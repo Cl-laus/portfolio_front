@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { Geist_Mono } from 'next/font/google';
 import './globals.css';
+import NavBar from '@/components/NavBar';
 
 const euclidCircularA = localFont({
   src: [
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${euclidCircularA.variable} ${geistMono.variable} dark antialiased`}>
       <body className="min-h-screen">
+        <NavBar />
         {children}
       </body>
     </html>
