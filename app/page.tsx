@@ -33,7 +33,7 @@ export default function HomePage() {
 
   if (loading || !info) {
     return (
-      <div className="loading-screen">
+      <div className="loading-screen flex items-center justify-center">
         <div className="loading-spinner" />
       </div>
     );
@@ -52,11 +52,11 @@ export default function HomePage() {
     <>
       <HeroSection info={info} />
 
-      <section className="projects-section">
+      <section className="projects-section pt-[12em] px-[5.5em] pb-[7em]">
         {/* Section header */}
-        <div className="section-head">
+        <div className="section-head flex items-center gap-[1em] mb-[5.5em]">
           <span className="section-title">Selected Work</span>
-          <span className="head-line" />
+          <span className="head-line flex-1" />
           <span className="head-count">
             {String(projects.length).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
           </span>
@@ -68,7 +68,7 @@ export default function HomePage() {
         {/* Thin dividers + closed projects */}
         {closed.map((project, i) => (
           <div key={project.id}>
-            <div className="project-divider" />
+            <div className="project-divider my-[5.5em]" />
             <ClosedProject
               project={project}
               index={String(i + 2).padStart(2, "0")}
@@ -78,7 +78,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      <footer className="portfolio-footer">
+      <footer className="portfolio-footer flex justify-center items-center py-[3.5em] px-[5.5em]">
         <span>© 2026 Lucas Luisetti</span>
       </footer>
     </>

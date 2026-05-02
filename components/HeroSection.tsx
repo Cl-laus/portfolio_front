@@ -11,9 +11,9 @@ export default function HeroSection({ info }: HeroSectionProps) {
   const lastName = rest.join(' ');
 
   return (
-    <section className="hero-section">
-      {/* LEFT CONTENT */}
-      <div className="hero-left">
+    <section className="hero-section grid grid-cols-2 h-screen overflow-hidden">
+
+      <div className="hero-left flex flex-col justify-center pl-[5.5em] max-w-[42em]">
         <h1 className="hero-name flex flex-col">
           <span>{firstName}</span>
           <span>{lastName}</span>
@@ -26,11 +26,11 @@ export default function HeroSection({ info }: HeroSectionProps) {
         </div>
       </div>
 
-      {/* FISSURE — centered vertically, label to the right */}
-      <div className="hero-center">
+      <div className="hero-center flex items-center">
         <div className="scroll-fissure" />
-        <div className="scroll-label">Scroll down</div>
+        <div className="scroll-label pl-[1.2em] pr-[5.5em]">Scroll down</div>
       </div>
+
     </section>
   );
 }

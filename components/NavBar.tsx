@@ -25,7 +25,7 @@ export default function NavBar() {
       {/* ABOUT BUTTON */}
       {!isAbout && (
         <button
-          className="about-link"
+          className="about-link inline-flex items-center p-0"
           onClick={() => router.push("/about")}
         >
           About
