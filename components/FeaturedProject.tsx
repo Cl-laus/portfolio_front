@@ -32,7 +32,6 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
         <span className="closed-index">01 /</span>
         <h2 className="closed-title">
           {project.title}
-          <span className="title-underline" />
         </h2>
         <span className="closed-meta">{meta}</span>
       </div>

@@ -20,7 +20,6 @@ export default function ClosedProject({ project, index, meta }: ClosedProjectPro
       <span className="closed-index">{index} /</span>
       <h2 className="closed-title">
         {project.title}
-        <span className="title-underline" />
       </h2>
 
       {meta && <span className="closed-meta">{meta}</span>}
