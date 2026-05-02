@@ -12,8 +12,6 @@ export default function HeroSection({ info }: HeroSectionProps) {
 
   return (
     <section className="hero-section">
-      <div className="hero-bg" />
-
       {/* LEFT CONTENT */}
       <div className="hero-left">
         <h1 className="hero-name flex flex-col">
