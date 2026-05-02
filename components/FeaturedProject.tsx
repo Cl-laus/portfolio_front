@@ -21,59 +21,52 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
       href={`/projects/${project.id}`}
       onClick={(e) => { e.preventDefault(); router.push(`/projects/${project.id}`); }}
     >
-      {/* feat-label-top: hairline + "Featured" label */}
-      <div className="feat-label-top">
+      <div className="feat-label-top inline-flex items-center gap-[0.85em] mb-[1.6em]">
         <div className="feat-hairline" />
         <span className="feat-label-text">Featured</span>
       </div>
 
-      {/* title-row: index + title + meta (same pattern as closed projects) */}
-      <div className="title-row">
-        <span className="closed-index">01 /</span>
-        <h2 className="closed-title">
+      <div className="title-row flex items-baseline gap-[1.6em]">
+        <span className="closed-index pt-[0.7em] self-start">01 /</span>
+        <h2 className="closed-title inline-block m-0">
           {project.title}
         </h2>
-        <span className="closed-meta">{meta}</span>
+        <span className="closed-meta pt-[0.85em] self-start">{meta}</span>
       </div>
 
-      {/* feat-detail: description + CTA left, image right */}
-      <div className="feat-detail">
+      <div className="feat-detail grid grid-cols-2 gap-[5.5em] items-center mt-[4em] pl-[5em]">
         <div className="featured-left">
           <p className="feat-desc">{project.summary}</p>
 
-          <div className="feat-meta">
+          <div className="feat-meta mt-[1.5em] flex gap-[0.85em] items-center">
             {project.technologies?.slice(0, 3).map((tech, i) => (
-              <span key={tech.id} className="meta-item">
-                {i > 0 && <span className="meta-dot" />}
+              <span key={tech.id} className="contents">
+                {i > 0 && <span className="meta-dot w-[0.18em] h-[0.18em] shrink-0 inline-block" />}
                 <span>{tech.name}</span>
               </span>
             ))}
             {project.technologies?.length > 0 && (
               <>
-                <span className="meta-dot" />
+                <span className="meta-dot w-[0.18em] h-[0.18em] shrink-0 inline-block" />
                 <span>{year}</span>
               </>
             )}
           </div>
 
-          <button className="feat-cta" aria-label="Open project">
+          <button className="feat-cta mt-[3.5em] w-[3em] h-[3em] inline-flex items-center justify-center" aria-label="Open project">
             <ArrowUpRight size={18} />
           </button>
         </div>
 
         <div className="featured-right">
-          <div className="feat-image-wrap">
+          <div className="feat-image-wrap w-full max-w-[27em] ml-auto">
             <span className="corner tl" />
             <span className="corner tr" />
             <span className="corner bl" />
             <span className="corner br" />
 
             {image ? (
-              <img
-                className="feat-image"
-                src={image.url}
-                alt={project.title}
-              />
+              <img className="feat-image" src={image.url} alt={project.title} />
             ) : (
               <div className="feat-image" style={{ background: "rgba(245,241,234,0.04)" }} />
             )}

@@ -19,12 +19,9 @@
 /* ===== NAV ===== */
 
 .about-link {
-  display: inline-flex;
-  align-items: center;
   font-size: 0.75em;
   color: var(--fg-muted);
   cursor: pointer;
-  padding: 0;
   background: none;
   border: none;
   font-family: inherit;
@@ -35,29 +32,14 @@
 
 /* ===== HERO ===== */
 
-/*
-  Grid layout: hero-left (left column) + hero-center (right column).
-  Background moved from .hero-bg div to the section itself.
-  No position:absolute needed for hero-center — it's a grid cell.
-*/
 .hero-section {
-  height: 100vh;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   background-image: url('/hero-bg.png');
   background-size: cover;
   background-position: center;
 }
 
-.hero-left {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 5.5em;
-  max-width: 42em;
-  z-index: 1;
-}
+.hero-left  { z-index: 1; }
+.hero-center { z-index: 1; }
 
 .hero-name {
   font-size: 8em;
@@ -71,12 +53,6 @@
   font-size: 2em;
   font-weight: 400;
   color: var(--fg-muted);
-}
-
-.hero-center {
-  display: flex;
-  align-items: center;
-  z-index: 1;
 }
 
 .scroll-fissure {
@@ -96,8 +72,6 @@
 
 .scroll-label {
   white-space: nowrap;
-  padding-left: 1.2em;
-  padding-right: 5.5em;
   font-size: 0.65em;
   letter-spacing: 0.32em;
   text-transform: uppercase;
@@ -109,18 +83,10 @@
 
 /* ===== PROJECTS SECTION ===== */
 
-.projects-section {
-  padding: 12em 5.5em 7em;
-}
-
 .section-head {
-  display: flex;
-  align-items: center;
-  gap: 1em;
   color: var(--fg-muted);
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  margin-bottom: 5.5em;
 }
 
 .section-title {
@@ -129,8 +95,7 @@
   letter-spacing: 0.05em;
 }
 
-.head-line {
-  flex: 1;
+.head-line,.project-divider {
   height: 1px;
   background: rgba(245,241,234,0.10);
 }
@@ -140,19 +105,10 @@
   letter-spacing: 0.1em;
 }
 
-.project-divider {
-  height: 1px;
-  background: rgba(245,241,234,0.08);
-  margin: 5.5em 0;
-}
-
 
 /* ===== SHARED: TITLE ROW (featured + closed) ===== */
 
 .title-row {
-  display: flex;
-  align-items: baseline;
-  gap: 1.6em;
   width: max-content;
   max-width: 100%;
   transition: transform 550ms var(--ease-snappy);
@@ -163,15 +119,12 @@
   font-size: 0.7em;
   color: var(--fg-muted);
   letter-spacing: 0.18em;
-  padding-top: 0.7em;
-  align-self: flex-start;
   transition: color 400ms ease;
 }
 .featured:hover .closed-index,
 .closed:hover   .closed-index { color: var(--amber-bright); }
 
 .closed-title {
-  display: inline-block;
   position: relative;
   font-weight: 500;
   font-size: 3.5em;
@@ -179,13 +132,11 @@
   line-height: 0.95;
   text-transform: uppercase;
   color: var(--fg);
-  margin: 0;
   transition: transform 550ms var(--ease-snappy);
 }
 .featured:hover .closed-title,
 .closed:hover   .closed-title { transform: translateY(-0.05em); }
 
-/* Amber underline via ::after — no extra markup span needed */
 .closed-title::after {
   content: "";
   position: absolute;
@@ -205,8 +156,6 @@
   color: var(--fg-muted);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  align-self: flex-start;
-  padding-top: 0.85em;
   opacity: 0;
   transform: translateX(-0.5em);
   transition: opacity 500ms ease, transform 550ms var(--ease-snappy);
@@ -220,13 +169,6 @@
 .featured {
   display: block;
   cursor: pointer;
-}
-
-.feat-label-top {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.85em;
-  margin-bottom: 1.6em;
 }
 
 .feat-hairline {
@@ -244,15 +186,6 @@
   color: var(--fg-muted);
 }
 
-.feat-detail {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5.5em;
-  align-items: center;
-  margin-top: 4em;
-  padding-left: 5em;
-}
-
 .feat-desc {
   font-size: 1.05em;
   color: var(--fg-muted);
@@ -264,39 +197,23 @@
 .featured:hover .feat-desc { opacity: 1; color: #9F9C92; }
 
 .feat-meta {
-  margin-top: 1.5em;
-  display: flex;
-  gap: 0.85em;
-  align-items: center;
   color: var(--fg-muted);
   font-size: 0.65em;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
-.meta-item { display: contents; }
-
 .meta-dot {
-  width: 0.18em;
-  height: 0.18em;
   border-radius: 50%;
   background: var(--fg-muted);
-  flex-shrink: 0;
-  display: inline-block;
 }
 
 /* CTA circular button */
 .feat-cta {
-  margin-top: 3.5em;
-  width: 3em;
-  height: 3em;
   border-radius: 50%;
   border: 1px solid rgba(245,241,234,.5);
   background: transparent;
   color: var(--fg);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   transition: background .45s ease, color .45s ease, border-color .45s ease;
 }
@@ -315,10 +232,7 @@
 /* Image wrapper */
 .feat-image-wrap {
   position: relative;
-  width: 100%;
-  max-width: 27em;
   aspect-ratio: 380 / 420;
-  margin-left: auto;
   background: var(--bg);
   transition: transform 600ms var(--ease-snappy);
 }
@@ -334,7 +248,7 @@
 }
 .featured:hover .feat-image { transform: scale(1.03); }
 
-/* Corner accents — L-shaped via ::before (horizontal) and ::after (vertical) */
+/* Corner accents */
 .corner {
   position: absolute;
   width: 1.1em;
@@ -375,9 +289,6 @@
 /* ===== CLOSED PROJECTS ===== */
 
 .closed {
-  display: flex;
-  align-items: baseline;
-  gap: 1.6em;
   width: max-content;
   max-width: 100%;
   cursor: pointer;
@@ -395,10 +306,6 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   z-index: 90;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5.5em;
 }
 
 .about-card {
@@ -412,7 +319,6 @@
   text-transform: uppercase;
   font-weight: 500;
   color: var(--fg-muted);
-  margin-bottom: 1.6em;
 }
 
 .about-card h2 {
@@ -420,29 +326,22 @@
   font-weight: 500;
   letter-spacing: -0.025em;
   line-height: 1.05;
-  margin-bottom: 1.6em;
 }
 
 .about-card p {
   color: var(--fg-muted);
   font-size: 1em;
   line-height: 1.65;
-  margin-bottom: 0.85em;
 }
 
 .about-row {
-  display: flex;
-  gap: 3em;
-  margin-top: 2em;
   color: var(--fg-muted);
   font-size: 0.65em;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 .about-row strong {
-  display: block;
   color: var(--fg);
-  margin-top: 0.4em;
   letter-spacing: 0.16em;
 }
 
@@ -452,15 +351,11 @@
   right: 3em;
   color: var(--fg);
   font-size: 0.75em;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6em;
   cursor: pointer;
   z-index: 100;
   background: none;
   border: none;
   font-family: inherit;
-  padding: 0;
 }
 
 .about-close-x {
@@ -487,9 +382,6 @@
 .loading-screen {
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: var(--bg-mid);
 }
 
@@ -506,30 +398,26 @@
 /* ===== FOOTER ===== */
 
 .portfolio-footer {
-  padding: 3.5em 5.5em;
   color: var(--fg-muted);
   font-size: 0.7em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border-top: 1px solid rgba(245,241,234,0.06);
 }
 
 
-/* ===== MOBILE ===== */
+/* ===== MOBILE OVERRIDES ===== */
 
 @media (max-width: 900px) {
-  .hero-section    { grid-template-columns: 1fr; }
-  .hero-left       { padding: 0 1.6em; max-width: none; }
-  .hero-name       { font-size: 4.5em; }
-  .hero-tagline    { font-size: 1.5em; }
-  .hero-center     { display: none; }
+  .hero-section     { grid-template-columns: 1fr; }
+  .hero-left        { padding: 0 1.6em; max-width: none; }
+  .hero-name        { font-size: 4.5em; }
+  .hero-tagline     { font-size: 1.5em; }
+  .hero-center      { display: none; }
   .projects-section { padding: 7em 1.6em 5em; }
-  .closed-title    { font-size: 2.5em; }
-  .feat-detail     { grid-template-columns: 1fr; gap: 3em; margin-top: 2.5em; padding-left: 0; }
-  .feat-image-wrap { max-width: 100%; }
+  .closed-title     { font-size: 2.5em; }
+  .feat-detail      { grid-template-columns: 1fr; gap: 3em; margin-top: 2.5em; padding-left: 0; }
+  .feat-image-wrap  { max-width: 100%; }
   .portfolio-footer { padding: 2.5em 1.6em; }
-  .about-overlay   { padding: 1.6em; }
-  .about-card h2   { font-size: 1.8em; }
-  .about-close     { top: 1.5em; right: 1.5em; }
+  .about-overlay    { padding: 1.6em; }
+  .about-card h2    { font-size: 1.8em; }
+  .about-close      { top: 1.5em; right: 1.5em; }
 }

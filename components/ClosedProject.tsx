@@ -14,15 +14,14 @@ export default function ClosedProject({ project, index, meta }: ClosedProjectPro
 
   return (
     <div
-      className="closed"
+      className="closed flex items-baseline gap-[1.6em]"
       onClick={() => router.push(`/projects/${project.id}`)}
     >
-      <span className="closed-index">{index} /</span>
-      <h2 className="closed-title">
+      <span className="closed-index pt-[0.7em] self-start">{index} /</span>
+      <h2 className="closed-title inline-block m-0">
         {project.title}
       </h2>
-
-      {meta && <span className="closed-meta">{meta}</span>}
+      {meta && <span className="closed-meta pt-[0.85em] self-start">{meta}</span>}
     </div>
   );
 }

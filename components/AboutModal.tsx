@@ -20,31 +20,31 @@ export default function AboutModal({ info, onClose }: AboutModalProps) {
   }, [onClose]);
 
   return (
-    <div className="about-overlay" onClick={onClose}>
-      <button className="about-close" onClick={onClose}>
+    <div className="about-overlay flex items-center justify-center p-[5.5em]" onClick={onClose}>
+      <button className="about-close inline-flex items-center gap-[0.6em] p-0" onClick={onClose}>
         <span>Close</span>
         <span className="about-close-x" />
       </button>
 
       <div className="about-card" onClick={(e) => e.stopPropagation()}>
-        <div className="about-card-label">About</div>
+        <div className="about-card-label mb-[1.6em]">About</div>
 
-        <h2>{info.aboutTitle || info.fullName}</h2>
+        <h2 className="mb-[1.6em]">{info.aboutTitle || info.fullName}</h2>
 
-        <p>{info.introText}</p>
+        <p className="mb-[0.85em]">{info.introText}</p>
         {info.aboutText && info.aboutText !== info.introText && (
-          <p>{info.aboutText}</p>
+          <p className="mb-[0.85em]">{info.aboutText}</p>
         )}
 
-        <div className="about-row">
+        <div className="about-row flex gap-[3em] mt-[2em]">
           <div>
             Status
-            <strong>Open · Q2 2026</strong>
+            <strong className="block mt-[0.4em]">Open · Q2 2026</strong>
           </div>
           {info.email && (
             <div>
               Contact
-              <strong>
+              <strong className="block mt-[0.4em]">
                 <a href={`mailto:${info.email}`}>{info.email}</a>
               </strong>
             </div>
@@ -52,7 +52,7 @@ export default function AboutModal({ info, onClose }: AboutModalProps) {
           {info.cv && (
             <div>
               CV
-              <strong>
+              <strong className="block mt-[0.4em]">
                 <a href={info.cv} target="_blank" rel="noopener noreferrer">Download</a>
               </strong>
             </div>
