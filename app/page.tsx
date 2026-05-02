@@ -55,7 +55,7 @@ export default function HomePage() {
       <section className="projects-section">
         {/* Section header */}
         <div className="section-head">
-          <span>Selected Work</span>
+          <span className="section-title">Selected Work</span>
           <span className="head-line" />
           <span className="head-count">
             {String(projects.length).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}

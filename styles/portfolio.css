@@ -1,31 +1,38 @@
 
 .about-link {
-  position: fixed;
-top: 2em;
-right: 2em;
-  z-index: 50;
   display: inline-flex;
   align-items: center;
   font-size: 13px;
-  
   color: var(--fg-muted);
-
   cursor: pointer;
   padding: 0;
+  background: none;
+  border: none;
   font-family: inherit;
-  transition: opacity 0.5s ease, color 0.35s ease;
+  transition: color 0.35s ease;
 }
 .about-link:hover { color: var(--amber-bright); }
-.about-link.hidden { opacity: 0; pointer-events: none; }
 
 
 /* ---- Hero section ---- */
+
 .hero-section {
-  min-height: 100vh;
-  width: 100%;
   position: relative;
+  height: 100vh;
   overflow: hidden;
 }
+
+.hero-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 5;
+}
+
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -33,16 +40,6 @@ right: 2em;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(50,45,40,0.93) 0%,
-    rgba(50,45,40,0.72) 45%,
-    rgba(50,45,40,0.20) 100%
-  );
 }
 .hero-left {
   position: relative;
@@ -55,36 +52,24 @@ right: 2em;
   max-width: 720px;
 }
 .hero-name {
-  font-size: clamp(72px, 9vw, 124px);
+  font-size: 8em;
+  text-transform: uppercase;
   font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 0.98;
   color: var(--fg);
-  margin: 0;
+  line-height: 0.8;
 }
 .hero-tagline {
-  margin-top: 22px;
-  font-size: 36px;
+  font-size: 2em;
   font-weight: 400;
-  letter-spacing: -0.01em;
   color: var(--fg-muted);
 }
 .hero-meta {
-  margin-top: 48px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
   color: var(--fg-muted);
-  font-size: 12px;
-  letter-spacing: 0.22em;
+  font-size: 1em;
   text-transform: uppercase;
 }
 .scroll-fissure {
-  position: absolute;
-  left: 50%;   /* fallback — overridden by JS */
-  right: 0;
-  bottom: 56px;
+  flex: 1;
   height: 2px;
   background: linear-gradient(
     to right,
@@ -93,21 +78,18 @@ right: 2em;
     rgba(216,142,61,0)  100%
   );
   box-shadow: 0 0 12px rgba(216,142,61,.55), 0 0 28px rgba(216,142,61,.25);
-  z-index: 5;
   transform-origin: left center;
   transform: scaleX(0);
   animation: scrollLineIn 1.4s cubic-bezier(.2,.7,.2,1) .25s forwards;
 }
 .scroll-label {
-  position: absolute;
-  right: 96px;
-  bottom: 80px;  /* fallback — overridden by JS */
-  transform: translateY(-100%);
+  white-space: nowrap;
+  padding-left: 20px;
+  padding-right: 96px;
   font-size: 11px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--fg);
-  z-index: 6;
   opacity: 0;
   animation: fadeIn .8s ease 1.4s forwards;
 }
@@ -130,6 +112,11 @@ right: 2em;
   letter-spacing: 0.32em;
   text-transform: uppercase;
   margin-bottom: 96px;
+}
+.section-title {
+  font-size: 4em;
+  color: var(--amber);
+  letter-spacing: 0.05em;
 }
 .head-line  { flex: 1; height: 1px; background: rgba(245,241,234,0.10); }
 .head-count { font-family: var(--font-geist-mono, monospace); letter-spacing: 0.1em; }
@@ -171,9 +158,10 @@ right: 2em;
   display: inline-block;
   position: relative;
   font-weight: 500;
-  font-size: clamp(72px, 10vw, 120px);
+  font-size: clamp(2em, 5vw, 3.5em);
   letter-spacing: -0.035em;
   line-height: 0.95;
+  text-transform: uppercase;
   color: var(--fg);
   margin: 0;
   transition: transform 550ms cubic-bezier(.2,.7,.2,1);
@@ -181,11 +169,10 @@ right: 2em;
 .featured:hover .closed-title,
 .closed:hover   .closed-title { transform: translateY(-3px); }
 
-/* Amber underline — 20px below title baseline for breathing room */
 .title-underline {
   position: absolute;
   left: 0;
-  bottom: -20px;
+  bottom: -0.5em;
   height: 1px;
   width: 0;
   background: var(--amber);
@@ -242,7 +229,7 @@ right: 2em;
   gap: 96px;
   align-items: center;
   margin-top: 64px;
-  padding-left: 88px; /* aligns desc under title text, past the index */
+  padding-left: 88px;
 }
 .feat-desc {
   font-size: 18px;
@@ -492,7 +479,6 @@ right: 2em;
 
 /* ---- Mobile ---- */
 @media (max-width: 900px) {
-  .about-link  { top: 24px; right: 24px; }
   .hero-left   { padding: 0 28px; max-width: none; }
   .hero-name   { font-size: clamp(48px, 13vw, 80px); }
   .hero-tagline { font-size: 18px; }
