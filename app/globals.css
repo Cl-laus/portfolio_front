@@ -18,6 +18,9 @@
   --color-amber-deep: var(--amber-deep);
 
   --color-border: var(--bg-edge);
+
+  /* Map Tailwind font-sans to the Euclid Circular A variable injected by Next.js layout */
+  --font-sans: var(--font-euclid), system-ui, sans-serif;
 }
 
 /* =========================
@@ -55,6 +58,8 @@
   html {
     scroll-behavior: smooth;
     @apply font-sans;
+    font-size: 17px;
+    line-height: 1.55;
     letter-spacing: 0.02em;
   }
 
@@ -71,8 +76,6 @@
 
     background-attachment: fixed;
     color: var(--fg);
-    font-size: 17px;
-    line-height: 1.5;
 
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
