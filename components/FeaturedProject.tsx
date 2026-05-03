@@ -23,7 +23,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
     >
       <div className="feat-label-top inline-flex items-center gap-[0.85em] mb-[1.6em]">
         <div className="feat-hairline" />
-        <span className="feat-label-text label">Featured</span>
+        <span className="feat-label-text label">En une</span>
       </div>
 
       <div className="title-row flex items-baseline gap-[1.6em]">

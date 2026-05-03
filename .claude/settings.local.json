@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(Get-ChildItem \"C:\\\\Users\\\\FlowUp\\\\Downloads\\\\portfolio projec detail\\\\portfolio\" -Recurse)",
+      "Bash(Select-Object FullName, Length)",
+      "Bash(npx tsc *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
