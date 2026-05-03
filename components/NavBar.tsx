@@ -10,13 +10,13 @@ export default function NavBar() {
   const isAbout = pathname === "/about";
 
   return (
-    <nav className="fixed top-6 right-6 flex gap-6 text-sm text-white z-50">
+    <nav className="fixed top-6 right-6 flex gap-6 z-50">
 
       {/* HOME BUTTON */}
       {!isHome && (
         <button
           onClick={() => router.push("/")}
-          className="opacity-80 hover:opacity-100 transition"
+          className="about-link inline-flex items-center p-0"
         >
           Home
         </button>
@@ -28,7 +28,7 @@ export default function NavBar() {
           className="about-link inline-flex items-center p-0"
           onClick={() => router.push("/about")}
         >
-          About
+          À propos
         </button>
       )}
 

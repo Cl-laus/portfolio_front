@@ -3,7 +3,8 @@
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { projectService } from "@/services/projectService";
-import { Project } from "@/types";
+import { technologyService } from "@/services/technologyService";
+import { Project, Technology } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -14,11 +15,18 @@ export default function ProjectPage({
 }) {
   const { id } = use(params);
 
-  const [project, setProject] = useState<Project | null>(null);
-  const [slide, setSlide]     = useState(0);
+  const [project, setProject]       = useState<Project | null>(null);
+  const [allTechs, setAllTechs]     = useState<Technology[]>([]);
+  const [slide, setSlide]           = useState(0);
 
   useEffect(() => {
-    projectService.getById(Number(id)).then(setProject);
+    Promise.all([
+      projectService.getById(Number(id)),
+      technologyService.getAll(),
+    ]).then(([proj, techs]) => {
+      setProject(proj);
+      setAllTechs(techs);
+    });
   }, [id]);
 
   // auto-advance carousel
@@ -43,14 +51,21 @@ export default function ProjectPage({
       </div>
     );
 
-  const { title, summary, description, technologies, links, images, createdAt } = project;
+  const { title, summary, description, links, images, createdAt } = project;
   const year     = createdAt ? new Date(createdAt).getFullYear() : null;
-  const topLabel = technologies?.[0]?.category || technologies?.[0]?.name || "Project";
+
+  // Résoudre les techs : le backend peut retourner des objets ou des IDs
+  const techIds = (project.technologies ?? []).map((t) =>
+    typeof t === "number" ? t : (t as Technology).id
+  );
+  const projectTechs = allTechs.filter((tech) => techIds.includes(tech.id));
+
+  const topLabel = projectTechs[0]?.category || projectTechs[0]?.name || "Project";
 
   return (
     <main className="pd-page flex flex-col min-h-screen pt-[4.5em] px-[5.5em] pb-[3.5em]">
 
-      {/* Top label — reuses .feat-label-text */}
+      {/* Top label */}
       <div className="feat-label-text label mb-[2em]">
         {topLabel}{year && ` · ${year}`}
       </div>
@@ -122,11 +137,11 @@ export default function ProjectPage({
           <div className="pd-meta-row flex justify-between items-start mt-[3em] pt-[1.6em] gap-[2em]">
 
             {/* Tech stack */}
-            {technologies?.length > 0 && (
+            {projectTechs.length > 0 && (
               <div className="flex flex-col">
                 <div className="pd-meta-label label mb-[1.3em]">Built with</div>
                 <div className="flex flex-wrap gap-[0.6em] items-center">
-                  {technologies.map((tech) => (
+                  {projectTechs.map((tech) => (
                     <span
                       key={tech.id}
                       className="pd-tech-chip inline-flex items-center px-[0.85em] py-[0.5em]"
