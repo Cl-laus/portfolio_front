@@ -1,10 +1,11 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 import { projectService } from "@/services/projectService";
 import { Project } from "@/types";
-import { glassStyle } from "@/styles/glass";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 export default function ProjectPage({
   params,
@@ -13,169 +14,171 @@ export default function ProjectPage({
 }) {
   const { id } = use(params);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
   const [project, setProject] = useState<Project | null>(null);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [index, setIndex] = useState(0);
-
-  const currentIndex = projects.findIndex((p) => p.id === project?.id);
+  const [slide, setSlide]     = useState(0);
 
   useEffect(() => {
     projectService.getById(Number(id)).then(setProject);
-    projectService.getTop3().then(setProjects);
   }, [id]);
 
+  // auto-advance carousel
   useEffect(() => {
     if (!project?.images?.length) return;
-
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % project.images.length);
-    }, 6000);
-
-    return () => clearInterval(interval);
+    const t = setInterval(
+      () => setSlide((prev) => (prev + 1) % project.images.length),
+      4500
+    );
+    return () => clearInterval(t);
   }, [project?.images?.length]);
 
-  const goToProject = (newIndex: number) => {
-    const target = projects[newIndex];
-    if (!target) return;
-    window.location.href = `/projects/${target.id}`;
+  const goTo = (n: number) => {
+    if (!project?.images?.length) return;
+    setSlide((n + project.images.length) % project.images.length);
   };
 
-  if (!project) return null;
+  if (!project)
+    return (
+      <div className="loading-screen flex items-center justify-center">
+        <div className="loading-spinner" />
+      </div>
+    );
+
+  const { title, summary, description, technologies, links, images, createdAt } = project;
+  const year     = createdAt ? new Date(createdAt).getFullYear() : null;
+  const topLabel = technologies?.[0]?.category || technologies?.[0]?.name || "Project";
 
   return (
-    <div className="">
+    <main className="pd-page flex flex-col min-h-screen pt-[4.5em] px-[5.5em] pb-[3.5em]">
 
-      {/* CONTENT CENTRÉ */}
-      <div className="max-w-5xl mx-auto p-6 space-y-10"   >
+      {/* Top label — reuses .feat-label-text */}
+      <div className="feat-label-text mb-[2em]">
+        {topLabel}{year && ` · ${year}`}
+      </div>
 
-        <h1 className="text-4xl font-bold text-left">
-          {project.title}
-        </h1>
+      {/* Main card: carousel left / content right */}
+      <article className="pd-card grid [grid-template-columns:1.05fr_1fr] gap-[5em] items-stretch flex-1 min-h-0">
 
-        {/* DESCRIPTION */}
-        <Card style={glassStyle}>
-          <CardHeader>
-            <CardTitle>Description</CardTitle>
-          </CardHeader>
+        {/* ── LEFT: image carousel ── */}
+        <section className="pd-carousel" aria-label="Project screenshots">
+          {images.length > 0 ? (
+            images.map((img, i) => (
+              <div key={img.id} className={`pd-slide${i === slide ? " active" : ""}`}>
+                <img src={`${API_URL}${img.url}`} alt={`${title} — ${i + 1}`} />
+              </div>
+            ))
+          ) : (
+            <div className="pd-slide active" style={{ background: "rgba(245,241,234,0.04)" }} />
+          )}
 
-          <CardContent className="space-y-8">
-            <p className="text-muted-foreground leading-relaxed">
-              {project.description}
-            </p>
+          {images.length > 1 && (
+            <>
+              <button
+                className="pd-arrow-btn prev inline-flex items-center justify-center"
+                onClick={() => goTo(slide - 1)}
+                aria-label="Previous"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 18 9 12l6-6" />
+                </svg>
+              </button>
+              <button
+                className="pd-arrow-btn next inline-flex items-center justify-center"
+                onClick={() => goTo(slide + 1)}
+                aria-label="Next"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+              <div className="pd-dots flex gap-[0.5em]">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`pd-dot${i === slide ? " active" : ""}`}
+                    onClick={() => setSlide(i)}
+                    aria-label={`Slide ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* ── RIGHT: text content ── */}
+        <section className="pd-content flex flex-col justify-between py-[0.5em]">
+          <div className="pd-content-top">
+            <h1 className="mb-[0.38em]">{title}</h1>
+            {summary && <p>{summary}</p>}
+            {description && description !== summary && (
+              <p className="mt-[1em]">{description}</p>
+            )}
+          </div>
 
-              <div>
-                <h3 className="font-semibold mb-3">Technologies</h3>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
+          <div className="pd-meta-row flex justify-between items-start mt-[3em] pt-[1.6em] gap-[2em]">
+
+            {/* Tech stack */}
+            {technologies?.length > 0 && (
+              <div className="flex flex-col">
+                <div className="pd-meta-label mb-[1.3em]">Built with</div>
+                <div className="flex flex-wrap gap-[0.6em] items-center">
+                  {technologies.map((tech) => (
                     <span
                       key={tech.id}
-                      className="px-2 py-1 text-xs rounded-md border bg-background"
+                      className="pd-tech-chip inline-flex items-center px-[0.85em] py-[0.5em]"
                     >
                       {tech.name}
                     </span>
                   ))}
                 </div>
               </div>
+            )}
 
-              {project.links && (
-                <div>
-                  <h3 className="font-semibold mb-3">Liens</h3>
-                  <div className="flex flex-col gap-2">
-                    {Object.entries(project.links).map(([key, value]) => (
-                      <a
-                        key={key}
-                        href={value}
-                        target="_blank"
-                        className="text-sm underline text-primary"
-                      >
-                        {key}
-                      </a>
-                    ))}
-                  </div>
+            {/* External links */}
+            {links && Object.keys(links).length > 0 && (
+              <div className="flex flex-col items-end">
+                <div className="pd-meta-label mb-[1.3em]">Links</div>
+                <div className="flex gap-[0.7em]">
+                  {Object.entries(links).map(([key, url]) => (
+                    <a
+                      key={key}
+                      className="pd-link-btn inline-flex items-center justify-center"
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={key}
+                    >
+                      {key.toLowerCase().includes("github") ? (
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.8 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2.9-.3 2-.4 3-.4s2 .1 3 .4c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.8-5.8 7.8-10.9C23.5 5.7 18.3.5 12 .5z" />
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <path d="M15 3h6v6" />
+                          <path d="m10 14 11-11" />
+                        </svg>
+                      )}
+                    </a>
+                  ))}
                 </div>
-              )}
-
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* IMAGES */}
-        <Card style={glassStyle}>
-          <CardHeader>
-            <CardTitle>Images</CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            {project.images.length > 0 && (
-              <div className="relative w-full h-[550px] overflow-hidden rounded-lg border">
-                <img
-                  src={`${API_URL}${project.images[index].url}`}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-all duration-1000 ease-in-out"
-                />
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </section>
+      </article>
 
-      </div>
+      {/* Back to home */}
+      <Link
+        className="pd-back-link inline-flex items-center gap-[0.6em] mt-[3.5em] self-center"
+        href="/"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m12 19-7-7 7-7" />
+          <path d="M19 12H5" />
+        </svg>
+        <span>Back to home</span>
+      </Link>
 
-      {/* NAVIGATION FIXE */}
-      <div className="hidden md:block">
-        <button
-          onClick={() => goToProject(currentIndex - 1)}
-          disabled={currentIndex <= 0}
-          className="project-nav project-nav--left"
-        >
-          ← Projet précédent
-        </button>
-
-        <button
-          onClick={() => goToProject(currentIndex + 1)}
-          disabled={currentIndex >= projects.length - 1}
-          className="project-nav project-nav--right"
-        >
-          Projet suivant →
-        </button>
-      </div>
-
-      {/* CSS DANS LA PAGE */}
-      <style jsx>{`
-        .project-nav {
-          position: fixed;
-          top: 50%;
-          transform: translateY(-50%);
-          font-size: 14px;
-          font-weight: 500;
-          color: #666;
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          transition: color 0.2s ease;
-        }
-
-        .project-nav:hover {
-          color: #111;
-        }
-
-        .project-nav:disabled {
-          opacity: 0.3;
-          pointer-events: none;
-        }
-
-        .project-nav--left {
-          left: 24px;
-        }
-
-        .project-nav--right {
-          right: 24px;
-        }
-      `}</style>
-
-    </div>
+    </main>
   );
 }
