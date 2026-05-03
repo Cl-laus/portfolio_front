@@ -23,9 +23,9 @@ export default function ClosedProject({ project, index, meta }: ClosedProjectPro
         <h2 className="closed-title inline-block m-0">
           {project.title}
         </h2>
-        {meta && <span className="closed-meta pt-[0.85em] self-start">{meta}</span>}
+        {meta && <span className="closed-meta label pt-[0.85em] self-start">{meta}</span>}
       </div>
-      <button className="feat-cta w-[6em] h-[6em] inline-flex items-center justify-center shrink-0" aria-label="Open project">
+      <button className="feat-cta btn-circle w-[6em] h-[6em] inline-flex items-center justify-center shrink-0" aria-label="Open project">
         <ArrowUpRight size={24} />
       </button>
     </div>

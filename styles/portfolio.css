@@ -11,8 +11,49 @@
 .closed-meta,
 .feat-meta,
 .feat-index,
-.about-row {
+.about-row,
+.pd-meta-label,
+.pd-tech-chip {
   font-family: var(--font-geist-mono, monospace);
+}
+
+
+/* ===== SHARED UTILITIES ===== */
+
+/* Small uppercase muted label — applied alongside component classes */
+.label {
+  font-size: 0.65em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* Circular icon button base + hover */
+.btn-circle {
+  border-radius: 50%;
+  border: 1px solid rgba(245,241,234,.4);
+  color: var(--fg);
+  cursor: pointer;
+  transition: background .35s ease, border-color .35s ease, color .35s ease;
+}
+.btn-circle:hover,
+.featured:hover .btn-circle,
+.closed:hover   .btn-circle {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+
+/* Full-cover image */
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fixed full-screen overlay */
+.fixed-overlay {
+  position: fixed;
+  inset: 0;
 }
 
 
@@ -95,7 +136,7 @@
   letter-spacing: 0.05em;
 }
 
-.head-line,.project-divider {
+.head-line, .project-divider {
   height: 1px;
   background: rgba(245,241,234,0.10);
 }
@@ -151,11 +192,9 @@
 .featured:hover .closed-title::after,
 .closed:hover   .closed-title::after { width: 100%; }
 
+/* letter-spacing + states only — font-size/color/uppercase come from .label */
 .closed-meta {
-  font-size: 0.65em;
-  color: var(--fg-muted);
   letter-spacing: 0.18em;
-  text-transform: uppercase;
   opacity: 0;
   transform: translateX(-0.5em);
   transition: opacity 500ms ease, transform 550ms var(--ease-snappy);
@@ -188,11 +227,9 @@
 }
 .featured:hover .feat-hairline { width: 4em; }
 
+/* letter-spacing only — font-size/color/uppercase come from .label */
 .feat-label-text {
-  font-size: 0.65em;
   letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
 }
 
 .feat-desc {
@@ -205,11 +242,9 @@
 }
 .featured:hover .feat-desc { opacity: 1; color: #9F9C92; }
 
+/* letter-spacing only — font-size/color/uppercase + mono font come from shared rules */
 .feat-meta {
-  color: var(--fg-muted);
-  font-size: 0.65em;
   letter-spacing: 0.18em;
-  text-transform: uppercase;
 }
 
 .meta-dot {
@@ -217,13 +252,10 @@
   background: var(--fg-muted);
 }
 
-/* CTA circular button */
+/* Unique to feat-cta: border opacity override, bg reset, slower transition, svg animation */
 .feat-cta {
-  border-radius: 50%;
-  border: 1px solid rgba(245,241,234,.5);
+  border-color: rgba(245,241,234,.5);
   background: transparent;
-  color: var(--fg);
-  cursor: pointer;
   transition: background .45s ease, color .45s ease, border-color .45s ease;
 }
 .feat-cta svg {
@@ -231,20 +263,12 @@
   height: 2.2em;
   transition: transform .45s var(--ease-snappy);
 }
-.featured:hover .feat-cta,
-.closed:hover   .feat-cta {
-  background: var(--fg);
-  color: var(--bg);
-  border-color: var(--fg);
-}
 .featured:hover .feat-cta svg,
 .closed:hover   .feat-cta svg { transform: rotate(45deg); }
 
+/* letter-spacing + transition only — font-size/color/uppercase come from .label */
 .feat-cta-label {
-  font-size: 0.65em;
   letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
   transition: color 400ms ease;
 }
 .featured:hover .feat-cta-label,
@@ -264,10 +288,8 @@
   background: var(--bg);
 }
 
+/* blend-mode + filter only — dimensions come from .img-cover */
 .feat-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   mix-blend-mode: lighten;
   filter: brightness(0.92) contrast(1.08) saturate(1.05);
 }
@@ -322,9 +344,8 @@
 
 /* ===== ABOUT OVERLAY ===== */
 
+/* position/inset come from .fixed-overlay */
 .about-overlay {
-  position: fixed;
-  inset: 0;
   background: rgba(22,20,18,.93);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -336,12 +357,10 @@
   color: var(--fg);
 }
 
+/* letter-spacing + weight only — font-size/color/uppercase come from .label */
 .about-card-label {
-  font-size: 0.65em;
   letter-spacing: 0.25em;
-  text-transform: uppercase;
   font-weight: 500;
-  color: var(--fg-muted);
 }
 
 .about-card h2 {
@@ -357,11 +376,9 @@
   line-height: 1.65;
 }
 
+/* letter-spacing only — font-size/color/uppercase + mono font come from shared rules */
 .about-row {
-  color: var(--fg-muted);
-  font-size: 0.65em;
   letter-spacing: 0.22em;
-  text-transform: uppercase;
 }
 .about-row strong {
   color: var(--fg);
@@ -402,9 +419,8 @@
 
 /* ===== LOADING ===== */
 
+/* position/inset come from .fixed-overlay */
 .loading-screen {
-  position: fixed;
-  inset: 0;
   background: var(--bg-mid);
 }
 
@@ -458,29 +474,23 @@
   background: linear-gradient(180deg, rgba(50,45,40,.18) 0%, rgba(50,45,40,0) 30%, rgba(50,45,40,.45) 100%);
   pointer-events: none;
 }
+
+/* filter only — dimensions come from .img-cover */
 .pd-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   filter: brightness(.9) contrast(1.05) saturate(1.04);
 }
 
+/* position/radius/border/color/cursor come from .btn-circle */
 .pd-arrow-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   width: 2.2em;
   height: 2.2em;
-  border-radius: 50%;
-  border: 1px solid rgba(245,241,234,.4);
   background: rgba(33,30,27,.45);
   backdrop-filter: blur(6px);
-  color: var(--fg);
-  cursor: pointer;
-  transition: background .35s ease, border-color .35s ease, color .35s ease;
   z-index: 3;
 }
-.pd-arrow-btn:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .pd-arrow-btn.prev  { left: 1em; }
 .pd-arrow-btn.next  { right: 1em; }
 .pd-arrow-btn svg   { width: 0.85em; height: 0.85em; }
@@ -521,48 +531,32 @@
 /* Meta row */
 .pd-meta-row { border-top: 1px solid rgba(245,241,234,0.10); }
 
+/* letter-spacing only — font-size/color/uppercase + mono font come from shared rules */
 .pd-meta-label {
-  font-family: var(--font-geist-mono, monospace);
-  font-size: 0.65em;
   letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
 }
 
-/* Tech chips */
+/* Tech chips — font-size/color/mono font come from shared rules */
 .pd-tech-chip {
   border: 1px solid rgba(245,241,234,0.10);
   border-radius: 999px;
-  font-family: var(--font-geist-mono, monospace);
-  font-size: 0.65em;
   letter-spacing: 0.06em;
   color: var(--fg);
   transition: border-color .3s ease;
 }
 
-/* Link buttons — same pattern as .feat-cta */
+/* radius/border/color/cursor/transition come from .btn-circle */
 .pd-link-btn {
   width: 2.5em;
   height: 2.5em;
-  border-radius: 50%;
-  border: 1px solid rgba(245,241,234,.4);
-  color: var(--fg);
   transition: background .3s ease, border-color .3s ease, color .3s ease, transform .35s var(--ease-snappy);
 }
-.pd-link-btn:hover {
-  background: var(--fg);
-  border-color: var(--fg);
-  color: var(--bg);
-  transform: translate(0.12em, -0.12em);
-}
-.pd-link-btn svg { width: 1em; height: 1em; }
+.pd-link-btn:hover { transform: translate(0.12em, -0.12em); }
+.pd-link-btn svg   { width: 1em; height: 1em; }
 
-/* Back link */
+/* letter-spacing + transition only — font-size/color/uppercase come from .label */
 .pd-back-link {
-  font-size: 0.65em;
   letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
   transition: color .35s ease;
 }
 .pd-back-link:hover { color: var(--amber-bright); }

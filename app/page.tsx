@@ -33,7 +33,7 @@ export default function HomePage() {
 
   if (loading || !info) {
     return (
-      <div className="loading-screen flex items-center justify-center">
+      <div className="loading-screen fixed-overlay flex items-center justify-center">
         <div className="loading-spinner" />
       </div>
     );

@@ -20,14 +20,14 @@ export default function AboutModal({ info, onClose }: AboutModalProps) {
   }, [onClose]);
 
   return (
-    <div className="about-overlay flex items-center justify-center p-[5.5em]" onClick={onClose}>
+    <div className="about-overlay fixed-overlay flex items-center justify-center p-[5.5em]" onClick={onClose}>
       <button className="about-close inline-flex items-center gap-[0.6em] p-0" onClick={onClose}>
         <span>Close</span>
         <span className="about-close-x" />
       </button>
 
       <div className="about-card" onClick={(e) => e.stopPropagation()}>
-        <div className="about-card-label mb-[1.6em]">About</div>
+        <div className="about-card-label label mb-[1.6em]">About</div>
 
         <h2 className="mb-[1.6em]">{info.aboutTitle || info.fullName}</h2>
 
@@ -36,7 +36,7 @@ export default function AboutModal({ info, onClose }: AboutModalProps) {
           <p className="mb-[0.85em]">{info.aboutText}</p>
         )}
 
-        <div className="about-row flex gap-[3em] mt-[2em]">
+        <div className="about-row label flex gap-[3em] mt-[2em]">
           <div>
             Status
             <strong className="block mt-[0.4em]">Open · Q2 2026</strong>
