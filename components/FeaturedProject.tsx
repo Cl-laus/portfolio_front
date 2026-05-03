@@ -34,7 +34,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
         <span className="closed-meta pt-[0.85em] self-start">{meta}</span>
       </div>
 
-      <div className="feat-detail grid grid-cols-2 gap-[5.5em] items-center mt-[4em] pl-[5em]">
+      <div className="feat-detail grid grid-cols-2 gap-[5.5em] items-stretch mt-[4em] pl-[5em]">
         <div className="featured-left">
           <p className="feat-desc">{project.summary}</p>
 
@@ -53,13 +53,16 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
             )}
           </div>
 
-          <button className="feat-cta mt-[3.5em] w-[3em] h-[3em] inline-flex items-center justify-center" aria-label="Open project">
-            <ArrowUpRight size={18} />
-          </button>
+          <div className="mt-auto self-end flex items-center gap-[1.5em] pb-[2em] pr-[2.5em]">
+            <span className="feat-cta-label">Voir détail du projet</span>
+            <button className="feat-cta w-[6em] h-[6em] inline-flex items-center justify-center" aria-label="Open project">
+              <ArrowUpRight size={24} />
+            </button>
+          </div>
         </div>
 
         <div className="featured-right">
-          <div className="feat-image-wrap w-full max-w-[27em] ml-auto">
+          <div className="feat-image-wrap w-full">
             <span className="corner tl" />
             <span className="corner tr" />
             <span className="corner bl" />
@@ -71,7 +74,6 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
               <div className="feat-image" style={{ background: "rgba(245,241,234,0.04)" }} />
             )}
 
-            <span className="feat-index mono">— 01</span>
           </div>
         </div>
       </div>
