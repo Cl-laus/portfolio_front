@@ -60,7 +60,7 @@
 /* ===== NAV ===== */
 
 .about-link {
-  font-size: 0.75em;
+  font-size: 1.5em;
   color: var(--fg-muted);
   cursor: pointer;
   background: none;
@@ -211,7 +211,7 @@
 }
 
 .feat-detail {
-  min-height: 52em;
+  min-height: 30em;
 }
 
 .featured-left {
