@@ -55,7 +55,7 @@ export default function HomePage() {
       <section className="projects-section pt-[12em] px-[5.5em] pb-[7em]">
         {/* Section header */}
         <div className="section-head flex items-center gap-[1em] mb-[5.5em]">
-          <span className="section-title">Selected Work</span>
+          <span className="section-title">Réalisations</span>
           <span className="head-line flex-1" />
           <span className="head-count">
             {String(projects.length).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}

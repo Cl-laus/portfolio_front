@@ -22,13 +22,13 @@ export default function HeroSection({ info }: HeroSectionProps) {
         <div className="flex flex-col gap-2">
           <span>{info.jobTitle}</span>
           <span>Lyon · FR</span>
-          <span>Open to CDI</span>
+          <span>Disponible</span>
         </div>
       </div>
 
       <div className="hero-center flex items-center">
         <div className="scroll-fissure" />
-        <div className="scroll-label pl-[1.2em] pr-[5.5em]">Scroll down</div>
+        <div className="scroll-label pl-[1.2em] pr-[5.5em]">Découvrir</div>
       </div>
 
     </section>

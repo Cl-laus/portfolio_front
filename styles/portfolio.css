@@ -59,16 +59,13 @@
 
 /* ===== NAV ===== */
 
-.about-link {
-  font-size: 1.5em;
+.nav-link {
+  font-size: 1em;
   color: var(--fg-muted);
   cursor: pointer;
-  background: none;
-  border: none;
-  font-family: inherit;
-  transition: color 0.35s ease;
+  transition: color 0.3s ease;
 }
-.about-link:hover { color: var(--amber-bright); }
+.nav-link:hover { color: var(--amber-bright); }
 
 
 /* ===== HERO ===== */
