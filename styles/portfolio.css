@@ -404,6 +404,142 @@
 }
 
 
+/* ===== PROJECT DETAIL ===== */
+
+/* Carousel */
+.pd-carousel {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--bg-edge);
+}
+
+.pd-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .9s cubic-bezier(.4,0,.2,1);
+}
+.pd-slide.active { opacity: 1; }
+
+.pd-slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(50,45,40,.18) 0%, rgba(50,45,40,0) 30%, rgba(50,45,40,.45) 100%);
+  pointer-events: none;
+}
+.pd-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(.9) contrast(1.05) saturate(1.04);
+}
+
+.pd-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 50%;
+  border: 1px solid rgba(245,241,234,.4);
+  background: rgba(33,30,27,.45);
+  backdrop-filter: blur(6px);
+  color: var(--fg);
+  cursor: pointer;
+  transition: background .35s ease, border-color .35s ease, color .35s ease;
+  z-index: 3;
+}
+.pd-arrow-btn:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.pd-arrow-btn.prev  { left: 1em; }
+.pd-arrow-btn.next  { right: 1em; }
+.pd-arrow-btn svg   { width: 0.85em; height: 0.85em; }
+
+.pd-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 0.85em;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+.pd-dot {
+  width: 0.3em;
+  height: 0.3em;
+  border-radius: 50%;
+  background: rgba(245,241,234,.4);
+  transition: background .3s ease, width .3s ease;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+}
+.pd-dot.active { background: var(--amber-bright); width: 1.1em; border-radius: 0.15em; }
+
+/* Content */
+.pd-content-top h1 {
+  font-size: 5em;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  color: var(--fg);
+}
+.pd-content-top p {
+  font-size: 1em;
+  line-height: 1.7;
+  color: var(--fg-muted);
+}
+
+/* Meta row */
+.pd-meta-row { border-top: 1px solid rgba(245,241,234,0.10); }
+
+.pd-meta-label {
+  font-family: var(--font-geist-mono, monospace);
+  font-size: 0.65em;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* Tech chips */
+.pd-tech-chip {
+  border: 1px solid rgba(245,241,234,0.10);
+  border-radius: 999px;
+  font-family: var(--font-geist-mono, monospace);
+  font-size: 0.65em;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+  transition: border-color .3s ease;
+}
+
+/* Link buttons — same pattern as .feat-cta */
+.pd-link-btn {
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  border: 1px solid rgba(245,241,234,.4);
+  color: var(--fg);
+  transition: background .3s ease, border-color .3s ease, color .3s ease, transform .35s var(--ease-snappy);
+}
+.pd-link-btn:hover {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+  transform: translate(0.12em, -0.12em);
+}
+.pd-link-btn svg { width: 1em; height: 1em; }
+
+/* Back link */
+.pd-back-link {
+  font-size: 0.65em;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  transition: color .35s ease;
+}
+.pd-back-link:hover { color: var(--amber-bright); }
+.pd-back-link svg   { width: 0.85em; height: 0.85em; }
+
+
 /* ===== MOBILE OVERRIDES ===== */
 
 @media (max-width: 900px) {
@@ -420,4 +556,8 @@
   .about-overlay    { padding: 1.6em; }
   .about-card h2    { font-size: 1.8em; }
   .about-close      { top: 1.5em; right: 1.5em; }
+  .pd-page          { padding: 3.5em 1.5em 2em; }
+  .pd-card          { grid-template-columns: 1fr !important; gap: 2.5em; }
+  .pd-content-top h1 { font-size: 3em; }
+  .pd-meta-row      { flex-direction: column; align-items: flex-start; }
 }
