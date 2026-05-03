@@ -38,7 +38,7 @@ export default function ProjectPage({
 
   if (!project)
     return (
-      <div className="loading-screen flex items-center justify-center">
+      <div className="loading-screen fixed-overlay flex items-center justify-center">
         <div className="loading-spinner" />
       </div>
     );
@@ -51,7 +51,7 @@ export default function ProjectPage({
     <main className="pd-page flex flex-col min-h-screen pt-[4.5em] px-[5.5em] pb-[3.5em]">
 
       {/* Top label — reuses .feat-label-text */}
-      <div className="feat-label-text mb-[2em]">
+      <div className="feat-label-text label mb-[2em]">
         {topLabel}{year && ` · ${year}`}
       </div>
 
@@ -68,7 +68,7 @@ export default function ProjectPage({
           {images.length > 0 ? (
             images.map((img, i) => (
               <div key={img.id} className={`pd-slide${i === slide ? " active" : ""}`}>
-                <img src={`${API_URL}${img.url}`} alt={`${title} — ${i + 1}`} />
+                <img className="img-cover" src={`${API_URL}${img.url}`} alt={`${title} — ${i + 1}`} />
               </div>
             ))
           ) : (
@@ -78,7 +78,7 @@ export default function ProjectPage({
           {images.length > 1 && (
             <>
               <button
-                className="pd-arrow-btn prev inline-flex items-center justify-center"
+                className="pd-arrow-btn btn-circle prev inline-flex items-center justify-center"
                 onClick={() => goTo(slide - 1)}
                 aria-label="Previous"
               >
@@ -87,7 +87,7 @@ export default function ProjectPage({
                 </svg>
               </button>
               <button
-                className="pd-arrow-btn next inline-flex items-center justify-center"
+                className="pd-arrow-btn btn-circle next inline-flex items-center justify-center"
                 onClick={() => goTo(slide + 1)}
                 aria-label="Next"
               >
@@ -124,7 +124,7 @@ export default function ProjectPage({
             {/* Tech stack */}
             {technologies?.length > 0 && (
               <div className="flex flex-col">
-                <div className="pd-meta-label mb-[1.3em]">Built with</div>
+                <div className="pd-meta-label label mb-[1.3em]">Built with</div>
                 <div className="flex flex-wrap gap-[0.6em] items-center">
                   {technologies.map((tech) => (
                     <span
@@ -141,12 +141,12 @@ export default function ProjectPage({
             {/* External links */}
             {links && Object.keys(links).length > 0 && (
               <div className="flex flex-col items-end">
-                <div className="pd-meta-label mb-[1.3em]">Links</div>
+                <div className="pd-meta-label label mb-[1.3em]">Links</div>
                 <div className="flex gap-[0.7em]">
                   {Object.entries(links).map(([key, url]) => (
                     <a
                       key={key}
-                      className="pd-link-btn inline-flex items-center justify-center"
+                      className="pd-link-btn btn-circle inline-flex items-center justify-center"
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -174,7 +174,7 @@ export default function ProjectPage({
 
       {/* Back to home */}
       <Link
-        className="pd-back-link inline-flex items-center gap-[0.6em] mt-[3.5em] self-center"
+        className="pd-back-link label inline-flex items-center gap-[0.6em] mt-[3.5em] self-center"
         href="/"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
