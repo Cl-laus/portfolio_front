@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import LoadingPage from '@/app/batcave/loading';
-import { useProtectedRoute } from '@/hooks/useProtectedRoute'; // <-- notre hook
+import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 export default function ProjectFormPage() {
   const { isAuth, checkingAuth } = useProtectedRoute();
@@ -32,51 +32,41 @@ export default function ProjectFormPage() {
 
   // ===================== DATA FETCH =====================
   useEffect(function () {
-    if (!isAuth) return; // si pas auth, on ne fetch pas
+    if (!isAuth) return;
+    let ignore = false;
 
     async function loadData() {
       try {
-        // fetch toutes les technologies
         const techs = await technologyService.getAll();
+        if (ignore) return;
         setTechnologies(techs);
 
-        // si édition, fetch du projet
         if (isEdit && projectId) {
           const p = await projectService.getById(projectId);
+          if (ignore) return;
           setTitle(p.title);
           setSummary(p.summary);
           setDescription(p.description);
-          setTechIds(p.technologies.map(getTechId));
+          setTechIds(p.technologies.map(function(t: Technology) { return t.id; }));
           setImages(p.images ?? []);
-
           if (p.links) {
-            setLinks(Object.entries(p.links).map(mapLinkEntry));
+            setLinks(Object.entries(p.links).map(function([k, v]) { return { key: k, value: v as string }; }));
           }
         }
       } catch (err) {
-        console.error(err);
+        if (!ignore) console.error(err);
       } finally {
-        setLoading(false);
+        if (!ignore) setLoading(false);
       }
     }
 
     loadData();
+    return function () { ignore = true; };
   }, [isAuth]);
-
-  // ===================== HELPERS =====================
-  function getTechId(t: Technology) {
-    return t.id;
-  }
-
-  function mapLinkEntry([k, v]: [string, string]) {
-    return { key: k, value: v };
-  }
 
   // ===================== LINKS =====================
   function addLink() {
-    setLinks(function (prev) {
-      return [...prev, { key: '', value: '' }];
-    });
+    setLinks(function (prev) { return [...prev, { key: '', value: '' }]; });
   }
 
   function updateLink(index: number, field: 'key' | 'value', value: string) {
@@ -88,27 +78,19 @@ export default function ProjectFormPage() {
   }
 
   function removeLink(index: number) {
-    setLinks(function (prev) {
-      return prev.filter(function (_, i) { return i !== index; });
-    });
+    setLinks(function (prev) { return prev.filter(function (_, i) { return i !== index; }); });
   }
 
   function formatLinks() {
     const obj: Record<string, string> = {};
-    links.forEach(function (l) {
-      if (l.key) obj[l.key] = l.value;
-    });
+    links.forEach(function (l) { if (l.key) obj[l.key] = l.value; });
     return Object.keys(obj).length ? obj : null;
   }
 
   // ===================== TECHNOLOGIES =====================
   function toggleTech(id: number) {
     setTechIds(function (prev) {
-      if (prev.includes(id)) {
-        return prev.filter(function (t) { return t !== id; });
-      } else {
-        return [...prev, id];
-      }
+      return prev.includes(id) ? prev.filter(function (t) { return t !== id; }) : [...prev, id];
     });
   }
 
@@ -122,8 +104,10 @@ export default function ProjectFormPage() {
         links: formatLinks(),
         technologies: techIds,
       })
-      .then(uploadImages)
-      .then(goBack)
+      .then(function () {
+        if (files.length > 0) return projectService.addImages(projectId, files);
+      })
+      .then(function () { router.push('/batcave/projects'); })
       .catch(console.error);
     } else {
       projectService.create({
@@ -133,37 +117,20 @@ export default function ProjectFormPage() {
         links: formatLinks(),
         technologies: techIds,
       })
-      .then(goBack)
+      .then(function () { router.push('/batcave/projects'); })
       .catch(console.error);
     }
   }
 
-  function uploadImages() {
-    if (files.length > 0 && projectId) {
-      return projectService.addImages(projectId, files);
-    }
-    return Promise.resolve();
-  }
-
-  function goBack() {
-    router.push('/batcave/projects');
-  }
-
   // ===================== LOADING UI =====================
-  if (checkingAuth || loading) {
-    return <LoadingPage />;
-  }
-
-  if (!isAuth) {
-    return null; // la redirection est gérée par le hook
-  }
+  if (checkingAuth || loading) return <LoadingPage />;
+  if (!isAuth) return null;
 
   // ===================== UI =====================
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
         <h2 className="text-lg font-semibold mb-2">Informations</h2>
-
         <Input placeholder="Titre" value={title} onChange={function(e){setTitle(e.target.value)}} />
         <Input placeholder="Résumé" value={summary} onChange={function(e){setSummary(e.target.value)}} className="mt-2" />
         <Textarea placeholder="Description" value={description} onChange={function(e){setDescription(e.target.value)}} className="mt-2 min-h-[150px]" />
@@ -208,17 +175,12 @@ export default function ProjectFormPage() {
             {images.map(function (img) {
               return (
                 <div key={img.id} className="relative w-24 h-24">
-                  <img
-                    src={process.env.NEXT_PUBLIC_API_URL + img.url}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={process.env.NEXT_PUBLIC_API_URL + img.url} className="w-full h-full object-cover" />
                   <Button
                     className="absolute top-0 right-0"
                     onClick={function () {
                       projectService.deleteImage(img.id).then(function () {
-                        setImages(function (prev) {
-                          return prev.filter(function (i) { return i.id !== img.id; });
-                        });
+                        setImages(function (prev) { return prev.filter(function (i) { return i.id !== img.id; }); });
                       });
                     }}
                   >
@@ -228,20 +190,13 @@ export default function ProjectFormPage() {
               );
             })}
           </div>
-          <Input
-            type="file"
-            multiple
-            onChange={function(e){setFiles(Array.from(e.target.files ?? []))}}
-            className="mt-2"
-          />
+          <Input type="file" multiple onChange={function(e){setFiles(Array.from(e.target.files ?? []))}} className="mt-2" />
         </div>
       )}
 
       <div className="flex gap-2">
         <Button onClick={handleSave}>Sauvegarder</Button>
-        <Button variant="outline" onClick={goBack}>
-          Annuler
-        </Button>
+        <Button variant="outline" onClick={function(){router.push('/batcave/projects')}}>Annuler</Button>
       </div>
     </div>
   );

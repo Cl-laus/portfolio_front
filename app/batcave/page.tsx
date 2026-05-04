@@ -24,7 +24,11 @@ export default function BatcavePage() {
   const router = useRouter();
 
   useEffect(() => {
-    setIsAuth(authService.isAuthenticated());
+    const authenticated = authService.isAuthenticated();
+    setIsAuth(authenticated);
+    if (authenticated) {
+      router.push('/batcave/projects');
+    }
   }, []);
 
   const handleLogin = async () => {
@@ -107,7 +111,6 @@ export default function BatcavePage() {
     );
   }
 
-  router.push("/batcave/projects");
   return (
     <div className="h-screen flex items-center justify-center">
       <p className="text-sm text-muted-foreground">Redirection…</p>
