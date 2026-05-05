@@ -14,20 +14,23 @@ export default function ProjectPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+  const projectId = Number(id);
 
-  const [project, setProject]       = useState<Project | null>(null);
-  const [allTechs, setAllTechs]     = useState<Technology[]>([]);
-  const [slide, setSlide]           = useState(0);
+  const [project, setProject]   = useState<Project | null>(null);
+  const [allTechs, setAllTechs] = useState<Technology[]>([]);
+  const [slide, setSlide]       = useState(0);
 
   useEffect(() => {
     Promise.all([
-      projectService.getById(Number(id)),
+      projectService.getById(projectId),
       technologyService.getAll(),
-    ]).then(([proj, techs]) => {
-      setProject(proj);
-      setAllTechs(techs);
-    });
-  }, [id]);
+    ])
+      .then(([proj, techs]) => {
+        setProject(proj);
+        setAllTechs(techs);
+      })
+      .catch(console.error);
+  }, [projectId]);
 
   // auto-advance carousel
   useEffect(() => {
@@ -52,9 +55,8 @@ export default function ProjectPage({
     );
 
   const { title, summary, description, links, images, createdAt } = project;
-  const year     = createdAt ? new Date(createdAt).getFullYear() : null;
+  const year = createdAt ? new Date(createdAt).getFullYear() : null;
 
-  // Résoudre les techs : le backend peut retourner des objets ou des IDs
   const techIds = (project.technologies ?? []).map((t) =>
     typeof t === "number" ? t : (t as Technology).id
   );
@@ -63,15 +65,15 @@ export default function ProjectPage({
   const topLabel = projectTechs[0]?.category || projectTechs[0]?.name || "Project";
 
   return (
-    <main className="pd-page flex flex-col min-h-screen pt-[4.5em] px-[5.5em] pb-[3.5em]">
+    <main className="pd-page flex flex-col min-h-screen pt-16 px-20 pb-14">
 
       {/* Top label */}
-      <div className="feat-label-text label mb-[2em]">
+      <div className="feat-label-text label mb-8">
         {topLabel}{year && ` · ${year}`}
       </div>
 
       {/* Main card: carousel left / content right */}
-      <article className="pd-card grid [grid-template-columns:1.05fr_1fr] gap-[5em] items-stretch flex-1 min-h-0">
+      <article className="pd-card grid [grid-template-columns:1.05fr_1fr] gap-20 items-stretch flex-1 min-h-0">
 
         {/* ── LEFT: image carousel ── */}
         <section className="pd-carousel" aria-label="Project screenshots">
@@ -80,7 +82,7 @@ export default function ProjectPage({
           <span className="corner bl" />
           <span className="corner br" />
 
-          {images.length > 0 ? (
+          {images?.length > 0 ? (
             images.map((img, i) => (
               <div key={img.id} className={`pd-slide${i === slide ? " active" : ""}`}>
                 <img className="img-cover" src={`${API_URL}${img.url}`} alt={`${title} — ${i + 1}`} />
@@ -90,7 +92,7 @@ export default function ProjectPage({
             <div className="pd-slide active" style={{ background: "rgba(245,241,234,0.04)" }} />
           )}
 
-          {images.length > 1 && (
+          {images?.length > 1 && (
             <>
               <button
                 className="pd-arrow-btn btn-circle prev inline-flex items-center justify-center"
@@ -110,7 +112,7 @@ export default function ProjectPage({
                   <path d="m9 18 6-6-6-6" />
                 </svg>
               </button>
-              <div className="pd-dots flex gap-[0.5em]">
+              <div className="pd-dots flex gap-2">
                 {images.map((_, i) => (
                   <button
                     key={i}
@@ -125,26 +127,26 @@ export default function ProjectPage({
         </section>
 
         {/* ── RIGHT: text content ── */}
-        <section className="pd-content flex flex-col justify-between py-[0.5em]">
+        <section className="pd-content flex flex-col justify-between py-2">
           <div className="pd-content-top">
-            <h1 className="mb-[0.38em]">{title}</h1>
+            <h1 className="mb-1.5">{title}</h1>
             {summary && <p>{summary}</p>}
             {description && description !== summary && (
-              <p className="mt-[1em]">{description}</p>
+              <p className="mt-4">{description}</p>
             )}
           </div>
 
-          <div className="pd-meta-row flex justify-between items-start mt-[3em] pt-[1.6em] gap-[2em]">
+          <div className="pd-meta-row flex justify-between items-start mt-12 pt-6 gap-8">
 
             {/* Tech stack */}
             {projectTechs.length > 0 && (
               <div className="flex flex-col">
-                <div className="pd-meta-label label mb-[1.3em]">Built with</div>
-                <div className="flex flex-wrap gap-[0.6em] items-center">
+                <div className="pd-meta-label label mb-5">Built with</div>
+                <div className="flex flex-wrap gap-2.5 items-center">
                   {projectTechs.map((tech) => (
                     <span
                       key={tech.id}
-                      className="pd-tech-chip inline-flex items-center px-[0.85em] py-[0.5em]"
+                      className="pd-tech-chip inline-flex items-center px-3.5 py-2"
                     >
                       {tech.name}
                     </span>
@@ -156,8 +158,8 @@ export default function ProjectPage({
             {/* External links */}
             {links && Object.keys(links).length > 0 && (
               <div className="flex flex-col items-end">
-                <div className="pd-meta-label label mb-[1.3em]">Links</div>
-                <div className="flex gap-[0.7em]">
+                <div className="pd-meta-label label mb-5">Links</div>
+                <div className="flex gap-3">
                   {Object.entries(links).map(([key, url]) => (
                     <a
                       key={key}
@@ -189,7 +191,7 @@ export default function ProjectPage({
 
       {/* Back to home */}
       <Link
-        className="pd-back-link label inline-flex items-center gap-[0.6em] mt-[3.5em] self-center"
+        className="pd-back-link label inline-flex items-center gap-2 mt-14 self-center"
         href="/"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
