@@ -1,0 +1,63 @@
+.heroSection {
+  background-image: url('/hero-bg.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.heroLeft  { z-index: 1; }
+.heroCenter { z-index: 1; }
+
+.heroName {
+  font-size: 8em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--fg);
+  line-height: 0.8;
+}
+
+.heroTagline {
+  font-size: 2em;
+  font-weight: 400;
+  color: var(--fg-muted);
+}
+
+.scrollFissure {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(216,142,61,.95) 0%,
+    rgba(216,142,61,.85) 70%,
+    rgba(216,142,61,0)  100%
+  );
+  box-shadow: 0 0 0.7em rgba(216,142,61,.55), 0 0 1.6em rgba(216,142,61,.25);
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: scrollLineIn 1.4s var(--ease-snappy) .25s forwards;
+}
+
+.scrollLabel {
+  white-space: nowrap;
+  font-size: 0.65em;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--fg);
+  opacity: 0;
+  animation: fadeIn .8s ease 1.4s forwards;
+}
+
+@keyframes scrollLineIn {
+  to { transform: scaleX(1); }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@media (max-width: 900px) {
+  .heroSection  { grid-template-columns: 1fr; }
+  .heroLeft     { padding: 0 1.6em; max-width: none; }
+  .heroName     { font-size: 4.5em; }
+  .heroTagline  { font-size: 1.5em; }
+  .heroCenter   { display: none; }
+}
