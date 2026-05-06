@@ -7,6 +7,7 @@ import { ProjectSummary, Information } from "@/types";
 import HeroSection     from "@/components/HeroSection";
 import FeaturedProject from "@/components/FeaturedProject";
 import ClosedProject   from "@/components/ClosedProject";
+import LoadingSpinner  from "@/components/LoadingSpinner";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -34,9 +35,7 @@ export default function HomePage() {
 
   if (loading || !info) {
     return (
-      <div className="loading-screen fixed-overlay flex items-center justify-center">
-        <div className="loading-spinner" />
-      </div>
+      <LoadingSpinner />
     );
   }
 

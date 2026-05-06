@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faPenToSquare, faTrashCan, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Project } from '@/types';
 import { projectService } from '@/services/projectService';
-import LoadingPage from '@/app/batcave/loading';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 export default function ProjectsPage() {
@@ -57,7 +57,7 @@ export default function ProjectsPage() {
     }
   }
 
-  if (checkingAuth || loading) return <LoadingPage />;
+  if (checkingAuth || loading) return <LoadingSpinner />;
   if (!isAuth) return null;
 
   const sorted  = [...projects].sort((a, b) => a.displayOrder - b.displayOrder);

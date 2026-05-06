@@ -11,6 +11,7 @@ import { Project, Technology } from "@/types";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import CircleButton from "@/components/CircleButton";
 import TechChip from "@/components/TechChip";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import styles from "./page.module.css";
 
 export default function ProjectPage({
@@ -38,9 +39,7 @@ export default function ProjectPage({
 
   if (!project)
     return (
-      <div className="loading-screen fixed-overlay flex items-center justify-center">
-        <div className="loading-spinner" />
-      </div>
+      <LoadingSpinner />
     );
 
   const { title, description, links, images, createdAt } = project;
