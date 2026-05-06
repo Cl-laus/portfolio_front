@@ -13,18 +13,22 @@ import LoadingPage from '@/app/batcave/loading';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 type SocialNetworkForm = SocialNetwork & { isNew?: boolean };
-type TechnologyForm = Technology & { isNew?: boolean };
+type TechnologyForm    = Technology    & { isNew?: boolean };
 
 export default function InformationsPage() {
   const { isAuth, checkingAuth } = useProtectedRoute();
 
-  const [information, setInformation]   = useState<Information | null>(null);
+  const [information,    setInformation]    = useState<Information | null>(null);
   const [socialNetworks, setSocialNetworks] = useState<SocialNetworkForm[]>([]);
-  const [technologies, setTechnologies] = useState<TechnologyForm[]>([]);
-  const [loading, setLoading]           = useState(true);
-  const [saving, setSaving]             = useState(false);
-  const [newTech, setNewTech]           = useState('');
+  const [technologies,   setTechnologies]   = useState<TechnologyForm[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving,  setSaving]  = useState(false);
 
+  const [newName,     setNewName]     = useState('');
+  const [newCategory, setNewCategory] = useState('');
+  const [newIcon,     setNewIcon]     = useState('');
+
+  // ── Fetch ──────────────────────────────────────────────────
   useEffect(() => {
     if (!isAuth) return;
     async function fetchData() {
@@ -46,33 +50,50 @@ export default function InformationsPage() {
     fetchData();
   }, [isAuth]);
 
+  // ── Information ─────────────────────────────────────────────
   function handleInfoChange(field: keyof Information, value: string) {
     if (!information) return;
     setInformation({ ...information, [field]: value });
   }
 
+  // ── Social networks ─────────────────────────────────────────
   function updateSocial(id: number, field: string, value: string) {
     setSocialNetworks(prev => prev.map(sn => sn.id === id ? { ...sn, [field]: value } : sn));
   }
-
   function addSocial() {
     setSocialNetworks(prev => [...prev, { id: Date.now(), name: '', icon: '', url: '', isNew: true }]);
   }
-
   function removeSocial(id: number) {
     setSocialNetworks(prev => prev.filter(sn => sn.id !== id));
   }
 
+  // ── Technologies ─────────────────────────────────────────────
+  function updateTech(id: number, field: keyof Technology, value: string) {
+    setTechnologies(prev => prev.map(t => t.id === id ? { ...t, [field]: value } : t));
+  }
+
   function addTech() {
-    if (!newTech.trim()) return;
-    setTechnologies(prev => [...prev, { id: Date.now(), name: newTech.trim(), icon: '', category: '', isNew: true }]);
-    setNewTech('');
+    if (!newName.trim()) return;
+    setTechnologies(prev => [
+      ...prev,
+      { id: Date.now(), name: newName.trim(), category: newCategory.trim(), icon: newIcon.trim(), isNew: true },
+    ]);
+    setNewName('');
+    setNewCategory('');
+    setNewIcon('');
   }
 
-  function removeTech(id: number) {
-    setTechnologies(prev => prev.filter(t => t.id !== id));
+  async function deleteTech(id: number, isNew?: boolean) {
+    if (isNew) { setTechnologies(prev => prev.filter(t => t.id !== id)); return; }
+    try {
+      await technologyService.delete(id);
+      setTechnologies(prev => prev.filter(t => t.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
   }
 
+  // ── Save ─────────────────────────────────────────────────────
   async function handleSave() {
     if (saving || !information) return;
     setSaving(true);
@@ -81,11 +102,12 @@ export default function InformationsPage() {
 
       for (const sn of socialNetworks) {
         if (sn.isNew) await socialNetworkService.create({ name: sn.name, icon: sn.icon, url: sn.url });
-        else await socialNetworkService.update(sn);
+        else          await socialNetworkService.update(sn);
       }
 
       for (const tech of technologies) {
         if (tech.isNew) await technologyService.create({ name: tech.name, icon: tech.icon, category: tech.category });
+        else            await technologyService.update(tech);
       }
     } catch (err) {
       console.error(err);
@@ -233,12 +255,8 @@ export default function InformationsPage() {
                     value={sn.url}
                     onChange={e => updateSocial(sn.id, 'url', e.target.value)}
                     placeholder="https://..." />
-                  <button
-                    className="adm-icon-btn adm-icon-btn--danger"
-                    type="button"
-                    onClick={() => removeSocial(sn.id)}
-                    title="Supprimer"
-                  >
+                  <button className="adm-icon-btn adm-icon-btn--danger" type="button"
+                    onClick={() => removeSocial(sn.id)} title="Supprimer">
                     <FontAwesomeIcon icon={faTrashCan} />
                   </button>
                 </div>
@@ -254,35 +272,54 @@ export default function InformationsPage() {
           <section className="adm-card">
             <div className="adm-card-head">
               <h2><span className="hairline" />Technologies</h2>
+              <span className="hint">Nom · Catégorie · Icône</span>
             </div>
             <div className="adm-card-body">
-              <div className="adm-chips">
-                {technologies.map(tech => (
-                  <button
-                    key={tech.id}
-                    type="button"
-                    className="adm-chip adm-chip--active"
-                    onClick={() => removeTech(tech.id)}
-                  >
-                    {tech.name}
-                    <span className="x">×</span>
+
+              {/* Existing techs */}
+              {technologies.map(tech => (
+                <div key={tech.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: 12, alignItems: 'center', marginBottom: 10 }}>
+                  <input className="adm-input" type="text"
+                    value={tech.name}
+                    onChange={e => updateTech(tech.id, 'name', e.target.value)}
+                    placeholder="Nom" />
+                  <input className="adm-input" type="text"
+                    value={tech.category}
+                    onChange={e => updateTech(tech.id, 'category', e.target.value)}
+                    placeholder="Catégorie (ex: Front, Back, 3D…)" />
+                  <input className="adm-input" type="text"
+                    value={tech.icon}
+                    onChange={e => updateTech(tech.id, 'icon', e.target.value)}
+                    placeholder="Icône (optionnel)" />
+                  <button className="adm-icon-btn adm-icon-btn--danger" type="button"
+                    onClick={() => deleteTech(tech.id, tech.isNew)} title="Supprimer">
+                    <FontAwesomeIcon icon={faTrashCan} />
                   </button>
-                ))}
-              </div>
-              <div className="adm-add-tech">
-                <input
-                  className="adm-input"
-                  type="text"
-                  placeholder="Ajouter une technologie…"
-                  value={newTech}
-                  onChange={e => setNewTech(e.target.value)}
+                </div>
+              ))}
+
+              {/* Add new tech */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: 12, alignItems: 'center', marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--hairline)' }}>
+                <input className="adm-input" type="text"
+                  value={newName}
+                  onChange={e => setNewName(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }}
-                  style={{ maxWidth: 320 }}
-                />
+                  placeholder="Nouveau nom" />
+                <input className="adm-input" type="text"
+                  value={newCategory}
+                  onChange={e => setNewCategory(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }}
+                  placeholder="Catégorie" />
+                <input className="adm-input" type="text"
+                  value={newIcon}
+                  onChange={e => setNewIcon(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }}
+                  placeholder="Icône (optionnel)" />
                 <button className="adm-icon-btn" type="button" onClick={addTech} title="Ajouter">
                   <FontAwesomeIcon icon={faPlus} />
                 </button>
               </div>
+
             </div>
           </section>
 

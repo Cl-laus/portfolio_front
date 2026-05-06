@@ -66,7 +66,7 @@
 .featured:hover .titleRow     { transform: translateX(0.85em); }
 .featured:hover .featHairline { width: 4em; }
 .featured:hover .featDesc     { opacity: 1; color: #9F9C92; }
-.featured:hover .ctaBtn       { translate: 0.12em -0.12em; }
+.featured:hover .ctaBtn       { translate: 0.85em 0; }
 
 .featured:hover .featCtaLabel,
 .featCtaLabel:hover           { color: var(--amber-bright); }
