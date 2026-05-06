@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faTableList, faPlus, faTrashCan, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faTableList, faPlus, faTrashCan, faFloppyDisk, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import { informationService } from '@/services/informationService';
 import { socialNetworkService } from '@/services/socialNetworkService';
@@ -63,8 +63,15 @@ export default function InformationsPage() {
   function addSocial() {
     setSocialNetworks(prev => [...prev, { id: Date.now(), name: '', icon: '', url: '', isNew: true }]);
   }
-  function removeSocial(id: number) {
-    setSocialNetworks(prev => prev.filter(sn => sn.id !== id));
+  async function removeSocial(id: number, isNew?: boolean) {
+    if (isNew) { setSocialNetworks(prev => prev.filter(sn => sn.id !== id)); return; }
+    if (!confirm('Supprimer ce réseau social ?')) return;
+    try {
+      await socialNetworkService.delete(id);
+      setSocialNetworks(prev => prev.filter(sn => sn.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   // ── Technologies ─────────────────────────────────────────────
@@ -72,11 +79,21 @@ export default function InformationsPage() {
     setTechnologies(prev => prev.map(t => t.id === id ? { ...t, [field]: value } : t));
   }
 
+  async function toggleTechVisibility(tech: TechnologyForm) {
+    const updated = { ...tech, visible: !tech.visible };
+    try {
+      await technologyService.update(updated);
+      setTechnologies(prev => prev.map(t => t.id === tech.id ? updated : t));
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   function addTech() {
     if (!newName.trim()) return;
     setTechnologies(prev => [
       ...prev,
-      { id: Date.now(), name: newName.trim(), category: newCategory.trim(), icon: newIcon.trim(), isNew: true },
+      { id: Date.now(), name: newName.trim(), category: newCategory.trim(), icon: newIcon.trim(), visible: true, isNew: true },
     ]);
     setNewName('');
     setNewCategory('');
@@ -85,6 +102,7 @@ export default function InformationsPage() {
 
   async function deleteTech(id: number, isNew?: boolean) {
     if (isNew) { setTechnologies(prev => prev.filter(t => t.id !== id)); return; }
+    if (!confirm('Supprimer cette technologie ?')) return;
     try {
       await technologyService.delete(id);
       setTechnologies(prev => prev.filter(t => t.id !== id));
@@ -256,7 +274,7 @@ export default function InformationsPage() {
                     onChange={e => updateSocial(sn.id, 'url', e.target.value)}
                     placeholder="https://..." />
                   <button className="adm-icon-btn adm-icon-btn--danger" type="button"
-                    onClick={() => removeSocial(sn.id)} title="Supprimer">
+                    onClick={() => removeSocial(sn.id, sn.isNew)} title="Supprimer">
                     <FontAwesomeIcon icon={faTrashCan} />
                   </button>
                 </div>
@@ -278,7 +296,7 @@ export default function InformationsPage() {
 
               {/* Existing techs */}
               {technologies.map(tech => (
-                <div key={tech.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: 12, alignItems: 'center', marginBottom: 10 }}>
+                <div key={tech.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto auto', gap: 12, alignItems: 'center', marginBottom: 10 }}>
                   <input className="adm-input" type="text"
                     value={tech.name}
                     onChange={e => updateTech(tech.id, 'name', e.target.value)}
@@ -291,6 +309,15 @@ export default function InformationsPage() {
                     value={tech.icon}
                     onChange={e => updateTech(tech.id, 'icon', e.target.value)}
                     placeholder="Icône (optionnel)" />
+                  <button
+                    className="adm-icon-btn"
+                    type="button"
+                    onClick={() => !tech.isNew && toggleTechVisibility(tech)}
+                    title={tech.visible ? 'Visible — cliquer pour masquer' : 'Masqué — cliquer pour rendre visible'}
+                    style={{ borderColor: tech.visible ? undefined : 'var(--amber)', color: tech.visible ? undefined : 'var(--amber)' }}
+                  >
+                    <FontAwesomeIcon icon={tech.visible ? faEye : faEyeSlash} />
+                  </button>
                   <button className="adm-icon-btn adm-icon-btn--danger" type="button"
                     onClick={() => deleteTech(tech.id, tech.isNew)} title="Supprimer">
                     <FontAwesomeIcon icon={faTrashCan} />

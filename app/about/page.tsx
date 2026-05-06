@@ -81,7 +81,7 @@ export default function AboutPage() {
     return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
   }, [info, techs, socials]);
 
-  const techGroups = groupByCategory(techs);
+  const techGroups = groupByCategory(techs.filter(t => t.visible));
 
   return (
     <>

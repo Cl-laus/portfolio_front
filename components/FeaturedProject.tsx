@@ -66,10 +66,6 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
 
         <div className={styles.featuredRight}>
           <div className={`${styles.featImageWrap} w-full`}>
-            <span className="corner tl" />
-            <span className="corner tr" />
-            <span className="corner bl" />
-            <span className="corner br" />
             {project.image ? (
               <img
                 className={`${styles.featImage} img-cover`}
