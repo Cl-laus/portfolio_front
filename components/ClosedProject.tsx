@@ -1,8 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowUpRight } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Project } from "@/types";
+import CircleButton from "./CircleButton";
+import styles from "./ClosedProject.module.css";
 
 interface ClosedProjectProps {
   project: Project;
@@ -15,19 +18,19 @@ export default function ClosedProject({ project, index, meta }: ClosedProjectPro
 
   return (
     <div
-      className="closed flex items-center justify-between gap-6"
+      className={`${styles.closed} flex items-center justify-between gap-6`}
       onClick={() => router.push(`/projects/${project.id}`)}
     >
       <div className="flex items-baseline gap-6">
         <span className="closed-index pt-3 self-start">{index} /</span>
-        <h2 className="closed-title inline-block m-0">
-          {project.title}
-        </h2>
+        <h2 className="closed-title inline-block m-0">{project.title}</h2>
         {meta && <span className="closed-meta label pt-3 self-start">{meta}</span>}
       </div>
-      <button className="feat-cta btn-circle w-24 h-24 inline-flex items-center justify-center shrink-0" aria-label="Open project">
-        <ArrowUpRight size={24} />
-      </button>
+      <CircleButton
+        icon={<FontAwesomeIcon icon={faArrowRight} />}
+        size="lg"
+        className="shrink-0"
+      />
     </div>
   );
 }

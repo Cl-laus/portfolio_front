@@ -4,7 +4,12 @@
       "Bash(git commit -m ' *)",
       "Read(//c/Users/FlowUp/Downloads/portfolio projec detail/portfolio/**)",
       "Bash(Get-ChildItem -Recurse -File)",
-      "Bash(Select-Object -ExpandProperty FullName)"
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Read(//c/Users/FlowUp/Documents/Reconversion/_Portfolio/MyPortfolio_API/**)",
+      "Read(//c/Users/FlowUp/Documents/Reconversion/_Portfolio/MyPortfolio_API/config/packages/**)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\FlowUp\\\\Documents\\\\Reconversion\\\\_Portfolio\\\\MyPortfolio_API\\\\src\" -Directory)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\FlowUp\\\\Documents\\\\Reconversion\\\\_Portfolio\\\\my-portfolio-v2\" -Recurse -Directory | Where-Object { $_.Name -match 'admin|batcave' } | Select-Object FullName)",
+      "PowerShell(head -50)"
     ]
   }
 }

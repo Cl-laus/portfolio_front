@@ -7,6 +7,7 @@ import { Project, Information } from "@/types";
 import HeroSection     from "@/components/HeroSection";
 import FeaturedProject from "@/components/FeaturedProject";
 import ClosedProject   from "@/components/ClosedProject";
+import styles from "./page.module.css";
 
 export default function HomePage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -52,23 +53,20 @@ export default function HomePage() {
     <>
       <HeroSection info={info} />
 
-      <section className="projects-section pt-[12em] px-[5.5em] pb-[7em]">
-        {/* Section header */}
-        <div className="section-head flex items-center gap-[1em] mb-[5.5em]">
-          <span className="section-title">Réalisations</span>
-          <span className="head-line flex-1" />
-          <span className="head-count">
+      <section className="pt-48 px-24 pb-28">
+        <div className={`${styles.sectionHead} flex items-center gap-4 mb-24`}>
+          <span className={styles.sectionTitle}>Réalisations</span>
+          <span className={`${styles.headLine} flex-1`} />
+          <span className={styles.headCount}>
             {String(projects.length).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
           </span>
         </div>
 
-        {/* Featured project */}
         {featured && <FeaturedProject project={featured} />}
 
-        {/* Thin dividers + closed projects */}
         {closed.map((project, i) => (
           <div key={project.id}>
-            <div className="project-divider my-[5.5em]" />
+            <div className={`${styles.projectDivider} my-24`} />
             <ClosedProject
               project={project}
               index={String(i + 2).padStart(2, "0")}
@@ -78,7 +76,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      <footer className="portfolio-footer flex justify-center items-center py-[3.5em] px-[5.5em]">
+      <footer className="portfolio-footer flex justify-center items-center py-14 px-24">
         <span>© 2026 Lucas Luisetti</span>
       </footer>
     </>

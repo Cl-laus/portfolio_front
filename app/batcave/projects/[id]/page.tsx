@@ -2,35 +2,37 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faPlus, faTrashCan, faFloppyDisk, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { projectService } from '@/services/projectService';
 import { technologyService } from '@/services/technologyService';
 import { Technology } from '@/types';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
 import LoadingPage from '@/app/batcave/loading';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export default function ProjectFormPage() {
   const { isAuth, checkingAuth } = useProtectedRoute();
   const router = useRouter();
   const params = useParams();
 
-  const isEdit = params?.id !== 'new';
+  const isEdit    = params?.id !== 'new';
   const projectId = isEdit ? Number(params?.id) : null;
 
-  const [title, setTitle] = useState('');
-  const [summary, setSummary] = useState('');
+  const [title, setTitle]           = useState('');
+  const [summary, setSummary]       = useState('');
   const [description, setDescription] = useState('');
-  const [links, setLinks] = useState<{ key: string; value: string }[]>([]);
-  const [techIds, setTechIds] = useState<number[]>([]);
+  const [links, setLinks]           = useState<{ key: string; value: string }[]>([]);
+  const [techIds, setTechIds]       = useState<number[]>([]);
   const [technologies, setTechnologies] = useState<Technology[]>([]);
-  const [images, setImages] = useState<{ id: number; url: string }[]>([]);
-  const [files, setFiles] = useState<File[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [images, setImages]         = useState<{ id: number; url: string }[]>([]);
+  const [files, setFiles]           = useState<File[]>([]);
+  const [loading, setLoading]       = useState(true);
+  const [saving, setSaving]         = useState(false);
+  const [visible, setVisible]       = useState(true);
 
-  // ===================== DATA FETCH =====================
   useEffect(function () {
     if (!isAuth) return;
     let ignore = false;
@@ -47,10 +49,11 @@ export default function ProjectFormPage() {
           setTitle(p.title);
           setSummary(p.summary);
           setDescription(p.description);
-          setTechIds(p.technologies.map(function(t: Technology) { return t.id; }));
+          setTechIds(p.technologies.map((t: Technology) => t.id));
           setImages(p.images ?? []);
+          setVisible(p.displayOrder <= 3);
           if (p.links) {
-            setLinks(Object.entries(p.links).map(function([k, v]) { return { key: k, value: v as string }; }));
+            setLinks(Object.entries(p.links).map(([k, v]) => ({ key: k, value: v as string })));
           }
         }
       } catch (err) {
@@ -61,143 +64,235 @@ export default function ProjectFormPage() {
     }
 
     loadData();
-    return function () { ignore = true; };
+    return () => { ignore = true; };
   }, [isAuth]);
 
-  // ===================== LINKS =====================
-  function addLink() {
-    setLinks(function (prev) { return [...prev, { key: '', value: '' }]; });
+  function addLink() { setLinks(prev => [...prev, { key: '', value: '' }]); }
+  function updateLink(i: number, field: 'key' | 'value', val: string) {
+    setLinks(prev => { const c = [...prev]; c[i][field] = val; return c; });
   }
-
-  function updateLink(index: number, field: 'key' | 'value', value: string) {
-    setLinks(function (prev) {
-      const copy = [...prev];
-      copy[index][field] = value;
-      return copy;
-    });
-  }
-
-  function removeLink(index: number) {
-    setLinks(function (prev) { return prev.filter(function (_, i) { return i !== index; }); });
-  }
+  function removeLink(i: number) { setLinks(prev => prev.filter((_, idx) => idx !== i)); }
 
   function formatLinks() {
     const obj: Record<string, string> = {};
-    links.forEach(function (l) { if (l.key) obj[l.key] = l.value; });
+    links.forEach(l => { if (l.key) obj[l.key] = l.value; });
     return Object.keys(obj).length ? obj : null;
   }
 
-  // ===================== TECHNOLOGIES =====================
   function toggleTech(id: number) {
-    setTechIds(function (prev) {
-      return prev.includes(id) ? prev.filter(function (t) { return t !== id; }) : [...prev, id];
-    });
+    setTechIds(prev => prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id]);
   }
 
-  // ===================== SAVE =====================
-  function handleSave() {
-    if (isEdit && projectId) {
-      projectService.update(projectId, {
-        title,
-        summary,
-        description,
-        links: formatLinks(),
-        technologies: techIds,
-      })
-      .then(function () {
-        if (files.length > 0) return projectService.addImages(projectId, files);
-      })
-      .then(function () { router.push('/batcave/projects'); })
+  function deleteImage(id: number) {
+    projectService.deleteImage(id)
+      .then(() => setImages(prev => prev.filter(img => img.id !== id)))
       .catch(console.error);
-    } else {
-      projectService.create({
-        title,
-        summary,
-        description,
-        links: formatLinks(),
-        technologies: techIds,
-      })
-      .then(function () { router.push('/batcave/projects'); })
-      .catch(console.error);
+  }
+
+  async function handleSave() {
+    if (saving) return;
+    setSaving(true);
+    try {
+      if (isEdit && projectId) {
+        await projectService.update(projectId, { title, summary, description, links: formatLinks(), technologies: techIds });
+        if (files.length > 0) await projectService.addImages(projectId, files);
+      } else {
+        await projectService.create({ title, summary, description, links: formatLinks(), technologies: techIds });
+      }
+      router.push('/batcave/projects');
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSaving(false);
     }
   }
 
-  // ===================== LOADING UI =====================
   if (checkingAuth || loading) return <LoadingPage />;
   if (!isAuth) return null;
 
-  // ===================== UI =====================
+  const crumbLabel = isEdit ? title || 'Édition projet' : 'Nouveau projet';
+
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Informations</h2>
-        <Input placeholder="Titre" value={title} onChange={function(e){setTitle(e.target.value)}} />
-        <Input placeholder="Résumé" value={summary} onChange={function(e){setSummary(e.target.value)}} className="mt-2" />
-        <Textarea placeholder="Description" value={description} onChange={function(e){setDescription(e.target.value)}} className="mt-2 min-h-[150px]" />
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Liens</h2>
-        {links.map(function (l, i) {
-          return (
-            <div key={i} className="flex gap-2 mb-2">
-              <Input placeholder="Label" value={l.key} onChange={function(e){updateLink(i,'key',e.target.value)}} />
-              <Input placeholder="URL" value={l.value} onChange={function(e){updateLink(i,'value',e.target.value)}} />
-              <Button onClick={function(){removeLink(i)}}>✕</Button>
-            </div>
-          );
-        })}
-        <Button variant="outline" onClick={addLink}>+ Ajouter</Button>
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Technologies</h2>
-        <div className="grid grid-cols-4 gap-2">
-          {technologies.map(function (tech) {
-            return (
-              <Badge
-                key={tech.id}
-                onClick={function(){toggleTech(tech.id)}}
-                className="cursor-pointer"
-                variant={techIds.includes(tech.id) ? 'default' : 'outline'}
-              >
-                {tech.name}
-              </Badge>
-            );
-          })}
+    <>
+      <header className="adm-topbar">
+        <div className="adm-crumb">
+          <span className="dash" />
+          <span>Admin · {crumbLabel}</span>
         </div>
-      </div>
+        <Link className="adm-back-link" href="/batcave/projects">
+          <FontAwesomeIcon icon={faArrowLeft} />
+          <span>Retour aux projets</span>
+        </Link>
+      </header>
 
-      {isEdit && (
-        <div>
-          <h2 className="text-lg font-semibold mb-2">Images</h2>
-          <div className="flex gap-2 flex-wrap">
-            {images.map(function (img) {
-              return (
-                <div key={img.id} className="relative w-24 h-24">
-                  <img src={process.env.NEXT_PUBLIC_API_URL + img.url} className="w-full h-full object-cover" />
-                  <Button
-                    className="absolute top-0 right-0"
-                    onClick={function () {
-                      projectService.deleteImage(img.id).then(function () {
-                        setImages(function (prev) { return prev.filter(function (i) { return i.id !== img.id; }); });
-                      });
-                    }}
-                  >
-                    ✕
-                  </Button>
-                </div>
-              );
-            })}
+      <main className="adm-page">
+        <div className="adm-page-header">
+          <div>
+            <h1>{isEdit ? (title || 'Édition projet') : 'Nouveau projet'}{isEdit ? '.' : ''}</h1>
+            <p className="subtitle">Édite le contenu, les liens et les médias de ce projet.</p>
           </div>
-          <Input type="file" multiple onChange={function(e){setFiles(Array.from(e.target.files ?? []))}} className="mt-2" />
+          {isEdit && (
+            <div className="actions">
+              <div className="adm-toggle-group">
+                <button
+                  type="button"
+                  className={`adm-toggle-opt ${visible ? 'adm-toggle-opt--on' : ''}`}
+                  onClick={() => setVisible(true)}
+                >
+                  Visible
+                </button>
+                <button
+                  type="button"
+                  className={`adm-toggle-opt ${!visible ? 'adm-toggle-opt--on' : ''}`}
+                  onClick={() => setVisible(false)}
+                >
+                  Archivé
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-      )}
 
-      <div className="flex gap-2">
-        <Button onClick={handleSave}>Sauvegarder</Button>
-        <Button variant="outline" onClick={function(){router.push('/batcave/projects')}}>Annuler</Button>
-      </div>
-    </div>
+        <form onSubmit={e => { e.preventDefault(); handleSave(); }}>
+
+          {/* ── Informations ── */}
+          <section className="adm-card">
+            <div className="adm-card-head">
+              <h2><span className="hairline" />Informations</h2>
+            </div>
+            <div className="adm-card-body">
+              <div className="adm-field">
+                <label className="adm-field-label" htmlFor="title">Titre</label>
+                <input className="adm-input" id="title" type="text"
+                  value={title} onChange={e => setTitle(e.target.value)}
+                  placeholder="Ex. Helio Dispatch" />
+              </div>
+              <div className="adm-field">
+                <label className="adm-field-label" htmlFor="summary">Résumé</label>
+                <input className="adm-input" id="summary" type="text"
+                  value={summary} onChange={e => setSummary(e.target.value)}
+                  placeholder="Une phrase pour décrire le projet" />
+              </div>
+              <div className="adm-field">
+                <label className="adm-field-label" htmlFor="desc">Description</label>
+                <textarea className="adm-textarea" id="desc"
+                  value={description} onChange={e => setDescription(e.target.value)}
+                  placeholder="Description complète du projet, stack, décisions techniques…" />
+              </div>
+            </div>
+          </section>
+
+          {/* ── Liens ── */}
+          <section className="adm-card">
+            <div className="adm-card-head">
+              <h2><span className="hairline" />Liens</h2>
+            </div>
+            <div className="adm-card-body">
+              {links.map((l, i) => (
+                <div key={i} className="adm-field-row">
+                  <input className="adm-input" type="text"
+                    value={l.key} onChange={e => updateLink(i, 'key', e.target.value)}
+                    placeholder="Libellé" />
+                  <input className="adm-input" type="url"
+                    value={l.value} onChange={e => updateLink(i, 'value', e.target.value)}
+                    placeholder="https://..." />
+                  <button className="adm-icon-btn adm-icon-btn--danger" type="button"
+                    onClick={() => removeLink(i)} title="Supprimer">
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </button>
+                </div>
+              ))}
+              <button className="adm-add-link" type="button" onClick={addLink}>
+                <FontAwesomeIcon icon={faPlus} />
+                Ajouter un lien
+              </button>
+            </div>
+          </section>
+
+          {/* ── Technologies ── */}
+          <section className="adm-card">
+            <div className="adm-card-head">
+              <h2><span className="hairline" />Technologies</h2>
+            </div>
+            <div className="adm-card-body">
+              <div className="adm-chips">
+                {technologies.map(tech => (
+                  <button
+                    key={tech.id}
+                    type="button"
+                    className={`adm-chip ${techIds.includes(tech.id) ? 'adm-chip--active' : ''}`}
+                    onClick={() => toggleTech(tech.id)}
+                  >
+                    {tech.name}
+                    {techIds.includes(tech.id) && <span className="x">×</span>}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ── Images ── */}
+          {isEdit && (
+            <section className="adm-card">
+              <div className="adm-card-head">
+                <h2><span className="hairline" />Images</h2>
+              </div>
+              <div className="adm-card-body">
+                {images.length > 0 && (
+                  <div className="adm-gallery" style={{ marginBottom: 16 }}>
+                    {images.map((img, i) => (
+                      <div key={img.id} className="adm-thumb">
+                        <img
+                          className="adm-thumb-img"
+                          src={`${API_URL}${img.url}`}
+                          alt={`Image ${i + 1}`}
+                        />
+                        <span className="adm-thumb-badge">{String(i + 1).padStart(2, '0')}</span>
+                        <button
+                          type="button"
+                          className="adm-thumb-remove"
+                          onClick={() => deleteImage(img.id)}
+                          title="Retirer"
+                        >
+                          <FontAwesomeIcon icon={faTrashCan} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <label className="adm-upload" htmlFor="files">
+                  <FontAwesomeIcon icon={faUpload} />
+                  <span>Ajouter des images — glisse-dépose ou clique</span>
+                  <span className="adm-upload-hint">PNG · JPG · WEBP</span>
+                  <input
+                    id="files"
+                    type="file"
+                    multiple
+                    hidden
+                    accept="image/*"
+                    onChange={e => setFiles(Array.from(e.target.files ?? []).slice(0, 10))}
+                  />
+                </label>
+                {files.length > 0 && (
+                  <p style={{ marginTop: 10, fontSize: 13, color: 'var(--amber-bright)' }}>
+                    {files.length} fichier{files.length > 1 ? 's' : ''} sélectionné{files.length > 1 ? 's' : ''}
+                  </p>
+                )}
+              </div>
+            </section>
+          )}
+
+          {/* ── Actions ── */}
+          <div className="adm-form-actions">
+            <Link className="adm-btn-link" href="/batcave/projects">Annuler</Link>
+            <button className="adm-btn adm-btn-amber" type="submit" disabled={saving}>
+              <FontAwesomeIcon icon={faFloppyDisk} />
+              {saving ? 'Sauvegarde…' : 'Sauvegarder'}
+            </button>
+          </div>
+
+        </form>
+      </main>
+    </>
   );
 }

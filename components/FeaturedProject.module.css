@@ -1,0 +1,93 @@
+.featured {
+  display: block;
+  cursor: pointer;
+}
+
+.titleRow {
+  width: max-content;
+  max-width: 100%;
+  transition: transform var(--dur-snap) var(--ease-snappy);
+}
+
+.featDetail { min-height: 30em; }
+
+.featuredLeft,
+.featuredRight {
+  display: flex;
+  flex-direction: column;
+}
+
+.featHairline {
+  height: 1px;
+  width: 2em;
+  background: var(--fg);
+  transition: width var(--dur-snap) var(--ease-snappy);
+}
+
+.featLabelText { letter-spacing: var(--ls-wide); }
+
+.featDesc {
+  font-size: 1rem;
+  color: var(--fg-muted);
+  max-width: 27em;
+  line-height: 1.55;
+  opacity: 0.9;
+  transition: opacity 500ms ease, color 500ms ease;
+}
+
+.featMeta { letter-spacing: var(--ls-meta); }
+
+.metaDot {
+  border-radius: 50%;
+  background: var(--fg-muted);
+}
+
+.featCtaLabel {
+  letter-spacing: 0.22em;
+  transition: color var(--dur-fade) ease;
+}
+
+.featImageWrap {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 16em;
+  background: var(--bg);
+}
+
+.featImage {
+  mix-blend-mode: lighten;
+  filter: brightness(0.9) contrast(1.08) saturate(1.05);
+}
+
+
+/* ── Hover: module-scoped ── */
+
+.featured:hover .titleRow     { transform: translateX(0.85em); }
+.featured:hover .featHairline { width: 4em; }
+.featured:hover .featDesc     { opacity: 1; color: #9F9C92; }
+.featured:hover .ctaBtn       { translate: 0.12em -0.12em; }
+
+.featured:hover .featCtaLabel,
+.featCtaLabel:hover           { color: var(--amber-bright); }
+
+
+/* ── Hover: global shared classes ── */
+
+.featured:hover :global(.closed-index)        { color: var(--amber-bright); }
+.featured:hover :global(.closed-title)        { transform: translateY(-0.05em); }
+.featured:hover :global(.closed-title::after) { width: 100%; }
+.featured:hover :global(.closed-meta)         { opacity: 0.7; transform: translateX(0); }
+.featured:hover :global(.corner)              { opacity: 1; }
+.featured:hover :global(.corner.tl)           { transition-delay:  50ms; }
+.featured:hover :global(.corner.tr)           { transition-delay: 120ms; }
+.featured:hover :global(.corner.bl)           { transition-delay: 190ms; }
+.featured:hover :global(.corner.br)           { transition-delay: 260ms; }
+
+
+/* ── Mobile ── */
+
+@media (max-width: 900px) {
+  .featDetail    { grid-template-columns: 1fr; gap: 3rem; margin-top: 2.5rem; padding-left: 0; min-height: auto; }
+  .featImageWrap { min-height: 12em; }
+}

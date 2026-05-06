@@ -1,0 +1,79 @@
+.carousel {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-edge);
+  min-height: 28em;
+}
+
+/* Corners always visible, staggered on load */
+.carousel :global(.corner)    { opacity: 0.8; }
+.carousel :global(.corner.tl) { transition-delay:  50ms; }
+.carousel :global(.corner.tr) { transition-delay: 120ms; }
+.carousel :global(.corner.bl) { transition-delay: 190ms; }
+.carousel :global(.corner.br) { transition-delay: 260ms; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .9s cubic-bezier(.4,0,.2,1);
+}
+.slide:global(.active) { opacity: 1; }
+
+.slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(50,45,40,.18) 0%, rgba(50,45,40,0) 30%, rgba(50,45,40,.45) 100%);
+  pointer-events: none;
+}
+
+.slide img { filter: brightness(.9) contrast(1.05) saturate(1.04); }
+
+/* Self-contained arrow buttons — no shared component needed */
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  border: 1px solid rgba(245,241,234,.4);
+  color: var(--fg);
+  cursor: pointer;
+  background: transparent;
+  transition: background .35s ease, border-color .35s ease, color .35s ease;
+  z-index: 3;
+}
+.arrow:hover {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+.arrow svg { width: 0.875em; height: 0.875em; }
+
+.arrowPrev { left: 1em; }
+.arrowNext { right: 1em; }
+
+.dots {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.dot {
+  width: 0.3em;
+  height: 0.3em;
+  border-radius: 50%;
+  background: rgba(245,241,234,.4);
+  transition: background .3s ease, width .3s ease;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+}
+.dot:global(.active) { background: var(--amber-bright); width: 1.1em; border-radius: 0.15em; }

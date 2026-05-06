@@ -57,7 +57,7 @@ export const projectService = {
 
 addImages: async (id: number, files: File[]): Promise<Project> => {
   const formData = new FormData();
-  files.forEach(file => formData.append('images', file)); // nom = images
+  files.slice(0, 10).forEach(file => formData.append('files[]', file));
   const response = await api.post(`/api/admin/projects/${id}/images`, formData);
   return response.data;
 },

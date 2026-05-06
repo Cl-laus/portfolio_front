@@ -1,56 +1,44 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Textarea } from '@/components/ui/textarea';
-import EditableList from '@/components/ui/EditableList';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faTableList, faPlus, faTrashCan, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
 import { informationService } from '@/services/informationService';
 import { socialNetworkService } from '@/services/socialNetworkService';
 import { technologyService } from '@/services/technologyService';
-
 import { Information, SocialNetwork, Technology } from '@/types';
 import LoadingPage from '@/app/batcave/loading';
-import { useProtectedRoute } from '@/hooks/useProtectedRoute'; // <-- notre hook
+import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 type SocialNetworkForm = SocialNetwork & { isNew?: boolean };
 type TechnologyForm = Technology & { isNew?: boolean };
 
 export default function InformationsPage() {
   const { isAuth, checkingAuth } = useProtectedRoute();
-  const router = useRouter();
 
-  // ===================== STATE =====================
-  const [information, setInformation] = useState<Information | null>(null);
+  const [information, setInformation]   = useState<Information | null>(null);
   const [socialNetworks, setSocialNetworks] = useState<SocialNetworkForm[]>([]);
   const [technologies, setTechnologies] = useState<TechnologyForm[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isSavingInfo, setSavingInfo] = useState(false);
-  const [isSavingSocial, setSavingSocial] = useState(false);
-  const [isSavingTech, setSavingTech] = useState(false);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [loading, setLoading]           = useState(true);
+  const [saving, setSaving]             = useState(false);
+  const [newTech, setNewTech]           = useState('');
 
-  // ===================== DATA FETCH =====================
   useEffect(() => {
-    if (!isAuth) return; // si pas auth, on ne fetch pas
-
+    if (!isAuth) return;
     async function fetchData() {
       try {
-        const info = await informationService.get();
-        const socials = await socialNetworkService.getAll();
-        const techs = await technologyService.getAll();
+        const [info, socials, techs] = await Promise.all([
+          informationService.get(),
+          socialNetworkService.getAll(),
+          technologyService.getAll(),
+        ]);
         setInformation(info);
         setSocialNetworks(socials);
         setTechnologies(techs);
-        setPhotoPreview(info.photoPath || null);
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -58,260 +46,257 @@ export default function InformationsPage() {
     fetchData();
   }, [isAuth]);
 
-  // ===================== INFORMATION =====================
   function handleInfoChange(field: keyof Information, value: string) {
     if (!information) return;
     setInformation({ ...information, [field]: value });
   }
 
-  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setPhotoFile(file);
-    setPhotoPreview(URL.createObjectURL(file));
+  function updateSocial(id: number, field: string, value: string) {
+    setSocialNetworks(prev => prev.map(sn => sn.id === id ? { ...sn, [field]: value } : sn));
   }
 
-  async function saveInformation() {
-    if (!information || isSavingInfo) return;
-    setSavingInfo(true);
+  function addSocial() {
+    setSocialNetworks(prev => [...prev, { id: Date.now(), name: '', icon: '', url: '', isNew: true }]);
+  }
+
+  function removeSocial(id: number) {
+    setSocialNetworks(prev => prev.filter(sn => sn.id !== id));
+  }
+
+  function addTech() {
+    if (!newTech.trim()) return;
+    setTechnologies(prev => [...prev, { id: Date.now(), name: newTech.trim(), icon: '', category: '', isNew: true }]);
+    setNewTech('');
+  }
+
+  function removeTech(id: number) {
+    setTechnologies(prev => prev.filter(t => t.id !== id));
+  }
+
+  async function handleSave() {
+    if (saving || !information) return;
+    setSaving(true);
     try {
-      let updatedInfo = information;
-      if (photoFile) {
-        updatedInfo = await informationService.uploadPhoto(
-          information.id,
-          photoFile,
-        );
-      }
-      await informationService.update(updatedInfo);
-      alert('Informations sauvegardées !');
-    } catch (err) {
-      console.error(err);
-      alert('Erreur lors de la sauvegarde des informations.');
-    } finally {
-      setSavingInfo(false);
-    }
-  }
+      await informationService.update(information);
 
-  // ===================== SOCIAL NETWORKS =====================
-  function addSocialNetwork(name: string) {
-    setSocialNetworks((prev) => [
-      ...prev,
-      { id: Date.now(), name, icon: '', url: '', isNew: true },
-    ]);
-  }
-
-  function updateSocialNetwork(id: number, field: string, value: string) {
-    setSocialNetworks((prev) =>
-      prev.map((sn) => (sn.id === id ? { ...sn, [field]: value } : sn)),
-    );
-  }
-
-  async function removeSocialNetwork(id: number) {
-    if (isSavingSocial) return;
-    setSavingSocial(true);
-    try {
-      await socialNetworkService.delete(id);
-      setSocialNetworks((prev) => prev.filter((sn) => sn.id !== id));
-    } catch (err) {
-      console.error(err);
-      alert('Erreur lors de la suppression du réseau social.');
-    } finally {
-      setSavingSocial(false);
-    }
-  }
-
-  async function saveSocialNetworks() {
-    if (isSavingSocial) return;
-    setSavingSocial(true);
-    try {
       for (const sn of socialNetworks) {
-        if (sn.isNew) {
-          await socialNetworkService.create({
-            name: sn.name,
-            icon: sn.icon,
-            url: sn.url,
-          });
-        } else {
-          await socialNetworkService.update(sn);
-        }
+        if (sn.isNew) await socialNetworkService.create({ name: sn.name, icon: sn.icon, url: sn.url });
+        else await socialNetworkService.update(sn);
       }
-      alert('Réseaux sociaux sauvegardés !');
-    } catch (err) {
-      console.error(err);
-      alert('Erreur lors de la sauvegarde des réseaux sociaux.');
-    } finally {
-      setSavingSocial(false);
-    }
-  }
 
-  // ===================== TECHNOLOGIES =====================
-  function addTechnology(name: string) {
-    setTechnologies((prev) => [
-      ...prev,
-      { id: Date.now(), name, icon: '', category: '', isNew: true },
-    ]);
-  }
-
-  function updateTechnology(id: number, field: string, value: string) {
-    setTechnologies((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, [field]: value } : t)),
-    );
-  }
-
-  async function removeTechnology(id: number) {
-    if (isSavingTech) return;
-    setSavingTech(true);
-    try {
-      await technologyService.delete(id);
-      setTechnologies((prev) => prev.filter((t) => t.id !== id));
-    } catch (err) {
-      console.error(err);
-      alert('Erreur lors de la suppression de la technologie.');
-    } finally {
-      setSavingTech(false);
-    }
-  }
-
-  async function saveTechnologies() {
-    if (isSavingTech) return;
-    setSavingTech(true);
-    try {
       for (const tech of technologies) {
-        if (tech.isNew) {
-          await technologyService.create({
-            name: tech.name,
-            icon: tech.icon,
-            category: tech.category,
-          });
-        } else {
-          await technologyService.update(tech);
-        }
+        if (tech.isNew) await technologyService.create({ name: tech.name, icon: tech.icon, category: tech.category });
       }
-      alert('Technologies sauvegardées !');
     } catch (err) {
       console.error(err);
-      alert('Erreur lors de la sauvegarde des technologies.');
     } finally {
-      setSavingTech(false);
+      setSaving(false);
     }
   }
 
-  // ===================== LOADING UI =====================
-  if (checkingAuth || loading) {
-    return <LoadingPage />;
-  }
+  if (checkingAuth || loading) return <LoadingPage />;
+  if (!isAuth) return null;
 
-  if (!isAuth) {
-    return null; // la redirection est gérée par le hook
-  }
-
-  // ===================== RENDER =====================
   return (
-    <div className="p-4 space-y-6">
-      <Button onClick={() => router.push('/batcave/projects')}>
-        Admin Projets
-      </Button>
+    <>
+      <header className="adm-topbar">
+        <div className="adm-crumb">
+          <span className="dash" />
+          <span>Admin · Informations</span>
+        </div>
+        <Link className="adm-back-link" href="/">
+          <FontAwesomeIcon icon={faArrowLeft} />
+          <span>Back to home</span>
+        </Link>
+      </header>
 
-      {/* ===== INFORMATIONS ===== */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Informations</CardTitle>
-        </CardHeader>
+      <main className="adm-page">
+        <div className="adm-page-header">
+          <div className="lead">
+            <h1>Informations.</h1>
+            <p className="subtitle">Identité du portfolio — nom, métier, baseline, contact et textes.</p>
+          </div>
+          <div className="actions">
+            <Link className="adm-btn" href="/batcave/projects">
+              <FontAwesomeIcon icon={faTableList} />
+              Projets
+            </Link>
+          </div>
+        </div>
 
-        <CardContent className="space-y-6">
-          <FieldGroup className="grid grid-cols-2 gap-4">
-            <Field>
-              <FieldLabel htmlFor="fullName">Nom complet</FieldLabel>
-              <Input id="fullName" value={information?.fullName ?? ''} onChange={(e) => handleInfoChange('fullName', e.target.value)} />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="jobTitle">Titre</FieldLabel>
-              <Input id="jobTitle" value={information?.jobTitle ?? ''} onChange={(e) => handleInfoChange('jobTitle', e.target.value)} />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="tagLine">Tag line</FieldLabel>
-              <Input id="tagLine" value={information?.tagLine ?? ''} onChange={(e) => handleInfoChange('tagLine', e.target.value)} />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="aboutTitle">Titre À propos</FieldLabel>
-              <Input id="aboutTitle" value={information?.aboutTitle ?? ''} onChange={(e) => handleInfoChange('aboutTitle', e.target.value)} />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input id="email" type="email" value={information?.email ?? ''} onChange={(e) => handleInfoChange('email', e.target.value)} />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="cv">CV (lien)</FieldLabel>
-              <Input id="cv" value={information?.cv ?? ''} onChange={(e) => handleInfoChange('cv', e.target.value)} />
-            </Field>
-          </FieldGroup>
+        <form onSubmit={e => { e.preventDefault(); handleSave(); }}>
 
-          <Separator />
+          {/* ── Identité ── */}
+          <section className="adm-card">
+            <div className="adm-card-head">
+              <h2><span className="hairline" />Identité</h2>
+            </div>
+            <div className="adm-card-body">
+              <div className="adm-grid-2">
+                <div className="adm-field">
+                  <label className="adm-field-label" htmlFor="fullName">Nom complet</label>
+                  <input className="adm-input" id="fullName" type="text"
+                    value={information?.fullName ?? ''}
+                    onChange={e => handleInfoChange('fullName', e.target.value)}
+                    placeholder="Prénom Nom" />
+                </div>
+                <div className="adm-field">
+                  <label className="adm-field-label" htmlFor="jobTitle">Titre</label>
+                  <input className="adm-input" id="jobTitle" type="text"
+                    value={information?.jobTitle ?? ''}
+                    onChange={e => handleInfoChange('jobTitle', e.target.value)}
+                    placeholder="Ex. Designer & Developer" />
+                </div>
+                <div className="adm-field">
+                  <label className="adm-field-label" htmlFor="tagLine">Tag line</label>
+                  <input className="adm-input" id="tagLine" type="text"
+                    value={information?.tagLine ?? ''}
+                    onChange={e => handleInfoChange('tagLine', e.target.value)}
+                    placeholder="Une phrase courte de présentation" />
+                </div>
+                <div className="adm-field">
+                  <label className="adm-field-label" htmlFor="aboutTitle">Titre À propos</label>
+                  <input className="adm-input" id="aboutTitle" type="text"
+                    value={information?.aboutTitle ?? ''}
+                    onChange={e => handleInfoChange('aboutTitle', e.target.value)}
+                    placeholder="Ex. À propos de moi" />
+                </div>
+              </div>
+            </div>
+          </section>
 
-          <FieldGroup className="grid grid-cols-1 gap-4">
-            <Field>
-              <FieldLabel htmlFor="introText">Introduction</FieldLabel>
-              <Textarea id="introText" className="h-28 resize-none" value={information?.introText ?? ''} onChange={(e) => handleInfoChange('introText', e.target.value)} />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="aboutText">À propos</FieldLabel>
-              <Textarea id="aboutText" className="h-28 resize-none" value={information?.aboutText ?? ''} onChange={(e) => handleInfoChange('aboutText', e.target.value)} />
-            </Field>
-          </FieldGroup>
+          {/* ── Contact ── */}
+          <section className="adm-card">
+            <div className="adm-card-head">
+              <h2><span className="hairline" />Contact</h2>
+            </div>
+            <div className="adm-card-body">
+              <div className="adm-grid-2">
+                <div className="adm-field">
+                  <label className="adm-field-label" htmlFor="email">Email</label>
+                  <input className="adm-input" id="email" type="email"
+                    value={information?.email ?? ''}
+                    onChange={e => handleInfoChange('email', e.target.value)}
+                    placeholder="contact@exemple.fr" />
+                </div>
+                <div className="adm-field">
+                  <label className="adm-field-label" htmlFor="cv">CV (lien)</label>
+                  <input className="adm-input" id="cv" type="url"
+                    value={information?.cv ?? ''}
+                    onChange={e => handleInfoChange('cv', e.target.value)}
+                    placeholder="https://..." />
+                </div>
+              </div>
+            </div>
+          </section>
 
-          <Separator />
+          {/* ── Textes ── */}
+          <section className="adm-card">
+            <div className="adm-card-head">
+              <h2><span className="hairline" />Textes</h2>
+            </div>
+            <div className="adm-card-body">
+              <div className="adm-field">
+                <label className="adm-field-label" htmlFor="introText">
+                  Introduction <span className="adm-field-hint">— page d'accueil</span>
+                </label>
+                <textarea className="adm-textarea" id="introText"
+                  value={information?.introText ?? ''}
+                  onChange={e => handleInfoChange('introText', e.target.value)}
+                  placeholder="Le texte qui apparaît en page d'accueil." />
+              </div>
+              <div className="adm-field">
+                <label className="adm-field-label" htmlFor="aboutText">
+                  À propos <span className="adm-field-hint">— page À propos</span>
+                </label>
+                <textarea className="adm-textarea" id="aboutText"
+                  value={information?.aboutText ?? ''}
+                  onChange={e => handleInfoChange('aboutText', e.target.value)}
+                  placeholder="Le texte long, sur la page À propos." />
+              </div>
+            </div>
+          </section>
 
-          <Field className="w-fit">
-            <FieldLabel>Photo</FieldLabel>
-            {photoPreview && (
-              <img
-                src={photoPreview.startsWith('http') ? photoPreview : `${process.env.NEXT_PUBLIC_API_URL}${photoPreview}`}
-                className="w-32 h-32 object-cover rounded-md border"
-                alt="Aperçu photo de profil"
-              />
-            )}
-            <Input type="file" accept="image/*" onChange={handlePhotoChange} />
-          </Field>
+          {/* ── Réseaux ── */}
+          <section className="adm-card">
+            <div className="adm-card-head">
+              <h2><span className="hairline" />Réseaux</h2>
+            </div>
+            <div className="adm-card-body">
+              {socialNetworks.map(sn => (
+                <div key={sn.id} className="adm-social-row">
+                  <input className="adm-input" type="text"
+                    value={sn.name}
+                    onChange={e => updateSocial(sn.id, 'name', e.target.value)}
+                    placeholder="Plateforme" />
+                  <input className="adm-input" type="url"
+                    value={sn.url}
+                    onChange={e => updateSocial(sn.id, 'url', e.target.value)}
+                    placeholder="https://..." />
+                  <button
+                    className="adm-icon-btn adm-icon-btn--danger"
+                    type="button"
+                    onClick={() => removeSocial(sn.id)}
+                    title="Supprimer"
+                  >
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </button>
+                </div>
+              ))}
+              <button className="adm-add-link" type="button" onClick={addSocial}>
+                <FontAwesomeIcon icon={faPlus} />
+                Ajouter un réseau
+              </button>
+            </div>
+          </section>
 
-          <Button onClick={saveInformation} disabled={isSavingInfo}>
-            {isSavingInfo ? 'Sauvegarde…' : 'Sauvegarder les informations'}
-          </Button>
-        </CardContent>
-      </Card>
+          {/* ── Technologies ── */}
+          <section className="adm-card">
+            <div className="adm-card-head">
+              <h2><span className="hairline" />Technologies</h2>
+            </div>
+            <div className="adm-card-body">
+              <div className="adm-chips">
+                {technologies.map(tech => (
+                  <button
+                    key={tech.id}
+                    type="button"
+                    className="adm-chip adm-chip--active"
+                    onClick={() => removeTech(tech.id)}
+                  >
+                    {tech.name}
+                    <span className="x">×</span>
+                  </button>
+                ))}
+              </div>
+              <div className="adm-add-tech">
+                <input
+                  className="adm-input"
+                  type="text"
+                  placeholder="Ajouter une technologie…"
+                  value={newTech}
+                  onChange={e => setNewTech(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }}
+                  style={{ maxWidth: 320 }}
+                />
+                <button className="adm-icon-btn" type="button" onClick={addTech} title="Ajouter">
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+              </div>
+            </div>
+          </section>
 
-      {/* ===== TECHNOLOGIES + SOCIAL NETWORKS ===== */}
-      <div className="grid grid-cols-2 gap-6">
-        <EditableList
-          title="Technologies"
-          items={technologies}
-          fields={[
-            { key: 'name', placeholder: 'Nom' },
-            { key: 'category', placeholder: 'Catégorie' },
-          ]}
-          onUpdate={updateTechnology}
-          onRemove={removeTechnology}
-          onAdd={addTechnology}
-          onSave={saveTechnologies}
-          isSaving={isSavingTech}
-          addPlaceholder="Nouvelle technologie"
-        />
+          {/* ── Actions ── */}
+          <div className="adm-form-actions">
+            <Link className="adm-btn-link" href="/batcave/projects">Annuler</Link>
+            <button className="adm-btn adm-btn-amber" type="submit" disabled={saving}>
+              <FontAwesomeIcon icon={faFloppyDisk} />
+              {saving ? 'Sauvegarde…' : 'Sauvegarder'}
+            </button>
+          </div>
 
-        <EditableList
-          title="Réseaux sociaux"
-          items={socialNetworks}
-          fields={[
-            { key: 'name', placeholder: 'Nom' },
-            { key: 'icon', placeholder: 'URL icône' },
-            { key: 'url', placeholder: 'URL' },
-          ]}
-          onUpdate={updateSocialNetwork}
-          onRemove={removeSocialNetwork}
-          onAdd={addSocialNetwork}
-          onSave={saveSocialNetworks}
-          isSaving={isSavingSocial}
-          addPlaceholder="Nouveau réseau social"
-        />
-      </div>
-    </div>
+        </form>
+      </main>
+    </>
   );
 }
