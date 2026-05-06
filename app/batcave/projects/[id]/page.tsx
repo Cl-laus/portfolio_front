@@ -8,7 +8,7 @@ import { faArrowLeft, faPlus, faTrashCan, faFloppyDisk, faUpload } from '@fortaw
 import { projectService } from '@/services/projectService';
 import { technologyService } from '@/services/technologyService';
 import { Technology } from '@/types';
-import LoadingPage from '@/app/batcave/loading';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
@@ -111,7 +111,7 @@ export default function ProjectFormPage() {
     }
   }
 
-  if (checkingAuth || loading) return <LoadingPage />;
+  if (checkingAuth || loading) return <LoadingSpinner />;
   if (!isAuth) return null;
 
   const crumbLabel = isEdit ? title || 'Édition projet' : 'Nouveau projet';

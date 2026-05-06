@@ -9,7 +9,7 @@ import { informationService } from '@/services/informationService';
 import { socialNetworkService } from '@/services/socialNetworkService';
 import { technologyService } from '@/services/technologyService';
 import { Information, SocialNetwork, Technology } from '@/types';
-import LoadingPage from '@/app/batcave/loading';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 type SocialNetworkForm = SocialNetwork & { isNew?: boolean };
@@ -134,7 +134,7 @@ export default function InformationsPage() {
     }
   }
 
-  if (checkingAuth || loading) return <LoadingPage />;
+  if (checkingAuth || loading) return <LoadingSpinner />;
   if (!isAuth) return null;
 
   return (
