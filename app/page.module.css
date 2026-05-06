@@ -1,0 +1,21 @@
+.sectionHead {
+  color: var(--fg-muted);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+.sectionTitle {
+  font-size: 2.6rem;
+  color: var(--amber);
+  letter-spacing: 0.05em;
+}
+
+.headLine, .projectDivider {
+  height: 1px;
+  background: rgba(245,241,234,0.10);
+}
+
+.headCount {
+  font-size: 0.65em;
+  letter-spacing: 0.10em;
+}

@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin · Informations — Lucas Luisetti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg-top:#322D28; --bg-mid:#3D3832; --bg-bot:#45403A;
+    --bg:#3D3832;
+    --fg:#F5F1EA; --fg-muted:#B5B0A4; --fg-faint:rgba(245,241,234,0.55);
+    --amber:#D88E3D; --amber-bright:#E8A04A;
+    --hairline:rgba(245,241,234,0.10);
+    --hairline-strong:rgba(245,241,234,0.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--fg)}
+  body{
+    font-family:"Euclid Circular A","Geist","Inter",-apple-system,system-ui,sans-serif;
+    font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+    background: linear-gradient(to bottom, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bot) 100%);
+    background-attachment:fixed; overflow-x:hidden; min-height:100vh;
+  }
+  ::selection{background:var(--amber);color:#111}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+
+  /* TOPBAR */
+  .topbar{
+    position: relative;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:28px 48px;z-index:60;
+  }
+  .crumb{
+    display:inline-flex;align-items:center;gap:14px;
+    color:var(--amber-bright);font-size:12px;
+    letter-spacing:.32em;text-transform:uppercase;
+    font-family:"Geist Mono",monospace;
+  }
+  .crumb .dash{ width:18px;height:1px;background:var(--amber) }
+  .back-link{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--fg-muted);
+    transition:color .35s ease, gap .35s cubic-bezier(.2,.7,.2,1);
+  }
+  .back-link svg{ width:14px;height:14px }
+  .back-link:hover{ color:var(--amber-bright); gap:14px }
+
+  /* PAGE */
+  .page{ max-width:1100px; margin:0 auto; padding: 60px 48px 120px }
+  .page-header{
+    margin-bottom:48px;
+    display:flex; justify-content:space-between; align-items:flex-end; gap:32px;
+  }
+  .page-header .lead{ flex:1; min-width:0 }
+  .page-header .actions{ display:flex; gap:12px }
+  .page-header h1{
+    font-size: clamp(40px,5vw,60px);
+    font-weight:500; letter-spacing:-.025em; line-height:1.02;
+  }
+  .page-header .subtitle{
+    margin-top:14px; font-size:16px; color:var(--fg-muted); max-width:560px;
+  }
+
+  /* BTN */
+  .topbar .actions{ display:inline-flex; gap:12px }
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:12px 22px;border-radius:999px;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    border:1px solid var(--hairline); color:var(--fg);
+    background:transparent;cursor:pointer;white-space:nowrap;
+    transition: background .3s ease, border-color .3s ease, color .3s ease, transform .35s cubic-bezier(.2,.7,.2,1);
+  }
+  .btn:hover{ background:var(--fg); border-color:var(--fg); color:var(--bg); transform:translate(2px,-2px) }
+  .btn svg{ width:14px; height:14px }
+  .btn-amber{ border-color:var(--amber); color:var(--amber-bright) }
+  .btn-amber:hover{ background:var(--amber); border-color:var(--amber); color:#1A1614 }
+  .btn-link{ border:0; padding:12px 4px; color:var(--fg-muted);
+    letter-spacing:.18em; text-transform:uppercase; font-size:12px;
+    transition: color .25s ease;
+  }
+  .btn-link:hover{ color:var(--amber-bright); transform:none; background:transparent }
+
+  /* CARD */
+  .card{
+    border-radius:18px;
+    background:transparent;
+    border:1px solid var(--hairline);
+    margin-bottom:28px;
+  }
+  .card-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 28px; border-bottom:1px solid var(--hairline);
+  }
+  .card-head h2{
+    font-size:14px;letter-spacing:.32em;text-transform:uppercase;
+    font-weight:500;color:var(--fg);
+    display:inline-flex;align-items:center;gap:14px;
+  }
+  .card-head h2 .hairline{ width:24px;height:1px;background:var(--amber) }
+  .card-head .hint{
+    font-family:"Geist Mono",monospace; font-size:11px;
+    color:var(--fg-muted); letter-spacing:.12em;
+  }
+  .card-body{ padding:28px }
+
+  /* FIELDS */
+  .field{ display:flex; flex-direction:column; gap:8px; margin-bottom:18px }
+  .field:last-child{ margin-bottom:0 }
+  .label{
+    font-size:11px; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--fg-muted); font-family:"Geist Mono",monospace;
+  }
+  .input, .textarea{
+    width:100%;
+    padding:14px 20px;
+    border-radius:999px;
+    background:transparent;
+    border:1px solid var(--hairline);
+    color:var(--fg);
+    font:inherit; font-size:15px;
+    transition: border-color .25s ease, background .25s ease;
+  }
+  .textarea{ border-radius:18px; min-height:160px; resize:vertical; line-height:1.6; padding:16px 20px }
+  .input::placeholder, .textarea::placeholder{ color:var(--fg-faint) }
+  .input:focus, .textarea:focus{
+    outline:0; border-color:var(--amber);
+    background: rgba(216,142,61,0.05);
+  }
+  .grid-2{
+    display:grid; grid-template-columns: 1fr 1fr; gap:16px;
+  }
+
+  /* CHIPS */
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px }
+  .chip{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:8px 14px; border-radius:999px;
+    border:1px solid var(--hairline); color:var(--fg-muted);
+    font-size:12px; letter-spacing:.08em;
+    background:transparent; cursor:pointer;
+    transition: background .25s ease, color .25s ease, border-color .25s ease;
+  }
+  .chip:hover{ color:var(--fg); border-color:var(--hairline-strong) }
+  .chip.active{
+    color:var(--amber-bright);
+    border-color:rgba(216,142,61,0.45);
+    background: rgba(216,142,61,0.08);
+  }
+  .chip .x{ display:inline-flex; width:0; opacity:0; transition: width .2s ease, opacity .2s ease }
+  .chip.active .x{ width:14px; opacity:.7; margin-left:2px }
+  .add-tech{ display:flex; align-items:center; gap:10px; margin-top:8px }
+
+  /* SOCIAL ROWS */
+  .social-row{
+    display:grid; grid-template-columns: 200px 1fr auto;
+    gap:12px; align-items:center; margin-bottom:10px;
+  }
+  .icon-btn{
+    width:38px;height:38px;border-radius:50%;
+    border:1px solid var(--hairline);
+    display:inline-flex;align-items:center;justify-content:center;
+    color:var(--fg); background:transparent;
+    transition: background .3s ease, border-color .3s ease, color .3s ease, transform .35s cubic-bezier(.2,.7,.2,1);
+    flex-shrink:0;
+  }
+  .icon-btn:hover{ background:var(--fg); border-color:var(--fg); color:var(--bg); transform:translate(2px,-2px) }
+  .icon-btn.danger:hover{ background:var(--amber); border-color:var(--amber); color:#1A1614 }
+  .icon-btn svg{ width:16px;height:16px }
+  .add-link{
+    display:inline-flex; align-items:center; gap:10px;
+    margin-top:8px; padding:10px 18px;
+    border-radius:999px; border:1px dashed var(--hairline-strong);
+    color:var(--fg-muted);
+    font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    transition: border-color .3s ease, color .3s ease, background .3s ease, transform .35s cubic-bezier(.2,.7,.2,1);
+    cursor:pointer;
+  }
+  .add-link:hover{
+    border-color:var(--amber);
+    color:var(--amber-bright);
+    background:rgba(216,142,61,0.05);
+    transform:translate(2px,-2px);
+  }
+  .add-link svg{ width:14px;height:14px }
+
+  /* FORM ACTIONS */
+  .form-actions{
+    display:flex; justify-content:flex-end; align-items:center; gap:14px;
+    margin-top:40px; padding-top:28px;
+    border-top:1px solid var(--hairline);
+  }
+
+  @media (max-width:900px){
+    .topbar{ padding:18px 24px }
+    .page{ padding:40px 20px 80px }
+    .grid-2{ grid-template-columns: 1fr }
+    .social-row{ grid-template-columns: 1fr }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="crumb">
+    <span class="dash"></span>
+    <span>Admin · Informations</span>
+  </div>
+  <a class="back-link" href="portfolio.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+    </svg>
+    <span>Back to home</span>
+  </a>
+</header>
+
+<main class="page">
+
+  <div class="page-header">
+    <div class="lead">
+      <h1>Informations.</h1>
+      <p class="subtitle">Identité du portfolio — nom, métier, baseline, contact, et le contenu des deux blocs principaux (introduction & à propos).</p>
+    </div>
+    <div class="actions">
+      <a class="btn" href="admin-projects.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        Projets
+      </a>
+    </div>
+  </div>
+
+  <form>
+
+    <!-- IDENTITÉ -->
+    <section class="card">
+      <div class="card-head">
+        <h2><span class="hairline"></span>Identité</h2>
+      </div>
+      <div class="card-body">
+        <div class="grid-2">
+          <div class="field">
+            <label class="label" for="fullname">Nom complet</label>
+            <input class="input" id="fullname" type="text" value="Lucas Luisetti" placeholder="Prénom Nom">
+          </div>
+          <div class="field">
+            <label class="label" for="title">Titre</label>
+            <input class="input" id="title" type="text" value="Développeur Full Stack" placeholder="Ex. Designer & Developer">
+          </div>
+          <div class="field">
+            <label class="label" for="tagline">Tag line</label>
+            <input class="input" id="tagline" type="text" value="Je crée des applications web modernes" placeholder="Une phrase courte de présentation">
+          </div>
+          <div class="field">
+            <label class="label" for="abouttitle">Titre À propos</label>
+            <input class="input" id="abouttitle" type="text" value="À propos de moi" placeholder="Ex. À propos de moi">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="card">
+      <div class="card-head">
+        <h2><span class="hairline"></span>Contact</h2>
+      </div>
+      <div class="card-body">
+        <div class="grid-2">
+          <div class="field">
+            <label class="label" for="email">Email</label>
+            <input class="input" id="email" type="email" value="lucas@luisetti.fr" placeholder="contact@exemple.fr">
+          </div>
+          <div class="field">
+            <label class="label" for="cv">CV (lien)</label>
+            <input class="input" id="cv" type="url" placeholder="https://...">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEXTES -->
+    <section class="card">
+      <div class="card-head">
+        <h2><span class="hairline"></span>Textes</h2>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label class="label" for="intro">Introduction <span style="color:var(--fg-faint); letter-spacing:.04em; text-transform:none">— page d'accueil</span></label>
+          <textarea class="textarea" id="intro" placeholder="Le texte qui apparaît en page d'accueil sous ton nom et ton titre.">Développeur full stack basé en France, je conçois des applications web modernes — du back-end robuste à l'interface soignée. J'aime les outils utiles, les détails qui comptent, et les projets bien finis.</textarea>
+        </div>
+        <div class="field">
+          <label class="label" for="about">À propos <span style="color:var(--fg-faint); letter-spacing:.04em; text-transform:none">— page À propos</span></label>
+          <textarea class="textarea" id="about" placeholder="Le texte long, sur la page À propos.">Après plusieurs années à naviguer entre back-end et front-end, j'ai trouvé mon équilibre dans le rôle de développeur full stack. Mes outils du quotidien : TypeScript, React, Node, Python — et surtout, beaucoup de questions posées avant d'écrire une ligne de code.</textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOCIAL LINKS -->
+    <section class="card">
+      <div class="card-head">
+        <h2><span class="hairline"></span>Réseaux</h2>
+      </div>
+      <div class="card-body">
+        <div class="social-row">
+          <input class="input" type="text" value="GitHub" placeholder="Plateforme">
+          <input class="input" type="url" value="https://github.com/lluisetti" placeholder="https://...">
+          <button class="icon-btn danger" type="button" aria-label="Supprimer" title="Supprimer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6"/><path d="M14 11v6"/>
+            </svg>
+          </button>
+        </div>
+        <div class="social-row">
+          <input class="input" type="text" value="LinkedIn" placeholder="Plateforme">
+          <input class="input" type="url" value="https://linkedin.com/in/lucas-luisetti" placeholder="https://...">
+          <button class="icon-btn danger" type="button" aria-label="Supprimer" title="Supprimer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6"/><path d="M14 11v6"/>
+            </svg>
+          </button>
+        </div>
+        <div class="social-row">
+          <input class="input" type="text" value="Twitter / X" placeholder="Plateforme">
+          <input class="input" type="url" value="https://x.com/lluisetti" placeholder="https://...">
+          <button class="icon-btn danger" type="button" aria-label="Supprimer" title="Supprimer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6"/><path d="M14 11v6"/>
+            </svg>
+          </button>
+        </div>
+
+        <button class="add-link" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"/><path d="M5 12h14"/>
+          </svg>
+          Ajouter un réseau
+        </button>
+      </div>
+    </section>
+
+    <!-- TECHNOLOGIES -->
+    <section class="card">
+      <div class="card-head">
+        <h2><span class="hairline"></span>Technologies</h2>
+      </div>
+      <div class="card-body">
+        <p style="color:var(--fg-muted); font-size:13px; margin-bottom:18px">Liste globale des technologies que tu maîtrises — elles deviennent disponibles dans les fiches projet et peuvent apparaître sur la page À propos.</p>
+        <div class="chips">
+          <button type="button" class="chip active">Python <span class="x">×</span></button>
+          <button type="button" class="chip active">TypeScript <span class="x">×</span></button>
+          <button type="button" class="chip active">React <span class="x">×</span></button>
+          <button type="button" class="chip active">Node.js <span class="x">×</span></button>
+          <button type="button" class="chip active">PostgreSQL <span class="x">×</span></button>
+          <button type="button" class="chip active">Symfony <span class="x">×</span></button>
+          <button type="button" class="chip active">Docker <span class="x">×</span></button>
+          <button type="button" class="chip active">Tailwind <span class="x">×</span></button>
+        </div>
+        <div class="add-tech">
+          <input class="input" id="new-tech" type="text" placeholder="Ajouter une technologie…" style="max-width:320px">
+          <button class="icon-btn" type="button" aria-label="Ajouter" title="Ajouter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14"/><path d="M5 12h14"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIONS -->
+    <div class="form-actions">
+      <button class="btn-link" type="button" onclick="window.location.href='admin-projects.html'">Annuler</button>
+      <button class="btn btn-amber" type="submit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Sauvegarder
+      </button>
+    </div>
+
+  </form>
+
+</main>
+
+<script>
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => c.classList.toggle('active')));
+</script>
+
+</body>
+</html>

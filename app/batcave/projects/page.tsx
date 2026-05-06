@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faPenToSquare, faTrashCan, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Project } from '@/types';
 import { projectService } from '@/services/projectService';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import LoadingPage from '@/app/batcave/loading';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
@@ -60,99 +60,151 @@ export default function ProjectsPage() {
   if (checkingAuth || loading) return <LoadingPage />;
   if (!isAuth) return null;
 
-  const sorted = [...projects].sort(function(a, b) { return a.displayOrder - b.displayOrder; });
-  const visible = sorted.filter(function(p) { return p.displayOrder <= 3; });
-  const archived = sorted.filter(function(p) { return p.displayOrder > 3; });
+  const sorted  = [...projects].sort((a, b) => a.displayOrder - b.displayOrder);
+  const visible  = sorted.filter(p => p.displayOrder <= 3);
+  const archived = sorted.filter(p => p.displayOrder > 3);
 
   function renderRows(list: Project[]) {
     if (list.length === 0) {
       return (
-        <TableRow>
-          <TableCell colSpan={4} className="text-center text-muted-foreground">Aucun projet</TableCell>
-        </TableRow>
+        <tr>
+          <td colSpan={5} style={{ textAlign: 'center', color: 'var(--fg-muted)', padding: '24px 28px' }}>
+            Aucun projet
+          </td>
+        </tr>
       );
     }
-    return list.map(function(project) {
-      return (
-        <TableRow key={project.id}>
-          <TableCell className="text-muted-foreground">{project.id}</TableCell>
-          <TableCell>{project.title}</TableCell>
-          <TableCell className="w-20">
-            <input
-              key={project.displayOrder}
-              type="number"
-              min={1}
-              defaultValue={project.displayOrder}
-              className="w-14 bg-transparent border border-input rounded px-1.5 py-0.5 text-sm text-center focus:outline-none focus:border-ring"
-              onBlur={function(e) { handleOrderChange(project, e.currentTarget); }}
-              onKeyDown={function(e) {
-                if (e.key === 'Enter') e.currentTarget.blur();
-                if (e.key === 'Escape') {
-                  e.currentTarget.value = String(project.displayOrder);
-                  e.currentTarget.blur();
-                }
-              }}
-            />
-          </TableCell>
-          <TableCell className="flex gap-1">
-            <Button variant="ghost" size="sm" onClick={function() { router.push(`/batcave/projects/${project.id}`); }}>
-              Éditer
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-destructive hover:text-destructive"
-              onClick={function() { handleDelete(project.id); }}
+    return list.map(project => (
+      <tr key={project.id}>
+        <td className="adm-col-id" data-label="ID">
+          {String(project.id).padStart(2, '0')}
+        </td>
+        <td className="adm-col-title" data-label="Titre">
+          <button
+            className="title-link"
+            onClick={() => router.push(`/batcave/projects/${project.id}`)}
+          >
+            {project.title}
+          </button>
+        </td>
+        <td className="adm-col-status" data-label="Statut">
+          <span className={`adm-pill ${project.displayOrder <= 3 ? 'adm-pill--visible' : ''}`}>
+            <span className="dot" />
+            {project.displayOrder <= 3 ? 'Visible' : 'Archivé'}
+          </span>
+        </td>
+        <td className="adm-col-order" data-label="Ordre">
+          <input
+            className="adm-order-input"
+            type="number"
+            min={1}
+            defaultValue={project.displayOrder}
+            key={project.displayOrder}
+            onBlur={e => handleOrderChange(project, e.currentTarget)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') e.currentTarget.blur();
+              if (e.key === 'Escape') {
+                e.currentTarget.value = String(project.displayOrder);
+                e.currentTarget.blur();
+              }
+            }}
+          />
+        </td>
+        <td className="adm-col-actions" data-label="Actions">
+          <div className="adm-row-actions">
+            <button
+              className="adm-icon-btn"
+              onClick={() => router.push(`/batcave/projects/${project.id}`)}
+              title="Éditer"
             >
-              Supprimer
-            </Button>
-          </TableCell>
-        </TableRow>
-      );
-    });
+              <FontAwesomeIcon icon={faPenToSquare} />
+            </button>
+            <button
+              className="adm-icon-btn adm-icon-btn--danger"
+              onClick={() => handleDelete(project.id)}
+              title="Supprimer"
+            >
+              <FontAwesomeIcon icon={faTrashCan} />
+            </button>
+          </div>
+        </td>
+      </tr>
+    ));
   }
 
   return (
-    <div className="p-4 space-y-6">
-      <Button onClick={function() { router.push('/batcave/informations'); }}>Admin Informations</Button>
+    <>
+      <header className="adm-topbar">
+        <div className="adm-crumb">
+          <span className="dash" />
+          <span>Admin · Projets</span>
+        </div>
+        <Link className="adm-back-link" href="/">
+          <FontAwesomeIcon icon={faArrowLeft} />
+          <span>Back to home</span>
+        </Link>
+      </header>
 
-      <div className="space-y-6">
-        <Card>
-          <CardHeader><CardTitle>Visibles</CardTitle></CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-16">ID</TableHead>
-                  <TableHead>Titre</TableHead>
-                  <TableHead className="w-20">Ordre</TableHead>
-                  <TableHead className="w-40">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>{renderRows(visible)}</TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+      <main className="adm-page">
+        <div className="adm-page-header">
+          <div className="lead">
+            <h1>Projets.</h1>
+            <p className="subtitle">
+              Gère l'ordre, la visibilité et le contenu de chaque projet du portfolio.
+            </p>
+          </div>
+          <div className="actions">
+            <Link className="adm-btn" href="/batcave/informations">
+              <FontAwesomeIcon icon={faPenToSquare} />
+              Informations globales
+            </Link>
+            <button className="adm-btn" onClick={() => router.push('/batcave/projects/new')}>
+              <FontAwesomeIcon icon={faPlus} />
+              Nouveau projet
+            </button>
+          </div>
+        </div>
 
-        <Card>
-          <CardHeader><CardTitle>Archivés</CardTitle></CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-16">ID</TableHead>
-                  <TableHead>Titre</TableHead>
-                  <TableHead className="w-20">Ordre</TableHead>
-                  <TableHead className="w-40">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>{renderRows(archived)}</TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </div>
+        {/* Visibles */}
+        <section className="adm-card" style={{ marginBottom: 36 }}>
+          <div className="adm-card-head">
+            <h2><span className="hairline" /><span>Visibles</span></h2>
+            <span className="count">{String(visible.length).padStart(2, '0')} projets</span>
+          </div>
+          <table className="adm-table">
+            <thead>
+              <tr>
+                <th className="adm-col-id">ID</th>
+                <th className="adm-col-title">Titre</th>
+                <th className="adm-col-status">Statut</th>
+                <th className="adm-col-order">Ordre</th>
+                <th className="adm-col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>{renderRows(visible)}</tbody>
+          </table>
+        </section>
 
-      <Button onClick={function() { router.push('/batcave/projects/new'); }}>+ Nouveau projet</Button>
-    </div>
+        {/* Archivés */}
+        <section className="adm-card" style={{ marginBottom: 36 }}>
+          <div className="adm-card-head">
+            <h2><span className="hairline" /><span style={{ color: 'var(--fg-muted)' }}>Archivés</span></h2>
+            <span className="count">{String(archived.length).padStart(2, '0')} projets</span>
+          </div>
+          <table className="adm-table">
+            <thead>
+              <tr>
+                <th className="adm-col-id">ID</th>
+                <th className="adm-col-title">Titre</th>
+                <th className="adm-col-status">Statut</th>
+                <th className="adm-col-order">Ordre</th>
+                <th className="adm-col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>{renderRows(archived)}</tbody>
+          </table>
+        </section>
+      </main>
+    </>
   );
 }

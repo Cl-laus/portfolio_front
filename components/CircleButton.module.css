@@ -1,0 +1,30 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  border: 1px solid rgba(245,241,234,.4);
+  color: var(--fg);
+  cursor: pointer;
+  transition: background .35s ease, border-color .35s ease, color .35s ease,
+              translate .35s var(--ease-snappy);
+}
+.btn:hover {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+  translate: 0.12em -0.12em;
+}
+.btn svg { width: 1em; height: 1em; }
+
+/* Large — project navigation buttons */
+.lg {
+  width: 6rem;
+  height: 6rem;
+  border-color: rgba(245,241,234,.5);
+  transition: background .45s ease, color .45s ease, border-color .45s ease,
+              translate .45s var(--ease-snappy);
+}
+.lg svg { width: 2.2em; height: 2.2em; }

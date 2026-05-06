@@ -1,0 +1,202 @@
+/* ── Rock backdrop ── */
+.rockStage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rockStage img {
+  width: min(720px, 70vw);
+  height: auto;
+  max-height: 88vh;
+  object-fit: contain;
+  filter: drop-shadow(0 40px 80px rgba(0,0,0,0.55))
+          drop-shadow(0 0 100px rgba(216,142,61,0.20));
+}
+.rockGlow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 900px;
+  max-width: 100vw;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(216,142,61,0.22) 0%,
+    rgba(216,142,61,0.06) 35%,
+    transparent 65%);
+  pointer-events: none;
+  filter: blur(20px);
+}
+
+/* ── Scroll container ── */
+.scrollWrap {
+  position: relative;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 96px;
+}
+
+/* ── Text blocks ── */
+.blocks {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 220px;
+  padding: 140px 0 240px;
+}
+
+.block {
+  display: grid;
+  grid-template-columns: 1fr 360px 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.col { min-width: 0; }
+
+.block.left  .colLeft  { grid-column: 1; }
+.block.right .colRight { grid-column: 3; justify-self: end; }
+
+.colLeft,
+.colRight { max-width: 460px; }
+
+/* Scroll-driven fade — controlled via JS custom property --p */
+.col {
+  opacity: var(--p, 0);
+  transform: translateY(calc((1 - var(--p, 0)) * var(--dir, 1) * 40px));
+  transition: opacity .25s linear, transform .25s linear;
+  will-change: opacity, transform;
+}
+
+/* ── Block content ── */
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow .hairline { height: 1px; width: 28px; background: var(--amber); flex-shrink: 0; }
+
+.block h2 {
+  font-size: clamp(28px, 2.4vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  color: var(--fg);
+}
+
+.block p {
+  color: var(--fg-muted);
+  font-size: 16px;
+  line-height: 1.7;
+}
+.block p + p { margin-top: 14px; }
+
+/* ── CV button ── */
+.cvBtn {
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg);
+  cursor: pointer;
+  background: transparent;
+  transition: background .35s ease, color .35s ease, border-color .35s ease, translate .35s var(--ease-snappy);
+}
+.cvBtn:hover {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+  translate: 0 -2px;
+}
+.cvBtn svg { width: 14px; height: 14px; }
+
+/* ── Tech groups ── */
+.techGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 8px;
+}
+.techGroup { display: flex; flex-direction: column; gap: 10px; }
+.groupLabel {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.techList { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.techChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+}
+
+/* ── Social links ── */
+.links { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.linkBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg);
+  transition: background .3s ease, border-color .3s ease, color .3s ease, translate .35s var(--ease-snappy);
+}
+.linkBtn:hover {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+  translate: 2px -2px;
+}
+.linkBtn svg { width: 16px; height: 16px; }
+
+/* ── Footer ── */
+.footer {
+  padding: 56px 96px;
+  color: var(--fg-muted);
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid var(--hairline);
+  background: var(--bg-bot);
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Mobile ── */
+@media (max-width: 960px) {
+  .scrollWrap { padding: 0 24px; }
+  .blocks { gap: 100px; padding: 100px 0 160px; }
+  .block { grid-template-columns: 1fr; gap: 24px; }
+  .colLeft, .colRight { max-width: 100%; grid-column: 1 !important; justify-self: start !important; }
+  .rockStage img { width: 90vw; max-height: 70vh; }
+  .rockGlow { display: none; }
+  .footer { padding: 40px 24px; }
+}

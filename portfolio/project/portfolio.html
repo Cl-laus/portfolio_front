@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lucas Luisetti — Designer-turned-developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    /* warm grey ramp per reference: medium-warm at top, lighter neutral at bottom */
+    --bg-top: #322D28;
+    --bg-mid: #3D3832;
+    --bg-bot: #45403A;
+    --bg: #3D3832;
+    --bg-edge: #322D28;
+    --fg: #F5F1EA;
+    --fg-muted: #B5B0A4;
+    --amber: #D88E3D;
+    --amber-bright: #E8A04A;
+    --amber-deep: #8B4F1C;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--fg);}
+  html{scroll-behavior:smooth}
+  body{
+    font-family: "Euclid Circular A", "Geist", "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size:17px;
+    line-height:1.5;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background:
+      linear-gradient(to bottom,
+        var(--bg-top) 0%,
+        var(--bg-mid) 38%,
+        var(--bg-mid) 62%,
+        var(--bg-bot) 100%);
+    background-attachment: fixed;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--amber);color:#111}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+
+  .mono{font-family:"Geist Mono", ui-monospace, "SF Mono", monospace}
+  .label{
+    font-size:11px;
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+    font-weight:500;
+    color:var(--fg);
+  }
+
+  /* ============ TOP RIGHT — ABOUT ============ */
+  .about-link{
+    position:fixed;
+    top:36px;
+    right:48px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size:13px;
+    letter-spacing:0.02em;
+    color: var(--fg-muted);
+    z-index:50;
+    transition: opacity .5s ease, color .35s ease;
+    cursor:pointer;
+  }
+  .about-link:hover{ color: var(--amber-bright) }
+  .about-link.hidden{opacity:0;pointer-events:none}
+  .about-link .dot{
+    width:6px;height:6px;border-radius:50%;
+    background: var(--fg-muted);
+    box-shadow: none;
+    transition: box-shadow .4s ease, transform .4s ease, background .4s ease;
+  }
+  .about-link:hover .dot{
+    background:var(--amber-bright);
+    transform:scale(1.25);
+    box-shadow:
+      0 0 10px rgba(232,160,74,.95),
+      0 0 24px rgba(232,160,74,.6),
+      0 0 40px rgba(232,160,74,.25);
+  }
+  @keyframes pulseDot{
+    0%,100%{box-shadow:0 0 6px rgba(216,142,61,.6),0 0 14px rgba(216,142,61,.35)}
+    50%{box-shadow:0 0 10px rgba(216,142,61,.95),0 0 22px rgba(216,142,61,.55)}
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    min-height:100vh;
+    width:100%;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-left{
+    position:relative;
+    z-index:5;
+    padding: 0 0 0 96px;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    max-width: 720px;
+  }
+  .hero-name{
+    font-size: clamp(72px, 9vw, 124px);
+    font-weight:500;
+    letter-spacing:-0.035em;
+    line-height:0.98;
+    color:var(--fg);
+  }
+  .hero-tagline{
+    margin-top:22px;
+    font-size:24px;
+    font-weight:400;
+    letter-spacing:-0.01em;
+    color:var(--fg-muted);
+  }
+  .hero-meta{
+    margin-top:48px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+    color:var(--fg-muted);
+    font-size:12px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+  }
+
+  .hero-right{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    pointer-events:none;
+  }
+  .rock-stage{
+    position:relative;
+    width: 100%;
+    height: 100vh;
+    display:flex;align-items:center;justify-content:flex-end;
+    animation: float 9s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(-6px)}
+    50%{transform:translateY(8px)}
+  }
+  .rock-stage::before{
+    /* soft amber ground glow */
+    content:"";
+    position:absolute;
+    right:18%;
+    top:50%;
+    transform:translateY(-50%);
+    width:55%;
+    height:80%;
+    background: radial-gradient(closest-side, rgba(216,142,61,0.32), rgba(216,142,61,0.10) 38%, rgba(216,142,61,0) 70%);
+    filter: blur(20px);
+    z-index:0;
+    pointer-events:none;
+  }
+  .rock-img{
+    position:relative;
+    z-index:1;
+    height: 100vh;
+    width: auto;
+    max-width: none;
+    object-fit:cover;
+    /* lift the rock off its grey backdrop and blend into our dark page */
+    mix-blend-mode: lighten;
+    filter:
+      brightness(0.92)
+      contrast(1.08)
+      saturate(1.05);
+  }
+  .rock-vignette{
+    position:absolute; inset:0;
+    z-index:2; pointer-events:none;
+    background:
+      linear-gradient(to right, var(--bg) 0%, rgba(33,30,27,0.85) 22%, rgba(33,30,27,0) 50%),
+      radial-gradient(ellipse at 75% 50%, rgba(33,30,27,0) 30%, rgba(33,30,27,.5) 75%, var(--bg) 100%);
+  }
+  /* dust particles around the rock */
+  .particles{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+  .particles span{
+    position:absolute;
+    width:2px;height:2px;border-radius:50%;
+    background: var(--amber-bright);
+    box-shadow: 0 0 4px rgba(232,160,74,.9), 0 0 10px rgba(232,160,74,.4);
+    opacity:0;
+    animation: rise 6s linear infinite;
+  }
+  @keyframes rise{
+    0%{transform:translateY(20px) translateX(0); opacity:0}
+    15%{opacity:.9}
+    100%{transform:translateY(-220px) translateX(var(--dx,0)); opacity:0}
+  }
+
+  /* scroll line — anchored to the right edge of "Luisetti" baseline,
+     extending to the right edge of the screen, animated left→right on load */
+  .scroll-fissure{
+    position:absolute;
+    left: var(--scroll-line-left, 50%);
+    right: 0;
+    top:  var(--scroll-line-top, auto);
+    bottom: var(--scroll-line-bottom, 56px);
+    height:1px;
+    background: linear-gradient(to right,
+      rgba(216,142,61,.95) 0%,
+      rgba(216,142,61,.85) 70%,
+      rgba(216,142,61,0) 100%);
+    box-shadow:
+      0 0 12px rgba(216,142,61,.55),
+      0 0 28px rgba(216,142,61,.25);
+    z-index:5;
+    transform-origin: left center;
+    transform: scaleX(0);
+    animation: scrollLineIn 1.4s cubic-bezier(.2,.7,.2,1) .25s forwards;
+  }
+  @keyframes scrollLineIn{
+    from{ transform: scaleX(0) }
+    to  { transform: scaleX(1) }
+  }
+  .scroll-label{
+    position:absolute;
+    right: 96px;
+    top:  var(--scroll-label-top, auto);
+    bottom: var(--scroll-label-bottom, 80px);
+    transform: translateY(-100%);
+    margin-bottom: 14px;
+    font-size:11px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--fg);
+    z-index:6;
+    opacity:0;
+    animation: fadeIn .8s ease 1.4s forwards;
+  }
+  @keyframes fadeIn{ to { opacity: 1 } }
+
+  /* ============ PROJECTS ============ */
+  .projects{
+    padding: 200px 96px 120px;
+    position:relative;
+  }
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    color:var(--fg-muted);
+    font-size:11px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    margin-bottom:96px;
+  }
+  .section-head .line{
+    flex:1; height:1px; background:rgba(245,241,234,0.10);
+  }
+  .section-head .count{ color:var(--fg-muted); font-family:"Geist Mono",monospace; letter-spacing:0.1em }
+
+  /* ---- featured ---- */
+  .featured{
+    position:relative;
+    cursor:pointer;
+    display:block;
+  }
+  /* the title row mirrors closed-project styling */
+  .featured .title-row{
+    display:flex;
+    align-items:baseline;
+    gap:28px;
+    width:max-content;
+    max-width:100%;
+    transition: transform .55s cubic-bezier(.2,.7,.2,1);
+  }
+  .featured:hover .title-row{ transform: translateX(14px) }
+  /* meta inside featured starts hidden like closed */
+  .featured .closed-meta{ opacity:0; transform: translateX(-8px); transition: opacity .5s ease, transform .55s cubic-bezier(.2,.7,.2,1) }
+
+  .feat-detail{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:96px;
+    align-items:center;
+    margin-top:64px;
+    padding-left: 88px; /* aligns under the title (past the index) */
+  }
+  .featured-left{position:relative}
+  .feat-label{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    font-size:11px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--fg-muted);
+    margin-bottom:24px;
+  }
+  .feat-label .hairline{
+    height:1px;
+    width:32px;
+    background:var(--fg);
+    transition: width .55s cubic-bezier(.2,.7,.2,1);
+  }
+  .featured:hover .feat-label .hairline{ width:64px }
+  .feat-label-top{
+    margin-bottom: 28px;
+  }
+
+  .feat-desc{
+    font-size:18px;
+    color:var(--fg-muted);
+    max-width: 460px;
+    line-height:1.55;
+    opacity:.85;
+    transition: opacity .5s ease, color .5s ease;
+  }
+  .featured:hover .feat-desc{ opacity:1; color:#9F9C92 }
+
+  .feat-meta{
+    margin-top:24px;
+    display:flex;gap:14px;align-items:center;
+    color:var(--fg-muted);
+    font-family:"Geist Mono", monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+  }
+  .feat-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--fg-muted)}
+
+  .feat-cta{
+    margin-top:56px;
+    width:48px;height:48px;border-radius:50%;
+    border:1px solid rgba(245,241,234,.5);
+    background:transparent;
+    color:var(--fg);
+    display:inline-flex;align-items:center;justify-content:center;
+    transition: background .45s ease, color .45s ease, border-color .45s ease, transform .45s ease;
+  }
+  .feat-cta svg{
+    width:18px;height:18px;
+    transition: transform .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .featured:hover .feat-cta{
+    background:var(--fg);
+    color:var(--bg);
+    border-color:var(--fg);
+  }
+  .featured:hover .feat-cta svg{ transform: rotate(45deg) }
+
+  /* image */
+  .feat-image-wrap{
+    position:relative;
+    width:100%;
+    max-width: 460px;
+    aspect-ratio: 380/420;
+    margin-left:auto;
+    transition: transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .featured:hover .feat-image-wrap{ transform: translate(4px,-4px) }
+  .feat-image{
+    width:100%;height:100%;
+    object-fit:cover;
+    /* same blend treatment as hero so any residual grey backdrop blends to dark */
+    mix-blend-mode: lighten;
+    filter: brightness(0.92) contrast(1.08) saturate(1.05);
+    transition: transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .feat-image-wrap{
+    background: var(--bg);
+  }
+  .featured:hover .feat-image{ transform: scale(1.03) }
+
+  /* corner accents */
+  .corner{
+    position:absolute;
+    width:18px;height:18px;
+    pointer-events:none;
+    opacity:0;
+    transition: opacity .4s ease, transform .55s cubic-bezier(.2,.7,.2,1);
+  }
+  .corner::before, .corner::after{
+    content:"";position:absolute;background:var(--fg)
+  }
+  .corner::before{left:0;top:0;width:100%;height:1px}
+  .corner::after{left:0;top:0;width:1px;height:100%}
+  .corner.tr{right:-1px;top:-1px;transform:scaleX(-1)}
+  .corner.bl{left:-1px;bottom:-1px;transform:scaleY(-1)}
+  .corner.br{right:-1px;bottom:-1px;transform:scale(-1,-1)}
+  .corner.tl{left:-1px;top:-1px}
+  .featured:hover .corner{opacity:1}
+  .featured:hover .corner.tl{transition-delay:.05s}
+  .featured:hover .corner.tr{transition-delay:.12s}
+  .featured:hover .corner.bl{transition-delay:.19s}
+  .featured:hover .corner.br{transition-delay:.26s}
+
+  /* mono index */
+  .feat-index{
+    position:absolute;
+    top:0; right:0;
+    font-family:"Geist Mono", monospace;
+    font-size:12px;
+    color:var(--fg-muted);
+    opacity:.55;
+    letter-spacing:0.1em;
+    transition: transform .5s cubic-bezier(.2,.7,.2,1), opacity .4s ease;
+  }
+  .featured:hover .feat-index{
+    transform: translateY(12px);
+    opacity:1;
+    color:var(--fg);
+  }
+
+  /* ---- closed projects ---- */
+  .closed-list{
+    margin-top: 160px;
+    display:flex;
+    flex-direction:column;
+    gap: 88px;
+  }
+  .closed{
+    position:relative;
+    display:flex;
+    align-items:baseline;
+    gap:28px;
+    cursor:pointer;
+    transition: transform .55s cubic-bezier(.2,.7,.2,1);
+    width:max-content;
+    max-width:100%;
+  }
+  .closed:hover{ transform: translateX(14px) }
+  .closed-index{
+    font-family:"Geist Mono", monospace;
+    font-size:12px;
+    color:var(--fg-muted);
+    letter-spacing:0.18em;
+    padding-top:12px;
+    align-self:flex-start;
+    transition: color .4s ease;
+  }
+  .closed:hover .closed-index,
+  .featured:hover .closed-index{ color:var(--amber-bright) }
+
+  .closed-title{
+    font-weight:500;
+    letter-spacing:-0.035em;
+    line-height:0.95;
+    color:var(--fg);
+    position:relative;
+    display:inline-block;
+    transition: transform .55s cubic-bezier(.2,.7,.2,1), color .4s ease;
+  }
+  /* size variants — applied via body class from tweaks */
+  body.titles-xxl .closed-title{ font-size: clamp(72px, 10vw, 120px) }
+  body.titles-md  .closed-title{ font-size: clamp(48px, 5.5vw, 64px) }
+
+  .closed:hover .closed-title,
+  .featured:hover .closed-title{ transform: translateY(-3px) }
+
+  .closed-title .underline{
+    position:absolute;
+    left:0; right:auto;
+    bottom:-12px;
+    height:1px;
+    width:0;
+    background: var(--amber);
+    box-shadow:
+      0 0 8px rgba(216,142,61,.85),
+      0 0 18px rgba(216,142,61,.45);
+    transition: width .65s cubic-bezier(.2,.7,.2,1);
+  }
+  .closed:hover .closed-title .underline,
+  .featured:hover .closed-title .underline{ width:100% }
+
+  .closed-meta{
+    font-family:"Geist Mono", monospace;
+    font-size:11px;
+    color:var(--fg-muted);
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    align-self:flex-start;
+    padding-top:14px;
+    opacity:0;
+    transform: translateX(-8px);
+    transition: opacity .5s ease, transform .55s cubic-bezier(.2,.7,.2,1);
+  }
+  .closed:hover .closed-meta,
+  .featured:hover .closed-meta{ opacity:.7; transform:translateX(0) }
+
+  /* ============ FOOTER ============ */
+  footer{
+    padding: 56px 96px;
+    color:var(--fg-muted);
+    font-size:12px;
+    display:flex; justify-content:center; align-items:center;
+    border-top: 1px solid rgba(245,241,234,0.06);
+  }
+
+  /* ============ ABOUT OVERLAY ============ */
+  .about-overlay{
+    position:fixed; inset:0;
+    background: rgba(22,20,18,.93);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index:90;
+    opacity:0; pointer-events:none;
+    transition: opacity .5s ease;
+    display:flex; align-items:center; justify-content:center;
+    padding: 96px;
+  }
+  .about-overlay.open{ opacity:1; pointer-events:auto }
+  .about-card{
+    max-width: 640px;
+    color:var(--fg);
+  }
+  .about-card .label{ color:var(--fg-muted); margin-bottom:28px }
+  .about-card h2{
+    font-size:42px;
+    font-weight:500;
+    letter-spacing:-0.025em;
+    line-height:1.05;
+    margin-bottom:28px;
+  }
+  .about-card p{
+    color:var(--fg-muted);
+    font-size:17px;
+    line-height:1.65;
+    margin-bottom:14px;
+  }
+  .about-card .row{
+    display:flex; gap:48px; margin-top:36px;
+    color:var(--fg-muted);
+    font-family:"Geist Mono", monospace;
+    font-size:11px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+  }
+  .about-card .row strong{display:block; color:var(--fg); margin-top:6px; letter-spacing:0.16em}
+  .about-close{
+    position:fixed; top:36px; right:48px;
+    color:var(--fg);
+    font-size:13px;
+    display:inline-flex; align-items:center; gap:10px;
+    cursor:pointer;
+    z-index:100;
+  }
+  .about-close .x{
+    width:18px; height:18px; position:relative;
+  }
+  .about-close .x::before, .about-close .x::after{
+    content:""; position:absolute; left:50%; top:50%;
+    width:18px; height:1px; background:var(--fg);
+  }
+  .about-close .x::before{ transform: translate(-50%,-50%) rotate(45deg) }
+  .about-close .x::after{ transform: translate(-50%,-50%) rotate(-45deg) }
+
+  /* ============ MOBILE ============ */
+  @media (max-width: 900px){
+    .about-link{ top:24px; right:24px }
+    .hero-left{ padding: 0 28px; max-width:none }
+    .hero-name{ font-size: clamp(48px, 13vw, 80px) }
+    .hero-tagline{ font-size: 18px }
+    .hero-right{ opacity:.4 }
+    .rock-stage{ width: 100%; height:100vh }
+    .scroll-fissure, .scroll-label{ bottom: 28px }
+    .projects{ padding: 120px 28px 80px }
+    .feat-detail{ grid-template-columns:1fr; gap: 48px; margin-top:40px; padding-left:0 }
+    .feat-image-wrap{ max-width:100% }
+    .closed-list{ margin-top: 96px; gap:64px }
+    body.titles-xxl .closed-title,
+    body.titles-md .closed-title{ font-size: clamp(48px, 12vw, 72px) }
+    footer{ padding: 40px 28px; justify-content:center }
+    .about-overlay{ padding: 28px }
+    .about-card h2{ font-size:30px }
+    .about-close{ top:24px; right:24px }
+  }
+</style>
+</head>
+<body class="titles-xxl">
+
+<!-- ABOUT TOP RIGHT -->
+<a class="about-link" id="aboutLink" href="about.html">
+  <span>About</span>
+</a>
+
+<!-- HERO -->
+<section class="hero" id="top" data-screen-label="01 Hero">
+  <div class="hero-left">
+    <h1 class="hero-name">Lucas<br><span id="heroLastName">Luisetti</span></h1>
+    <div class="hero-tagline" style="font-size: 36px">Designer-turned-developer.</div>
+    <div class="hero-meta">
+      <span>Junior Fullstack</span>
+      <span>Paris · FR</span>
+      <span>Open to CDI</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="rock-stage" id="rockStage">
+      <img class="rock-img" id="rockImg" src="assets/rock-clean-1.jpg" alt="Glowing amber stone with moss and dried flowers"/>
+      <div class="rock-vignette"></div>
+      <div class="particles" id="particles"></div>
+    </div>
+  </div>
+
+  <div class="scroll-fissure" id="scrollFissure" style="height: 2px"></div>
+  <div class="scroll-label">Scroll down</div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" data-screen-label="02 Selected Work">
+  <div class="section-head">
+    <span>Selected Work</span>
+    <span class="line"></span>
+    <span class="count">03 / 03</span>
+  </div>
+
+  <!-- FEATURED — Project 01 -->
+  <a class="featured" id="featured" href="#" data-screen-label="02a Featured">
+    <div class="feat-label feat-label-top">
+      <span class="hairline"></span>
+      <span>Featured</span>
+    </div>
+    <div class="title-row">
+      <span class="closed-index">01 /</span>
+      <h2 class="closed-title">
+        Amber Studio
+        <span class="underline"></span>
+      </h2>
+      <span class="closed-meta">Web · 2025</span>
+    </div>
+
+    <div class="feat-detail">
+      <div class="featured-left">
+        <p class="feat-desc">
+          A modern operations canvas for creative agencies — real-time briefs,
+          production handoff, and a 3D asset library, in one place.
+        </p>
+        <div class="feat-meta">
+          <span>Web app</span>
+          <span class="dot"></span>
+          <span>2025</span>
+          <span class="dot"></span>
+          <span>Next · TS</span>
+        </div>
+        <button class="feat-cta" aria-label="Open project">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="featured-right">
+        <div class="feat-image-wrap">
+          <img class="feat-image" id="featImage" src="assets/rock-clean-3.jpg" alt="Amber Studio preview"/>
+          <span class="corner tl"></span>
+          <span class="corner tr"></span>
+          <span class="corner bl"></span>
+          <span class="corner br"></span>
+          <span class="feat-index mono">— 01</span>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- CLOSED PROJECTS -->
+  <div class="closed-list">
+    <a class="closed" href="#" data-screen-label="02b Helio">
+      <span class="closed-index">02 /</span>
+      <h3 class="closed-title">
+        Helio Dashboard
+        <span class="underline"></span>
+      </h3>
+      <span class="closed-meta">SaaS · 2024</span>
+    </a>
+
+    <a class="closed" href="#" data-screen-label="02c Petrichor">
+      <span class="closed-index">03 /</span>
+      <h3 class="closed-title">
+        Petrichor
+        <span class="underline"></span>
+      </h3>
+      <span class="closed-meta">Brand · 2024</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<!-- FOOTER -->
+<footer data-screen-label="03 Footer">
+  <span>© 2026 Lucas Luisetti</span>
+</footer>
+
+<!-- TWEAKS -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script>
+  // -------- scroll line origin: end of "Luisetti" --------
+  (() => {
+    const last = document.getElementById('heroLastName');
+    const line = document.getElementById('scrollFissure');
+    const label = document.querySelector('.scroll-label');
+    const hero = document.querySelector('.hero');
+    if(!last || !line || !hero) return;
+    const place = () => {
+      const r = last.getBoundingClientRect();
+      const heroRect = hero.getBoundingClientRect();
+      // horizontal: just past the right edge of "Luisetti"
+      const left = Math.round(r.right - heroRect.left + 24);
+      // vertical: align line with the baseline of "Luisetti"
+      // (~88% of the line-box height for a typical font)
+      const top  = Math.round(r.top - heroRect.top + r.height * 0.88);
+      line.style.setProperty('--scroll-line-left', left + 'px');
+      line.style.setProperty('--scroll-line-top',  top  + 'px');
+      line.style.setProperty('--scroll-line-bottom', 'auto');
+      if(label){
+        label.style.setProperty('--scroll-label-top', top + 'px');
+        label.style.setProperty('--scroll-label-bottom', 'auto');
+      }
+    };
+    place();
+    window.addEventListener('resize', place);
+    if(document.fonts && document.fonts.ready){
+      document.fonts.ready.then(place);
+    }
+  })();
+
+  // -------- particles --------
+  (() => {
+    const root = document.getElementById('particles');
+    if(!root) return;
+    const N = 14;
+    for(let i=0;i<N;i++){
+      const s = document.createElement('span');
+      const left = 20 + Math.random()*60;
+      const dx = (Math.random()*40 - 20).toFixed(0) + 'px';
+      const delay = (Math.random()*6).toFixed(2);
+      const dur = (4 + Math.random()*5).toFixed(2);
+      s.style.left = left + '%';
+      s.style.top = (60 + Math.random()*30) + '%';
+      s.style.setProperty('--dx', dx);
+      s.style.animationDelay = delay + 's';
+      s.style.animationDuration = dur + 's';
+      root.appendChild(s);
+    }
+  })();
+
+  // -------- About link fades on scroll past hero --------
+  (() => {
+    const link = document.getElementById('aboutLink');
+    const onScroll = () => {
+      const past = window.scrollY > window.innerHeight * 0.65;
+      link.classList.toggle('hidden', past);
+    };
+    window.addEventListener('scroll', onScroll, {passive:true});
+  })();
+
+  // -------- click-through guard for "go to project" links --------
+  document.querySelectorAll('.featured, .closed').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const slug = el.getAttribute('data-screen-label') || '';
+      // navigation stub — in production this would be /projects/[slug]
+      console.log('navigate →', slug);
+    });
+  });
+</script>
+
+<!-- TWEAKS PANEL -->
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "closedTitleSize": "xxl",
+  "heroRock": "1",
+  "featuredImage": "3",
+  "amberHue": "#D88E3D",
+  "particles": true
+}/*EDITMODE-END*/;
+
+function App(){
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  // closed title size
+  useEffect(() => {
+    document.body.classList.toggle('titles-xxl', t.closedTitleSize === 'xxl');
+    document.body.classList.toggle('titles-md',  t.closedTitleSize === 'md');
+  }, [t.closedTitleSize]);
+
+  // hero rock image
+  useEffect(() => {
+    const img = document.getElementById('rockImg');
+    if(img) img.src = `assets/rock-clean-${t.heroRock}.jpg`;
+  }, [t.heroRock]);
+
+  // featured project image
+  useEffect(() => {
+    const img = document.getElementById('featImage');
+    if(img) img.src = `assets/rock-clean-${t.featuredImage}.jpg`;
+  }, [t.featuredImage]);
+
+  // amber hue
+  useEffect(() => {
+    document.documentElement.style.setProperty('--amber', t.amberHue);
+  }, [t.amberHue]);
+
+  // particles
+  useEffect(() => {
+    const p = document.getElementById('particles');
+    if(p) p.style.display = t.particles ? '' : 'none';
+  }, [t.particles]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="Closed project titles">
+        <TweakRadio
+          value={t.closedTitleSize}
+          onChange={v => setTweak('closedTitleSize', v)}
+          options={[
+            {label:'XXL impact', value:'xxl'},
+            {label:'M+ refined', value:'md'},
+          ]}
+        />
+      </TweakSection>
+
+      <TweakSection label="Hero rock">
+        <TweakSelect
+          value={t.heroRock}
+          onChange={v => setTweak('heroRock', v)}
+          options={[
+            {label:'01 — Amber core w/ moss', value:'1'},
+            {label:'02 — Floating crystal', value:'3'},
+            {label:'03 — Ochre flowers', value:'4'},
+          ]}
+        />
+      </TweakSection>
+
+      <TweakSection label="Featured image">
+        <TweakSelect
+          value={t.featuredImage}
+          onChange={v => setTweak('featuredImage', v)}
+          options={[
+            {label:'01 — Amber core', value:'1'},
+            {label:'02 — Floating crystal', value:'3'},
+            {label:'03 — Ochre flowers', value:'4'},
+          ]}
+        />
+      </TweakSection>
+
+      <TweakSection label="Amber hue">
+        <TweakColor value={t.amberHue} onChange={v => setTweak('amberHue', v)} />
+      </TweakSection>
+
+      <TweakSection label="Hero particles">
+        <TweakToggle value={t.particles} onChange={v => setTweak('particles', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+const root = document.createElement('div');
+document.body.appendChild(root);
+ReactDOM.createRoot(root).render(<App/>);
+</script>
+
+</body>
+</html>
