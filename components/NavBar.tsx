@@ -7,8 +7,11 @@ export default function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const isHome = pathname === "/";
-  const isAbout = pathname === "/about";
+  const isHome    = pathname === "/";
+  const isAbout   = pathname === "/about";
+  const isBatcave = pathname.startsWith("/batcave");
+
+  if (isBatcave) return null;
 
   return (
     <nav className="fixed top-4 right-3 flex gap-6 z-50">

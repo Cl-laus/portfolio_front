@@ -4,6 +4,7 @@ export interface Technology {
   name: string;
   icon: string;
   category: string;
+  visible: boolean;
 }
 
 /* Simplified DTO returned by GET /api/projects (homepage list) */

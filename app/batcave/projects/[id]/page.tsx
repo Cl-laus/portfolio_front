@@ -71,12 +71,15 @@ export default function ProjectFormPage() {
   function updateLink(i: number, field: 'key' | 'value', val: string) {
     setLinks(prev => { const c = [...prev]; c[i][field] = val; return c; });
   }
-  function removeLink(i: number) { setLinks(prev => prev.filter((_, idx) => idx !== i)); }
+  function removeLink(i: number) {
+    if (!confirm('Supprimer ce lien ?')) return;
+    setLinks(prev => prev.filter((_, idx) => idx !== i));
+  }
 
-  function formatLinks() {
+  function formatLinks(): Record<string, string> {
     const obj: Record<string, string> = {};
     links.forEach(l => { if (l.key) obj[l.key] = l.value; });
-    return Object.keys(obj).length ? obj : null;
+    return obj; // empty object = clear all links
   }
 
   function toggleTech(id: number) {
@@ -84,6 +87,7 @@ export default function ProjectFormPage() {
   }
 
   function deleteImage(id: number) {
+    if (!confirm('Supprimer cette image ?')) return;
     projectService.deleteImage(id)
       .then(() => setImages(prev => prev.filter(img => img.id !== id)))
       .catch(console.error);
