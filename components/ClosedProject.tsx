@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { Project } from "@/types";
+import { ProjectSummary } from "@/types";
 import CircleButton from "./CircleButton";
 import styles from "./ClosedProject.module.css";
 
 interface ClosedProjectProps {
-  project: Project;
+  project: ProjectSummary;
   index: string;
   meta?: string;
 }

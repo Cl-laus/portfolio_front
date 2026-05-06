@@ -6,6 +6,17 @@ export interface Technology {
   category: string;
 }
 
+/* Simplified DTO returned by GET /api/projects (homepage list) */
+export interface ProjectSummary {
+  id: number;
+  displayOrder: number;
+  title: string;
+  summary: string;
+  createdAt: string;
+  technologies: { category: string }[];
+  image: { id: number; url: string; displayOrder: number } | null;
+}
+
 export interface Image {
   id: number;
   url: string;

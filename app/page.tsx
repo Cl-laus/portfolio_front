@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import { projectService }     from "@/services/projectService";
 import { informationService } from "@/services/informationService";
-import { Project, Information } from "@/types";
+import { ProjectSummary, Information } from "@/types";
 import HeroSection     from "@/components/HeroSection";
 import FeaturedProject from "@/components/FeaturedProject";
 import ClosedProject   from "@/components/ClosedProject";
 import styles from "./page.module.css";
 
 export default function HomePage() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [info,     setInfo]     = useState<Information | null>(null);
   const [loading,  setLoading]  = useState(true);
 
@@ -43,10 +43,10 @@ export default function HomePage() {
   const featured = projects[0];
   const closed   = projects.slice(1);
 
-  const closedMeta = (p: Project) => {
-    const year = p.createdAt ? new Date(p.createdAt).getFullYear() : "";
-    const cat  = p.technologies?.[0]?.category || p.technologies?.[0]?.name || "Web";
-    return year ? `${cat} · ${year}` : cat;
+  const closedMeta = (p: ProjectSummary) => {
+    const year = p.createdAt ? new Date(p.createdAt).getFullYear() : null;
+    const cat  = p.technologies?.[0]?.category || null;
+    return [cat, year].filter(Boolean).join(" · ");
   };
 
   return (

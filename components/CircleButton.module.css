@@ -15,7 +15,6 @@
   background: var(--fg);
   border-color: var(--fg);
   color: var(--bg);
-  translate: 0.12em -0.12em;
 }
 .btn svg { width: 1em; height: 1em; }
 
