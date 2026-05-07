@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faPenToSquare, faTrashCan, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrashCan, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Project } from '@/types';
 import { projectService } from '@/services/projectService';
+import AdminCard from '@/components/AdminCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
@@ -16,7 +17,7 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(function () {
+  useEffect(() => {
     if (!isAuth) return;
     fetchProjects();
   }, [isAuth]);
@@ -24,26 +25,26 @@ export default function ProjectsPage() {
   async function fetchProjects() {
     try {
       const data = await projectService.getAll();
-      setProjects(data.sort(function(a, b) { return a.displayOrder - b.displayOrder; }));
-    } catch (error) {
-      console.error(error);
+      setProjects(data.sort((a, b) => a.displayOrder - b.displayOrder));
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
   }
 
-  async function handleOrderChange(project: Project, inputEl: HTMLInputElement) {
-    const newOrder = parseInt(inputEl.value, 10);
+  async function handleOrderChange(project: Project, input: HTMLInputElement) {
+    const newOrder = parseInt(input.value, 10);
     if (!newOrder || newOrder === project.displayOrder) {
-      inputEl.value = String(project.displayOrder);
+      input.value = String(project.displayOrder);
       return;
     }
     try {
       await projectService.update(project.id, { displayOrder: newOrder });
       await fetchProjects();
-    } catch (error) {
-      console.error(error);
-      inputEl.value = String(project.displayOrder);
+    } catch (err) {
+      console.error(err);
+      input.value = String(project.displayOrder);
     }
   }
 
@@ -52,25 +53,22 @@ export default function ProjectsPage() {
     try {
       await projectService.delete(id);
       await fetchProjects();
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   }
 
   if (checkingAuth || loading) return <LoadingSpinner />;
   if (!isAuth) return null;
 
-  const sorted  = [...projects].sort((a, b) => a.displayOrder - b.displayOrder);
-  const visible  = sorted.filter(p => p.displayOrder <= 3);
-  const archived = sorted.filter(p => p.displayOrder > 3);
+  const visible  = projects.filter(p => p.displayOrder <= 3);
+  const archived = projects.filter(p => p.displayOrder > 3);
 
   function renderRows(list: Project[]) {
     if (list.length === 0) {
       return (
         <tr>
-          <td colSpan={5} style={{ textAlign: 'center', color: 'var(--fg-muted)', padding: '24px 28px' }}>
-            Aucun projet
-          </td>
+          <td colSpan={5} className="adm-empty">Aucun projet</td>
         </tr>
       );
     }
@@ -80,10 +78,7 @@ export default function ProjectsPage() {
           {String(project.id).padStart(2, '0')}
         </td>
         <td className="adm-col-title" data-label="Titre">
-          <button
-            className="title-link"
-            onClick={() => router.push(`/batcave/projects/${project.id}`)}
-          >
+          <button className="title-link" onClick={() => router.push(`/batcave/projects/${project.id}`)}>
             {project.title}
           </button>
         </td>
@@ -112,18 +107,10 @@ export default function ProjectsPage() {
         </td>
         <td className="adm-col-actions" data-label="Actions">
           <div className="adm-row-actions">
-            <button
-              className="adm-icon-btn"
-              onClick={() => router.push(`/batcave/projects/${project.id}`)}
-              title="Éditer"
-            >
+            <button className="adm-icon-btn" onClick={() => router.push(`/batcave/projects/${project.id}`)} title="Éditer">
               <FontAwesomeIcon icon={faPenToSquare} />
             </button>
-            <button
-              className="adm-icon-btn adm-icon-btn--danger"
-              onClick={() => handleDelete(project.id)}
-              title="Supprimer"
-            >
+            <button className="adm-icon-btn adm-icon-btn--danger" onClick={() => handleDelete(project.id)} title="Supprimer">
               <FontAwesomeIcon icon={faTrashCan} />
             </button>
           </div>
@@ -132,26 +119,22 @@ export default function ProjectsPage() {
     ));
   }
 
-  return (
-    <>
-      <header className="adm-topbar">
-        <div className="adm-crumb">
-          <span className="dash" />
-          <span>Admin · Projets</span>
-        </div>
-        <Link className="adm-back-link" href="/">
-          <FontAwesomeIcon icon={faArrowLeft} />
-          <span>Back to home</span>
-        </Link>
-      </header>
+  const tableHead = (
+    <tr>
+      <th className="adm-col-id">ID</th>
+      <th className="adm-col-title">Titre</th>
+      <th className="adm-col-status">Statut</th>
+      <th className="adm-col-order">Ordre</th>
+      <th className="adm-col-actions">Actions</th>
+    </tr>
+  );
 
-      <main className="adm-page">
+  return (
+    <main className="adm-page">
         <div className="adm-page-header">
           <div className="lead">
             <h1>Projets.</h1>
-            <p className="subtitle">
-              Gère l'ordre, la visibilité et le contenu de chaque projet du portfolio.
-            </p>
+            <p className="subtitle">Gère l&apos;ordre, la visibilité et le contenu de chaque projet du portfolio.</p>
           </div>
           <div className="actions">
             <Link className="adm-btn" href="/batcave/informations">
@@ -165,46 +148,19 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        {/* Visibles */}
-        <section className="adm-card" style={{ marginBottom: 36 }}>
-          <div className="adm-card-head">
-            <h2><span className="hairline" /><span>Visibles</span></h2>
-            <span className="count">{String(visible.length).padStart(2, '0')} projets</span>
-          </div>
+        <AdminCard title="Visibles" right={<span className="count">{String(visible.length).padStart(2, '0')} projets</span>}>
           <table className="adm-table">
-            <thead>
-              <tr>
-                <th className="adm-col-id">ID</th>
-                <th className="adm-col-title">Titre</th>
-                <th className="adm-col-status">Statut</th>
-                <th className="adm-col-order">Ordre</th>
-                <th className="adm-col-actions">Actions</th>
-              </tr>
-            </thead>
+            <thead>{tableHead}</thead>
             <tbody>{renderRows(visible)}</tbody>
           </table>
-        </section>
+        </AdminCard>
 
-        {/* Archivés */}
-        <section className="adm-card" style={{ marginBottom: 36 }}>
-          <div className="adm-card-head">
-            <h2><span className="hairline" /><span style={{ color: 'var(--fg-muted)' }}>Archivés</span></h2>
-            <span className="count">{String(archived.length).padStart(2, '0')} projets</span>
-          </div>
+        <AdminCard title="Archivés" muted right={<span className="count">{String(archived.length).padStart(2, '0')} projets</span>}>
           <table className="adm-table">
-            <thead>
-              <tr>
-                <th className="adm-col-id">ID</th>
-                <th className="adm-col-title">Titre</th>
-                <th className="adm-col-status">Statut</th>
-                <th className="adm-col-order">Ordre</th>
-                <th className="adm-col-actions">Actions</th>
-              </tr>
-            </thead>
+            <thead>{tableHead}</thead>
             <tbody>{renderRows(archived)}</tbody>
           </table>
-        </section>
-      </main>
-    </>
+        </AdminCard>
+    </main>
   );
 }

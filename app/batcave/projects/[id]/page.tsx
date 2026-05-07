@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faPlus, faTrashCan, faFloppyDisk, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrashCan, faFloppyDisk, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { projectService } from '@/services/projectService';
 import { technologyService } from '@/services/technologyService';
 import { Technology } from '@/types';
+import AdminCard from '@/components/AdminCard';
+import AdminField from '@/components/AdminField';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
@@ -21,19 +23,18 @@ export default function ProjectFormPage() {
   const isEdit    = params?.id !== 'new';
   const projectId = isEdit ? Number(params?.id) : null;
 
-  const [title, setTitle]           = useState('');
-  const [summary, setSummary]       = useState('');
+  const [title,       setTitle]       = useState('');
+  const [summary,     setSummary]     = useState('');
   const [description, setDescription] = useState('');
-  const [links, setLinks]           = useState<{ key: string; value: string }[]>([]);
-  const [techIds, setTechIds]       = useState<number[]>([]);
+  const [links,       setLinks]       = useState<{ key: string; value: string }[]>([]);
+  const [techIds,     setTechIds]     = useState<number[]>([]);
   const [technologies, setTechnologies] = useState<Technology[]>([]);
-  const [images, setImages]         = useState<{ id: number; url: string }[]>([]);
-  const [files, setFiles]           = useState<File[]>([]);
-  const [loading, setLoading]       = useState(true);
-  const [saving, setSaving]         = useState(false);
-  const [visible, setVisible]       = useState(true);
+  const [images,      setImages]      = useState<{ id: number; url: string }[]>([]);
+  const [files,       setFiles]       = useState<File[]>([]);
+  const [loading,     setLoading]     = useState(true);
+  const [saving,      setSaving]      = useState(false);
 
-  useEffect(function () {
+  useEffect(() => {
     if (!isAuth) return;
     let ignore = false;
 
@@ -51,7 +52,6 @@ export default function ProjectFormPage() {
           setDescription(p.description);
           setTechIds(p.technologies.map((t: Technology) => t.id));
           setImages(p.images ?? []);
-          setVisible(p.displayOrder <= 3);
           if (p.links) {
             setLinks(Object.entries(p.links).map(([k, v]) => ({ key: k, value: v as string })));
           }
@@ -67,7 +67,9 @@ export default function ProjectFormPage() {
     return () => { ignore = true; };
   }, [isAuth]);
 
-  function addLink() { setLinks(prev => [...prev, { key: '', value: '' }]); }
+  function addLink() {
+    setLinks(prev => [...prev, { key: '', value: '' }]);
+  }
   function updateLink(i: number, field: 'key' | 'value', val: string) {
     setLinks(prev => { const c = [...prev]; c[i][field] = val; return c; });
   }
@@ -79,7 +81,7 @@ export default function ProjectFormPage() {
   function formatLinks(): Record<string, string> {
     const obj: Record<string, string> = {};
     links.forEach(l => { if (l.key) obj[l.key] = l.value; });
-    return obj; // empty object = clear all links
+    return obj;
   }
 
   function toggleTech(id: number) {
@@ -114,92 +116,45 @@ export default function ProjectFormPage() {
   if (checkingAuth || loading) return <LoadingSpinner />;
   if (!isAuth) return null;
 
-  const crumbLabel = isEdit ? title || 'Édition projet' : 'Nouveau projet';
-
   return (
-    <>
-      <header className="adm-topbar">
-        <div className="adm-crumb">
-          <span className="dash" />
-          <span>Admin · {crumbLabel}</span>
-        </div>
-        <Link className="adm-back-link" href="/batcave/projects">
-          <FontAwesomeIcon icon={faArrowLeft} />
-          <span>Retour aux projets</span>
-        </Link>
-      </header>
-
-      <main className="adm-page">
+    <main className="adm-page">
         <div className="adm-page-header">
-          <div>
-            <h1>{isEdit ? (title || 'Édition projet') : 'Nouveau projet'}{isEdit ? '.' : ''}</h1>
+          <div className="lead">
+            <h1>{isEdit ? 'Éditer ce projet.' : 'Nouveau projet.'}</h1>
             <p className="subtitle">Édite le contenu, les liens et les médias de ce projet.</p>
           </div>
-          {isEdit && (
-            <div className="actions">
-              <div className="adm-toggle-group">
-                <button
-                  type="button"
-                  className={`adm-toggle-opt ${visible ? 'adm-toggle-opt--on' : ''}`}
-                  onClick={() => setVisible(true)}
-                >
-                  Visible
-                </button>
-                <button
-                  type="button"
-                  className={`adm-toggle-opt ${!visible ? 'adm-toggle-opt--on' : ''}`}
-                  onClick={() => setVisible(false)}
-                >
-                  Archivé
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         <form onSubmit={e => { e.preventDefault(); handleSave(); }}>
 
-          {/* ── Informations ── */}
-          <section className="adm-card">
-            <div className="adm-card-head">
-              <h2><span className="hairline" />Informations</h2>
-            </div>
+          <AdminCard title="Informations">
             <div className="adm-card-body">
-              <div className="adm-field">
-                <label className="adm-field-label" htmlFor="title">Titre</label>
+              <AdminField label="Titre" htmlFor="title">
                 <input className="adm-input" id="title" type="text"
-                  value={title} onChange={e => setTitle(e.target.value)}
-                  placeholder="Ex. Helio Dispatch" />
-              </div>
-              <div className="adm-field">
-                <label className="adm-field-label" htmlFor="summary">Résumé</label>
+                  value={title} placeholder="Ex. Helio Dispatch"
+                  onChange={e => setTitle(e.target.value)} />
+              </AdminField>
+              <AdminField label="Résumé" htmlFor="summary">
                 <input className="adm-input" id="summary" type="text"
-                  value={summary} onChange={e => setSummary(e.target.value)}
-                  placeholder="Une phrase pour décrire le projet" />
-              </div>
-              <div className="adm-field">
-                <label className="adm-field-label" htmlFor="desc">Description</label>
+                  value={summary} placeholder="Une phrase pour décrire le projet"
+                  onChange={e => setSummary(e.target.value)} />
+              </AdminField>
+              <AdminField label="Description" htmlFor="desc">
                 <textarea className="adm-textarea" id="desc"
-                  value={description} onChange={e => setDescription(e.target.value)}
-                  placeholder="Description complète du projet, stack, décisions techniques…" />
-              </div>
+                  value={description} placeholder="Description complète du projet, stack, décisions techniques…"
+                  onChange={e => setDescription(e.target.value)} />
+              </AdminField>
             </div>
-          </section>
+          </AdminCard>
 
-          {/* ── Liens ── */}
-          <section className="adm-card">
-            <div className="adm-card-head">
-              <h2><span className="hairline" />Liens</h2>
-            </div>
+          <AdminCard title="Liens">
             <div className="adm-card-body">
               {links.map((l, i) => (
                 <div key={i} className="adm-field-row">
-                  <input className="adm-input" type="text"
-                    value={l.key} onChange={e => updateLink(i, 'key', e.target.value)}
-                    placeholder="Libellé" />
-                  <input className="adm-input" type="url"
-                    value={l.value} onChange={e => updateLink(i, 'value', e.target.value)}
-                    placeholder="https://..." />
+                  <input className="adm-input" type="text" value={l.key} placeholder="Libellé"
+                    onChange={e => updateLink(i, 'key', e.target.value)} />
+                  <input className="adm-input" type="url" value={l.value} placeholder="https://..."
+                    onChange={e => updateLink(i, 'value', e.target.value)} />
                   <button className="adm-icon-btn adm-icon-btn--danger" type="button"
                     onClick={() => removeLink(i)} title="Supprimer">
                     <FontAwesomeIcon icon={faTrashCan} />
@@ -211,13 +166,9 @@ export default function ProjectFormPage() {
                 Ajouter un lien
               </button>
             </div>
-          </section>
+          </AdminCard>
 
-          {/* ── Technologies ── */}
-          <section className="adm-card">
-            <div className="adm-card-head">
-              <h2><span className="hairline" />Technologies</h2>
-            </div>
+          <AdminCard title="Technologies">
             <div className="adm-card-body">
               <div className="adm-chips">
                 {technologies.map(tech => (
@@ -233,31 +184,19 @@ export default function ProjectFormPage() {
                 ))}
               </div>
             </div>
-          </section>
+          </AdminCard>
 
-          {/* ── Images ── */}
           {isEdit && (
-            <section className="adm-card">
-              <div className="adm-card-head">
-                <h2><span className="hairline" />Images</h2>
-              </div>
+            <AdminCard title="Images">
               <div className="adm-card-body">
                 {images.length > 0 && (
-                  <div className="adm-gallery" style={{ marginBottom: 16 }}>
+                  <div className="adm-gallery mb-4">
                     {images.map((img, i) => (
                       <div key={img.id} className="adm-thumb">
-                        <img
-                          className="adm-thumb-img"
-                          src={`${API_URL}${img.url}`}
-                          alt={`Image ${i + 1}`}
-                        />
+                        <img className="adm-thumb-img" src={`${API_URL}${img.url}`} alt={`Image ${i + 1}`} />
                         <span className="adm-thumb-badge">{String(i + 1).padStart(2, '0')}</span>
-                        <button
-                          type="button"
-                          className="adm-thumb-remove"
-                          onClick={() => deleteImage(img.id)}
-                          title="Retirer"
-                        >
+                        <button type="button" className="adm-thumb-remove"
+                          onClick={() => deleteImage(img.id)} title="Retirer">
                           <FontAwesomeIcon icon={faTrashCan} />
                         </button>
                       </div>
@@ -268,25 +207,18 @@ export default function ProjectFormPage() {
                   <FontAwesomeIcon icon={faUpload} />
                   <span>Ajouter des images — glisse-dépose ou clique</span>
                   <span className="adm-upload-hint">PNG · JPG · WEBP</span>
-                  <input
-                    id="files"
-                    type="file"
-                    multiple
-                    hidden
-                    accept="image/*"
-                    onChange={e => setFiles(Array.from(e.target.files ?? []).slice(0, 10))}
-                  />
+                  <input id="files" type="file" multiple hidden accept="image/*"
+                    onChange={e => setFiles(Array.from(e.target.files ?? []).slice(0, 10))} />
                 </label>
                 {files.length > 0 && (
-                  <p style={{ marginTop: 10, fontSize: 13, color: 'var(--amber-bright)' }}>
+                  <p className="adm-upload-count">
                     {files.length} fichier{files.length > 1 ? 's' : ''} sélectionné{files.length > 1 ? 's' : ''}
                   </p>
                 )}
               </div>
-            </section>
+            </AdminCard>
           )}
 
-          {/* ── Actions ── */}
           <div className="adm-form-actions">
             <Link className="adm-btn-link" href="/batcave/projects">Annuler</Link>
             <button className="adm-btn adm-btn-amber" type="submit" disabled={saving}>
@@ -296,7 +228,6 @@ export default function ProjectFormPage() {
           </div>
 
         </form>
-      </main>
-    </>
+    </main>
   );
 }

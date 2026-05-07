@@ -12,17 +12,6 @@
   z-index: 60;
 }
 
-.adm-crumb {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  color: var(--amber-bright);
-  font-size: 12px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  font-family: var(--font-geist-mono), monospace;
-}
-.adm-crumb .dash { width: 18px; height: 1px; background: var(--amber); }
 
 .adm-back-link {
   display: inline-flex;
@@ -39,6 +28,7 @@
 
 /* ── Page layout ── */
 .adm-page {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
   padding: 60px 48px 120px;
@@ -51,12 +41,26 @@
   gap: 32px;
   margin-bottom: 56px;
 }
+/* h1 styled like the old crumb — amber, monospace, small caps */
 .adm-page-header .lead h1 {
-  font-size: clamp(40px, 5vw, 64px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  font-family: var(--font-geist-mono), monospace;
   font-weight: 500;
-  letter-spacing: -0.025em;
-  line-height: 1.02;
-  color: var(--fg);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  line-height: 1.5;
+}
+.adm-page-header .lead h1::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  background: var(--amber);
+  flex-shrink: 0;
 }
 .adm-page-header .lead .subtitle {
   margin-top: 14px;
@@ -65,6 +69,10 @@
   max-width: 520px;
 }
 .adm-page-header .actions { display: flex; gap: 12px; align-items: center; }
+
+
+/* ensures form wrapper doesn't narrow cards vs direct children */
+.adm-page form { width: 100%; }
 
 
 /* ── Buttons ── */
@@ -118,6 +126,7 @@
 
 /* ── Cards ── */
 .adm-card {
+  width: 100%;
   position: relative;
   border-radius: 18px;
   background: transparent;
@@ -590,6 +599,47 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: 11px;
+}
+
+
+/* ── Utilities ── */
+.adm-title-muted { color: var(--fg-muted); }
+.adm-empty       { text-align: center; color: var(--fg-muted); padding: 24px 28px; }
+
+
+/* ── Tech rows (informations page) ── */
+
+/* Existing tech — 3 inputs + visibility toggle + delete */
+.adm-tech-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Add new tech — 3 inputs + add button */
+.adm-tech-add {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hairline);
+}
+
+/* Icon button — permanent amber (e.g. hidden tech) */
+.adm-icon-btn--amber {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+/* File upload count */
+.adm-upload-count {
+  margin-top: 0.625rem;
+  font-size: 13px;
+  color: var(--amber-bright);
 }
 
 
