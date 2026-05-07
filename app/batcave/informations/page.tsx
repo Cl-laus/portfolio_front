@@ -3,12 +3,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faTableList, faPlus, faTrashCan, faFloppyDisk, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
+import { faTableList, faPlus, faTrashCan, faFloppyDisk, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { informationService } from '@/services/informationService';
 import { socialNetworkService } from '@/services/socialNetworkService';
 import { technologyService } from '@/services/technologyService';
 import { Information, SocialNetwork, Technology } from '@/types';
+import AdminCard from '@/components/AdminCard';
+import AdminField from '@/components/AdminField';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
@@ -28,7 +29,6 @@ export default function InformationsPage() {
   const [newCategory, setNewCategory] = useState('');
   const [newIcon,     setNewIcon]     = useState('');
 
-  // ── Fetch ──────────────────────────────────────────────────
   useEffect(() => {
     if (!isAuth) return;
     async function fetchData() {
@@ -50,13 +50,12 @@ export default function InformationsPage() {
     fetchData();
   }, [isAuth]);
 
-  // ── Information ─────────────────────────────────────────────
   function handleInfoChange(field: keyof Information, value: string) {
     if (!information) return;
     setInformation({ ...information, [field]: value });
   }
 
-  // ── Social networks ─────────────────────────────────────────
+  // ── Social networks ──────────────────────────────────────────
   function updateSocial(id: number, field: string, value: string) {
     setSocialNetworks(prev => prev.map(sn => sn.id === id ? { ...sn, [field]: value } : sn));
   }
@@ -78,7 +77,6 @@ export default function InformationsPage() {
   function updateTech(id: number, field: keyof Technology, value: string) {
     setTechnologies(prev => prev.map(t => t.id === id ? { ...t, [field]: value } : t));
   }
-
   async function toggleTechVisibility(tech: TechnologyForm) {
     const updated = { ...tech, visible: !tech.visible };
     try {
@@ -88,18 +86,14 @@ export default function InformationsPage() {
       console.error(err);
     }
   }
-
   function addTech() {
     if (!newName.trim()) return;
     setTechnologies(prev => [
       ...prev,
       { id: Date.now(), name: newName.trim(), category: newCategory.trim(), icon: newIcon.trim(), visible: true, isNew: true },
     ]);
-    setNewName('');
-    setNewCategory('');
-    setNewIcon('');
+    setNewName(''); setNewCategory(''); setNewIcon('');
   }
-
   async function deleteTech(id: number, isNew?: boolean) {
     if (isNew) { setTechnologies(prev => prev.filter(t => t.id !== id)); return; }
     if (!confirm('Supprimer cette technologie ?')) return;
@@ -117,12 +111,10 @@ export default function InformationsPage() {
     setSaving(true);
     try {
       await informationService.update(information);
-
       for (const sn of socialNetworks) {
         if (sn.isNew) await socialNetworkService.create({ name: sn.name, icon: sn.icon, url: sn.url });
         else          await socialNetworkService.update(sn);
       }
-
       for (const tech of technologies) {
         if (tech.isNew) await technologyService.create({ name: tech.name, icon: tech.icon, category: tech.category });
         else            await technologyService.update(tech);
@@ -138,19 +130,7 @@ export default function InformationsPage() {
   if (!isAuth) return null;
 
   return (
-    <>
-      <header className="adm-topbar">
-        <div className="adm-crumb">
-          <span className="dash" />
-          <span>Admin · Informations</span>
-        </div>
-        <Link className="adm-back-link" href="/">
-          <FontAwesomeIcon icon={faArrowLeft} />
-          <span>Back to home</span>
-        </Link>
-      </header>
-
-      <main className="adm-page">
+    <main className="adm-page">
         <div className="adm-page-header">
           <div className="lead">
             <h1>Informations.</h1>
@@ -166,113 +146,73 @@ export default function InformationsPage() {
 
         <form onSubmit={e => { e.preventDefault(); handleSave(); }}>
 
-          {/* ── Identité ── */}
-          <section className="adm-card">
-            <div className="adm-card-head">
-              <h2><span className="hairline" />Identité</h2>
-            </div>
+          <AdminCard title="Identité">
             <div className="adm-card-body">
               <div className="adm-grid-2">
-                <div className="adm-field">
-                  <label className="adm-field-label" htmlFor="fullName">Nom complet</label>
+                <AdminField label="Nom complet" htmlFor="fullName">
                   <input className="adm-input" id="fullName" type="text"
-                    value={information?.fullName ?? ''}
-                    onChange={e => handleInfoChange('fullName', e.target.value)}
-                    placeholder="Prénom Nom" />
-                </div>
-                <div className="adm-field">
-                  <label className="adm-field-label" htmlFor="jobTitle">Titre</label>
+                    value={information?.fullName ?? ''} placeholder="Prénom Nom"
+                    onChange={e => handleInfoChange('fullName', e.target.value)} />
+                </AdminField>
+                <AdminField label="Titre" htmlFor="jobTitle">
                   <input className="adm-input" id="jobTitle" type="text"
-                    value={information?.jobTitle ?? ''}
-                    onChange={e => handleInfoChange('jobTitle', e.target.value)}
-                    placeholder="Ex. Designer & Developer" />
-                </div>
-                <div className="adm-field">
-                  <label className="adm-field-label" htmlFor="tagLine">Tag line</label>
+                    value={information?.jobTitle ?? ''} placeholder="Ex. Designer & Developer"
+                    onChange={e => handleInfoChange('jobTitle', e.target.value)} />
+                </AdminField>
+                <AdminField label="Tag line" htmlFor="tagLine">
                   <input className="adm-input" id="tagLine" type="text"
-                    value={information?.tagLine ?? ''}
-                    onChange={e => handleInfoChange('tagLine', e.target.value)}
-                    placeholder="Une phrase courte de présentation" />
-                </div>
-                <div className="adm-field">
-                  <label className="adm-field-label" htmlFor="aboutTitle">Titre À propos</label>
+                    value={information?.tagLine ?? ''} placeholder="Une phrase courte de présentation"
+                    onChange={e => handleInfoChange('tagLine', e.target.value)} />
+                </AdminField>
+                <AdminField label="Titre À propos" htmlFor="aboutTitle">
                   <input className="adm-input" id="aboutTitle" type="text"
-                    value={information?.aboutTitle ?? ''}
-                    onChange={e => handleInfoChange('aboutTitle', e.target.value)}
-                    placeholder="Ex. À propos de moi" />
-                </div>
+                    value={information?.aboutTitle ?? ''} placeholder="Ex. À propos de moi"
+                    onChange={e => handleInfoChange('aboutTitle', e.target.value)} />
+                </AdminField>
               </div>
             </div>
-          </section>
+          </AdminCard>
 
-          {/* ── Contact ── */}
-          <section className="adm-card">
-            <div className="adm-card-head">
-              <h2><span className="hairline" />Contact</h2>
-            </div>
+          <AdminCard title="Contact">
             <div className="adm-card-body">
               <div className="adm-grid-2">
-                <div className="adm-field">
-                  <label className="adm-field-label" htmlFor="email">Email</label>
+                <AdminField label="Email" htmlFor="email">
                   <input className="adm-input" id="email" type="email"
-                    value={information?.email ?? ''}
-                    onChange={e => handleInfoChange('email', e.target.value)}
-                    placeholder="contact@exemple.fr" />
-                </div>
-                <div className="adm-field">
-                  <label className="adm-field-label" htmlFor="cv">CV (lien)</label>
+                    value={information?.email ?? ''} placeholder="contact@exemple.fr"
+                    onChange={e => handleInfoChange('email', e.target.value)} />
+                </AdminField>
+                <AdminField label="CV (lien)" htmlFor="cv">
                   <input className="adm-input" id="cv" type="url"
-                    value={information?.cv ?? ''}
-                    onChange={e => handleInfoChange('cv', e.target.value)}
-                    placeholder="https://..." />
-                </div>
+                    value={information?.cv ?? ''} placeholder="https://..."
+                    onChange={e => handleInfoChange('cv', e.target.value)} />
+                </AdminField>
               </div>
             </div>
-          </section>
+          </AdminCard>
 
-          {/* ── Textes ── */}
-          <section className="adm-card">
-            <div className="adm-card-head">
-              <h2><span className="hairline" />Textes</h2>
-            </div>
+          <AdminCard title="Textes">
             <div className="adm-card-body">
-              <div className="adm-field">
-                <label className="adm-field-label" htmlFor="introText">
-                  Introduction <span className="adm-field-hint">— page d'accueil</span>
-                </label>
+              <AdminField label="Introduction" htmlFor="introText" hint="— page d'accueil">
                 <textarea className="adm-textarea" id="introText"
-                  value={information?.introText ?? ''}
-                  onChange={e => handleInfoChange('introText', e.target.value)}
-                  placeholder="Le texte qui apparaît en page d'accueil." />
-              </div>
-              <div className="adm-field">
-                <label className="adm-field-label" htmlFor="aboutText">
-                  À propos <span className="adm-field-hint">— page À propos</span>
-                </label>
+                  value={information?.introText ?? ''} placeholder="Le texte qui apparaît en page d'accueil."
+                  onChange={e => handleInfoChange('introText', e.target.value)} />
+              </AdminField>
+              <AdminField label="À propos" htmlFor="aboutText" hint="— page À propos">
                 <textarea className="adm-textarea" id="aboutText"
-                  value={information?.aboutText ?? ''}
-                  onChange={e => handleInfoChange('aboutText', e.target.value)}
-                  placeholder="Le texte long, sur la page À propos." />
-              </div>
+                  value={information?.aboutText ?? ''} placeholder="Le texte long, sur la page À propos."
+                  onChange={e => handleInfoChange('aboutText', e.target.value)} />
+              </AdminField>
             </div>
-          </section>
+          </AdminCard>
 
-          {/* ── Réseaux ── */}
-          <section className="adm-card">
-            <div className="adm-card-head">
-              <h2><span className="hairline" />Réseaux</h2>
-            </div>
+          <AdminCard title="Réseaux">
             <div className="adm-card-body">
               {socialNetworks.map(sn => (
                 <div key={sn.id} className="adm-social-row">
-                  <input className="adm-input" type="text"
-                    value={sn.name}
-                    onChange={e => updateSocial(sn.id, 'name', e.target.value)}
-                    placeholder="Plateforme" />
-                  <input className="adm-input" type="url"
-                    value={sn.url}
-                    onChange={e => updateSocial(sn.id, 'url', e.target.value)}
-                    placeholder="https://..." />
+                  <input className="adm-input" type="text" value={sn.name} placeholder="Plateforme"
+                    onChange={e => updateSocial(sn.id, 'name', e.target.value)} />
+                  <input className="adm-input" type="url" value={sn.url} placeholder="https://..."
+                    onChange={e => updateSocial(sn.id, 'url', e.target.value)} />
                   <button className="adm-icon-btn adm-icon-btn--danger" type="button"
                     onClick={() => removeSocial(sn.id, sn.isNew)} title="Supprimer">
                     <FontAwesomeIcon icon={faTrashCan} />
@@ -284,37 +224,23 @@ export default function InformationsPage() {
                 Ajouter un réseau
               </button>
             </div>
-          </section>
+          </AdminCard>
 
-          {/* ── Technologies ── */}
-          <section className="adm-card">
-            <div className="adm-card-head">
-              <h2><span className="hairline" />Technologies</h2>
-              <span className="hint">Nom · Catégorie · Icône</span>
-            </div>
+          <AdminCard title="Technologies" right={<span className="hint">Nom · Catégorie · Icône</span>}>
             <div className="adm-card-body">
-
-              {/* Existing techs */}
               {technologies.map(tech => (
-                <div key={tech.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto auto', gap: 12, alignItems: 'center', marginBottom: 10 }}>
-                  <input className="adm-input" type="text"
-                    value={tech.name}
-                    onChange={e => updateTech(tech.id, 'name', e.target.value)}
-                    placeholder="Nom" />
-                  <input className="adm-input" type="text"
-                    value={tech.category}
-                    onChange={e => updateTech(tech.id, 'category', e.target.value)}
-                    placeholder="Catégorie (ex: Front, Back, 3D…)" />
-                  <input className="adm-input" type="text"
-                    value={tech.icon}
-                    onChange={e => updateTech(tech.id, 'icon', e.target.value)}
-                    placeholder="Icône (optionnel)" />
+                <div key={tech.id} className="adm-tech-row">
+                  <input className="adm-input" type="text" value={tech.name} placeholder="Nom"
+                    onChange={e => updateTech(tech.id, 'name', e.target.value)} />
+                  <input className="adm-input" type="text" value={tech.category} placeholder="Catégorie (ex: Front, Back, 3D…)"
+                    onChange={e => updateTech(tech.id, 'category', e.target.value)} />
+                  <input className="adm-input" type="text" value={tech.icon} placeholder="Icône (optionnel)"
+                    onChange={e => updateTech(tech.id, 'icon', e.target.value)} />
                   <button
-                    className="adm-icon-btn"
+                    className={`adm-icon-btn ${!tech.visible ? 'adm-icon-btn--amber' : ''}`}
                     type="button"
                     onClick={() => !tech.isNew && toggleTechVisibility(tech)}
                     title={tech.visible ? 'Visible — cliquer pour masquer' : 'Masqué — cliquer pour rendre visible'}
-                    style={{ borderColor: tech.visible ? undefined : 'var(--amber)', color: tech.visible ? undefined : 'var(--amber)' }}
                   >
                     <FontAwesomeIcon icon={tech.visible ? faEye : faEyeSlash} />
                   </button>
@@ -324,33 +250,23 @@ export default function InformationsPage() {
                   </button>
                 </div>
               ))}
-
-              {/* Add new tech */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: 12, alignItems: 'center', marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--hairline)' }}>
-                <input className="adm-input" type="text"
-                  value={newName}
+              <div className="adm-tech-add">
+                <input className="adm-input" type="text" value={newName} placeholder="Nouveau nom"
                   onChange={e => setNewName(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }}
-                  placeholder="Nouveau nom" />
-                <input className="adm-input" type="text"
-                  value={newCategory}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }} />
+                <input className="adm-input" type="text" value={newCategory} placeholder="Catégorie"
                   onChange={e => setNewCategory(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }}
-                  placeholder="Catégorie" />
-                <input className="adm-input" type="text"
-                  value={newIcon}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }} />
+                <input className="adm-input" type="text" value={newIcon} placeholder="Icône (optionnel)"
                   onChange={e => setNewIcon(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }}
-                  placeholder="Icône (optionnel)" />
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTech(); } }} />
                 <button className="adm-icon-btn" type="button" onClick={addTech} title="Ajouter">
                   <FontAwesomeIcon icon={faPlus} />
                 </button>
               </div>
-
             </div>
-          </section>
+          </AdminCard>
 
-          {/* ── Actions ── */}
           <div className="adm-form-actions">
             <Link className="adm-btn-link" href="/batcave/projects">Annuler</Link>
             <button className="adm-btn adm-btn-amber" type="submit" disabled={saving}>
@@ -360,7 +276,6 @@ export default function InformationsPage() {
           </div>
 
         </form>
-      </main>
-    </>
+    </main>
   );
 }
