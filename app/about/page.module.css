@@ -65,12 +65,19 @@
 .colLeft,
 .colRight { max-width: 460px; }
 
-/* Scroll-driven fade — controlled via JS custom property --p */
-.col {
-  opacity: var(--p, 0);
-  transform: translateY(calc((1 - var(--p, 0)) * var(--dir, 1) * 40px));
-  transition: opacity .25s linear, transform .25s linear;
-  will-change: opacity, transform;
+/* Gradient mask — handles visibility via CSS, no JS needed */
+.scrollMask {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5; /* above content (z-4), below footer (z-10) and nav (z-50) */
+  background: linear-gradient(
+    to bottom,
+    var(--bg-top) 0%,
+    transparent 28%,
+    transparent 72%,
+    var(--bg-top) 100%
+  );
 }
 
 /* ── Block content ── */
@@ -147,18 +154,10 @@
 /* ── Social links ── */
 .links { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
 
-/* ── Footer ── */
-.footer {
-  padding: 56px 96px;
-  color: var(--fg-muted);
-  font-size: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-top: 1px solid var(--separator);
-  background: var(--bg-bot);
+/* Footer wrapper — above the mask (z-5), no solid background needed */
+.footerWrap {
   position: relative;
-  z-index: 10;
+  z-index: 6;
 }
 
 /* ── Mobile ── */
@@ -169,5 +168,4 @@
   .colLeft, .colRight { max-width: 100%; grid-column: 1 !important; justify-self: start !important; }
   .rockStage img { width: 90vw; max-height: 70vh; }
   .rockGlow { display: none; }
-  .footer { padding: 40px 24px; }
 }
