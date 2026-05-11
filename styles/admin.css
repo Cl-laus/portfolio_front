@@ -81,7 +81,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--separator);
   color: var(--fg);
   background: transparent;
   cursor: pointer;
@@ -93,7 +93,7 @@
 .adm-btn svg { width: 1rem; height: 1rem; }
 
 .adm-btn-amber { border-color: var(--amber); color: var(--amber-bright); }
-.adm-btn-amber:hover { background: var(--amber); border-color: var(--amber); color: var(--on-amber); }
+.adm-btn-amber:hover { background: var(--amber); border-color: var(--amber); color: var(--fg); }
 
 .adm-btn-link {
   border: 0;
@@ -115,7 +115,7 @@
   position: relative;
   border-radius: 1rem;
   background: transparent;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--separator);
   overflow: hidden;
   margin-bottom: 2rem;
 }
@@ -125,7 +125,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 2rem;
-  border-bottom: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--separator);
 }
 
 .adm-card-head h2 {
@@ -160,16 +160,16 @@
   font-size: 0.625rem;
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--fg-faint);
+  color: var(--fg-muted);
   font-weight: 500;
   font-family: var(--font-geist-mono), monospace;
   background: rgba(0,0,0,0.10);
-  border-bottom: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--separator);
 }
 
 .adm-table tbody td {
   padding: 1.25rem 2rem;
-  border-bottom: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--separator);
   color: var(--fg);
   font-size: 1rem;
   vertical-align: middle;
@@ -198,7 +198,7 @@
   font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--separator);
   color: var(--fg-muted);
 }
 .adm-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fg-muted); }
@@ -218,7 +218,7 @@
   padding: 0;
   border-radius: 50%;
   background: transparent;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--separator);
   color: var(--fg);
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.75rem;
@@ -238,7 +238,7 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--separator);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -252,7 +252,7 @@
 .adm-icon-btn:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); translate: 2px -2px; }
 .adm-icon-btn svg { width: 1rem; height: 1rem; }
 
-.adm-icon-btn--danger:hover { background: var(--amber); border-color: var(--amber); color: var(--on-amber); }
+.adm-icon-btn--danger:hover { background: var(--amber); border-color: var(--amber); color: var(--fg); }
 .adm-icon-btn--amber { border-color: var(--amber); color: var(--amber); }
 
 
@@ -267,21 +267,21 @@
   color: var(--fg-muted);
   font-family: var(--font-geist-mono), monospace;
 }
-.adm-field-hint { color: var(--fg-faint); letter-spacing: 0.04em; text-transform: none; }
+.adm-field-hint { color: var(--fg-muted); letter-spacing: 0.04em; text-transform: none; }
 
 /* Shared input/textarea base */
 .adm-input,
 .adm-textarea {
   width: 100%;
   background: transparent;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--separator);
   color: var(--fg);
   font: inherit;
   font-size: 1rem;
   transition: border-color .25s ease, background .25s ease;
 }
 .adm-input::placeholder,
-.adm-textarea::placeholder { color: var(--fg-faint); }
+.adm-textarea::placeholder { color: var(--fg-muted); }
 .adm-input:focus,
 .adm-textarea:focus { outline: 0; border-color: var(--amber); background: rgba(216,142,61,0.05); }
 
@@ -296,7 +296,7 @@
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--separator);
   color: var(--fg-muted);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
@@ -304,7 +304,7 @@
   cursor: pointer;
   transition: background .25s ease, color .25s ease, border-color .25s ease;
 }
-.adm-chip:hover { color: var(--fg); border-color: var(--hairline-strong); }
+.adm-chip:hover { color: var(--fg); border-color: var(--separator); }
 .adm-chip--active { color: var(--amber-bright); border-color: rgba(216,142,61,0.45); background: rgba(216,142,61,0.08); }
 .adm-chip .x { display: inline-flex; width: 0; opacity: 0; transition: width .2s ease, opacity .2s ease; }
 .adm-chip--active .x { width: 1rem; opacity: 0.7; margin-left: 0.125rem; }
@@ -314,7 +314,7 @@
 .adm-social-row { display: grid; grid-template-columns: 12rem 1fr auto; gap: 0.75rem; align-items: center; margin-bottom: 0.75rem; }
 .adm-field-row  { display: grid; grid-template-columns: 1fr 1fr auto; gap: 0.75rem; align-items: center; margin-bottom: 0.75rem; }
 .adm-tech-row   { display: grid; grid-template-columns: 1fr 1fr 1fr auto auto; gap: 0.75rem; align-items: center; margin-bottom: 0.75rem; }
-.adm-tech-add   { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 0.75rem; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--hairline); }
+.adm-tech-add   { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 0.75rem; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--separator); }
 
 
 /* ── Add link button ── */
@@ -325,7 +325,7 @@
   margin-top: 0.5rem;
   padding: 0.625rem 1.25rem;
   border-radius: 999px;
-  border: 1px dashed var(--hairline-strong);
+  border: 1px dashed var(--separator);
   color: var(--fg-muted);
   font-size: 0.75rem;
   letter-spacing: 0.16em;
@@ -347,7 +347,7 @@
   gap: 1rem;
   margin-top: 2.5rem;
   padding-top: 2rem;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--separator);
 }
 
 
@@ -369,7 +369,7 @@
   .adm-table tbody,
   .adm-table tr,
   .adm-table td { display: block; width: 100%; }
-  .adm-table tbody tr { padding: 1.25rem; border-bottom: 1px solid var(--hairline); }
+  .adm-table tbody tr { padding: 1.25rem; border-bottom: 1px solid var(--separator); }
   .adm-table tbody td {
     padding: 0.25rem 0;
     border-bottom: 0;
@@ -384,6 +384,6 @@
     font-size: 0.625rem;
     letter-spacing: var(--ls-wide);
     text-transform: uppercase;
-    color: var(--fg-faint);
+    color: var(--fg-muted);
   }
 }

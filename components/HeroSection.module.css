@@ -1,21 +1,11 @@
 .heroSection {
-  position: relative;
+  background-image: url('/hero-rock.png');
+  background-size: cover;
+  background-position: right bottom;
 }
 
 .heroLeft   { z-index: 1; }
-.heroCenter { z-index: 1; }
-
-/* Rock image — full section cover, replaced by video later */
-.heroRock {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  pointer-events: none;
-  z-index: 0;
-}
+.heroCenter { z-index: 1; transform: translateX(-150px); }
 
 .heroName {
   font-size: 8em;
@@ -23,6 +13,7 @@
   font-weight: 500;
   color: var(--fg);
   line-height: 0.8;
+  margin-left: -0.06em;
 }
 
 .heroTagline {
@@ -36,11 +27,12 @@
   height: 2px;
   background: linear-gradient(
     to right,
-    rgba(216,142,61,.95) 0%,
-    rgba(216,142,61,.85) 70%,
-    rgba(216,142,61,0)  100%
+    color-mix(in srgb, var(--amber) 95%, transparent) 0%,
+    color-mix(in srgb, var(--amber) 85%, transparent) 70%,
+    transparent 100%
   );
-  box-shadow: 0 0 0.7em rgba(216,142,61,.55), 0 0 1.6em rgba(216,142,61,.25);
+  box-shadow: 0 0 0.7em color-mix(in srgb, var(--amber) 55%, transparent),
+              0 0 1.6em color-mix(in srgb, var(--amber) 25%, transparent);
   transform-origin: left center;
   transform: scaleX(0);
   animation: scrollLineIn 1.4s var(--ease-snappy) .25s forwards;
@@ -48,11 +40,12 @@
 
 .scrollLabel {
   white-space: nowrap;
-  font-size: 0.65em;
+  font-size: 1.3em;
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--fg);
   opacity: 0;
+  transform: translateX(50px);
   animation: fadeIn .8s ease 1.4s forwards;
 }
 

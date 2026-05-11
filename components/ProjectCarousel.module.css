@@ -1,16 +1,10 @@
 .carousel {
   position: relative;
   overflow: hidden;
-  background: var(--bg-edge);
+  background: var(--bg-top);
   min-height: 28em;
 }
 
-/* Corners always visible, staggered on load */
-.carousel :global(.corner)    { opacity: 0.8; }
-.carousel :global(.corner.tl) { transition-delay:  50ms; }
-.carousel :global(.corner.tr) { transition-delay: 120ms; }
-.carousel :global(.corner.bl) { transition-delay: 190ms; }
-.carousel :global(.corner.br) { transition-delay: 260ms; }
 
 .slide {
   position: absolute;

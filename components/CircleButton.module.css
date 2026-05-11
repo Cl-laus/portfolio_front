@@ -14,7 +14,7 @@
 .btn:hover {
   background: var(--fg);
   border-color: var(--fg);
-  color: var(--bg);
+  color: var(--bg-mid);
 }
 .btn svg { width: 1em; height: 1em; }
 
