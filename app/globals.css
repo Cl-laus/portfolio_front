@@ -109,17 +109,6 @@
 
 
 /* =========================
-   FOOTER
-   ========================= */
-
-.portfolio-footer {
-  color: var(--fg-muted);
-  font-size: 0.75rem;
-  border-top: 1px solid color-mix(in srgb, var(--fg) 6%, transparent);
-}
-
-
-/* =========================
    SHARED TITLE PRIMITIVES
    FeaturedProject + ClosedProject
    ========================= */
@@ -168,5 +157,4 @@
 
 @media (max-width: 900px) {
   .closed-title     { font-size: 2.5rem; }
-  .portfolio-footer { padding: 2.5rem 1.6rem; }
 }

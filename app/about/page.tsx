@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
@@ -12,6 +11,7 @@ import { technologyService } from "@/services/technologyService";
 import { socialNetworkService } from "@/services/socialNetworkService";
 import TechChip from "@/components/TechChip";
 import CircleButton from "@/components/CircleButton";
+import Footer from "@/components/Footer";
 import styles from "./page.module.css";
 
 function socialIcon(name: string) {
@@ -35,8 +35,6 @@ export default function AboutPage() {
   const [techs,   setTechs]   = useState<Technology[]>([]);
   const [socials, setSocials] = useState<SocialNetwork[]>([]);
 
-  const colRefs = useRef<(HTMLDivElement | null)[]>([]);
-
   useEffect(() => {
     Promise.all([
       informationService.get(),
@@ -45,43 +43,6 @@ export default function AboutPage() {
     ]).then(([i, t, s]) => { setInfo(i); setTechs(t); setSocials(s); })
       .catch(console.error);
   }, []);
-
-  // Scroll-driven opacity/transform animation
-  useEffect(() => {
-    const cols = colRefs.current.filter(Boolean) as HTMLDivElement[];
-    if (!cols.length) return;
-
-    let raf: number | null = null;
-
-    const update = () => {
-      raf = null;
-      const vh     = window.innerHeight;
-      const center = vh / 2;
-      const fadeIn  = vh * 0.25;
-      const fadeOut = vh * 0.60;
-
-      for (const el of cols) {
-        const r       = el.getBoundingClientRect();
-        const elCenter = r.top + r.height / 2;
-        const dist    = elCenter - center;
-        const absDist = Math.abs(dist);
-
-        let p: number;
-        if (absDist <= fadeIn)       p = 1;
-        else if (absDist >= fadeOut) p = 0;
-        else p = 1 - (absDist - fadeIn) / (fadeOut - fadeIn);
-
-        el.style.setProperty("--p",   p.toFixed(3));
-        el.style.setProperty("--dir", dist >= 0 ? "1" : "-1");
-      }
-    };
-
-    const onScroll = () => { if (raf == null) raf = requestAnimationFrame(update); };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    update();
-    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
-  }, [info, techs, socials]);
 
   const techGroups = groupByCategory(techs.filter(t => t.visible));
 
@@ -93,15 +54,15 @@ export default function AboutPage() {
         <img src="/about-rock.jpg" alt="" />
       </div>
 
+      {/* Gradient mask — above content, below nav and footer */}
+      <div className={styles.scrollMask} aria-hidden="true" />
+
       <div className={styles.scrollWrap}>
         <div className={styles.blocks}>
 
           {/* 01 — Hello */}
           <section className={`${styles.block} ${styles.left}`}>
-            <div
-              className={`${styles.col} ${styles.colLeft}`}
-              ref={el => { colRefs.current[0] = el; }}
-            >
+            <div className={`${styles.col} ${styles.colLeft}`}>
               <div className={styles.eyebrow}>
                 <span className={styles.hairline} />
                 <span>01 — Hello</span>
@@ -113,29 +74,25 @@ export default function AboutPage() {
 
           {/* 02 — Parcours */}
           <section className={`${styles.block} ${styles.right}`}>
-            <div
-              className={`${styles.col} ${styles.colRight}`}
-              ref={el => { colRefs.current[1] = el; }}
-            >
+            <div className={`${styles.col} ${styles.colRight}`}>
               <div className={styles.eyebrow}>
                 <span className={styles.hairline} />
                 <span>02 — Parcours</span>
               </div>
               {info?.careerTitle && <h2>{info.careerTitle}</h2>}
               {info?.careerText && <p>{info.careerText}</p>}
-              <a className={styles.cvBtn} href={info?.cv ?? '#'} download={!!info?.cv}>
-                <FontAwesomeIcon icon={faDownload} />
-                Télécharger mon CV
-              </a>
+              {info?.cv && (
+                <a className={styles.cvBtn} href={info.cv} download>
+                  <FontAwesomeIcon icon={faDownload} />
+                  Télécharger mon CV
+                </a>
+              )}
             </div>
           </section>
 
           {/* 03 — Stack */}
           <section className={`${styles.block} ${styles.left}`}>
-            <div
-              className={`${styles.col} ${styles.colLeft}`}
-              ref={el => { colRefs.current[2] = el; }}
-            >
+            <div className={`${styles.col} ${styles.colLeft}`}>
               <div className={styles.eyebrow}>
                 <span className={styles.hairline} />
                 <span>03 — Stack</span>
@@ -146,9 +103,7 @@ export default function AboutPage() {
                   <div key={category} className={styles.techGroup}>
                     <div className={styles.groupLabel}>{category}</div>
                     <div className={styles.techList}>
-                      {items.map(t => (
-                        <TechChip key={t.id} name={t.name} />
-                      ))}
+                      {items.map(t => <TechChip key={t.id} name={t.name} />)}
                     </div>
                   </div>
                 ))}
@@ -158,10 +113,7 @@ export default function AboutPage() {
 
           {/* 04 — Liens */}
           <section className={`${styles.block} ${styles.right}`}>
-            <div
-              className={`${styles.col} ${styles.colRight}`}
-              ref={el => { colRefs.current[3] = el; }}
-            >
+            <div className={`${styles.col} ${styles.colRight}`}>
               <div className={styles.eyebrow}>
                 <span className={styles.hairline} />
                 <span>04 — Liens</span>
@@ -186,9 +138,9 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <footer className={styles.footer}>
-        <span>© 2026 Lucas Luisetti</span>
-      </footer>
+      <div className={styles.footerWrap}>
+        <Footer />
+      </div>
     </>
   );
 }

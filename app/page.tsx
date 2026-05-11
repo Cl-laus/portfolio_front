@@ -8,6 +8,7 @@ import HeroSection     from "@/components/HeroSection";
 import FeaturedProject from "@/components/FeaturedProject";
 import ClosedProject   from "@/components/ClosedProject";
 import LoadingSpinner  from "@/components/LoadingSpinner";
+import Footer from "@/components/Footer";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -75,9 +76,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      <footer className="portfolio-footer flex justify-center items-center py-14 px-24">
-        <span>© 2026 Lucas Luisetti</span>
-      </footer>
+      <Footer />
     </>
   );
 }
