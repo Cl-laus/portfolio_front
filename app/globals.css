@@ -1,8 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-
-@custom-variant dark (&:is(.dark *));
 
 /* =========================
    TAILWIND THEME TOKENS
@@ -47,16 +43,6 @@
   /* Letter-spacing */
   --ls-wide: 0.32em;
   --ls-meta: 0.18em;
-}
-
-/* =========================
-   DARK MODE (shadcn fallback)
-   ========================= */
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --ring: oklch(0.556 0 0);
 }
 
 /* =========================
