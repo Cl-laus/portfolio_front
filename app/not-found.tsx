@@ -35,7 +35,7 @@ export default function NotFound() {
       </h1>
 
       <p style={{ color: 'var(--fg-muted)', fontSize: '1rem', maxWidth: '28rem' }}>
-        Ce projet n&apos;existe pas ou n&apos;est plus disponible.
+        Cette page n&apos;existe pas.
       </p>
 
       <Link href="/" style={{
