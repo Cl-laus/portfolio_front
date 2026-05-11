@@ -109,7 +109,7 @@
   align-items: center;
   gap: 12px;
   padding: 14px 22px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--separator);
   border-radius: 999px;
   font-size: 12px;
   letter-spacing: 0.18em;
@@ -121,7 +121,7 @@
 }
 .cvBtn:hover {
   background: var(--fg);
-  color: var(--bg);
+  color: var(--bg-mid);
   border-color: var(--fg);
   translate: 0 -2px;
 }
@@ -146,24 +146,6 @@
 
 /* ── Social links ── */
 .links { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
-.linkBtn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--hairline);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--fg);
-  transition: background .3s ease, border-color .3s ease, color .3s ease, translate .35s var(--ease-snappy);
-}
-.linkBtn:hover {
-  background: var(--fg);
-  border-color: var(--fg);
-  color: var(--bg);
-  translate: 2px -2px;
-}
-.linkBtn svg { width: 16px; height: 16px; }
 
 /* ── Footer ── */
 .footer {
@@ -173,7 +155,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--separator);
   background: var(--bg-bot);
   position: relative;
   z-index: 10;

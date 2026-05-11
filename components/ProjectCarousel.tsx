@@ -32,11 +32,6 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
 
   return (
     <section className={styles.carousel} aria-label="Project screenshots">
-      <span className="corner tl" />
-      <span className="corner tr" />
-      <span className="corner bl" />
-      <span className="corner br" />
-
       {images?.length > 0 ? (
         images.map((img, i) => (
           <div key={img.id} className={`${styles.slide}${i === slide ? " active" : ""}`}>

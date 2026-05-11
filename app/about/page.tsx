@@ -11,6 +11,7 @@ import { informationService } from "@/services/informationService";
 import { technologyService } from "@/services/technologyService";
 import { socialNetworkService } from "@/services/socialNetworkService";
 import TechChip from "@/components/TechChip";
+import CircleButton from "@/components/CircleButton";
 import styles from "./page.module.css";
 
 function socialIcon(name: string) {
@@ -173,21 +174,10 @@ export default function AboutPage() {
               </p>
               <div className={styles.links}>
                 {socials.map(s => (
-                  <a
-                    key={s.id}
-                    className={styles.linkBtn}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={s.name}
-                  >
-                    {socialIcon(s.name)}
-                  </a>
+                  <CircleButton key={s.id} href={s.url} icon={socialIcon(s.name)} />
                 ))}
                 {info?.email && (
-                  <a className={styles.linkBtn} href={`mailto:${info.email}`} title="Email">
-                    <FontAwesomeIcon icon={faEnvelope} />
-                  </a>
+                  <CircleButton href={`mailto:${info.email}`} icon={<FontAwesomeIcon icon={faEnvelope} />} />
                 )}
               </div>
             </div>

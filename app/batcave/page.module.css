@@ -10,7 +10,7 @@
   width: 100%;
   max-width: 420px;
   border-radius: 18px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--separator);
   background: transparent;
   padding: 40px;
 }

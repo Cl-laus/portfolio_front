@@ -4,13 +4,12 @@
    TAILWIND THEME TOKENS
    ========================= */
 @theme {
-  --color-background: var(--bg);
+  --color-background: var(--bg-mid);
   --color-foreground: var(--fg);
   --color-muted: var(--fg-muted);
   --color-amber: var(--amber);
   --color-amber-bright: var(--amber-bright);
-  --color-amber-deep: var(--amber-deep);
-  --color-border: var(--bg-edge);
+  --color-border: var(--separator);
   --font-sans: var(--font-euclid), system-ui, sans-serif;
 }
 
@@ -19,21 +18,17 @@
    ========================= */
 :root {
   /* Colors */
-  --bg-top:  #322D28;
-  --bg-mid:  #504b45;
-  --bg-bot:  #80776b;
-  --bg:      #3D3832;
-  --bg-edge: #322D28;
-  --fg:       #F5F1EA;
+  --bg-top: #322D28;
+  --bg-mid: #504b45;
+  --bg-bot: #80776b;
+  --bg:     #3D3832; /* texte inversé sur boutons au hover */
+  --fg:      #F5F1EA;
   --fg-muted: #B5B0A4;
+
   --amber:       #be8548;
   --amber-bright: #ffd17b;
-  --amber-deep:   #7a4211;
-  --on-amber:     #1A1614; /* dark text on amber backgrounds */
 
-  --fg-faint:        rgba(245,241,234,0.55);
-  --hairline:        rgba(245,241,234,0.10);
-  --hairline-strong: rgba(245,241,234,0.16);
+  --separator: rgba(245,241,234,0.10);
 
   /* Motion */
   --ease-snappy: cubic-bezier(.2,.7,.2,1);
@@ -165,30 +160,6 @@
   transform: translateX(-0.5em);
   transition: opacity 500ms ease, transform var(--dur-snap) var(--ease-snappy);
 }
-
-
-/* =========================
-   CORNER ACCENTS
-   FeaturedProject + ProjectCarousel
-   ========================= */
-
-.corner {
-  position: absolute;
-  width: 1.1em;
-  height: 1.1em;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--dur-fade) ease;
-}
-.corner::before,
-.corner::after  { content: ""; position: absolute; background: var(--fg); }
-.corner::before { left: 0; top: 0; width: 100%; height: 1px; }
-.corner::after  { left: 0; top: 0; width: 1px;  height: 100%; }
-
-.corner.tl { top: -1px;    left:  -1px; }
-.corner.tr { top: -1px;    right: -1px; transform: scaleX(-1); }
-.corner.bl { bottom: -1px; left:  -1px; transform: scaleY(-1); }
-.corner.br { bottom: -1px; right: -1px; transform: scale(-1,-1); }
 
 
 /* =========================
