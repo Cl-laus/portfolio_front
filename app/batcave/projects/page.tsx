@@ -106,7 +106,7 @@ export default function ProjectsPage() {
           />
         </td>
         <td className="adm-col-actions" data-label="Actions">
-          <div className="adm-row-actions">
+          <div className="inline-flex gap-2.5 justify-end">
             <button className="adm-icon-btn" onClick={() => router.push(`/batcave/projects/${project.id}`)} title="Éditer">
               <FontAwesomeIcon icon={faPenToSquare} />
             </button>

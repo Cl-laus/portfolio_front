@@ -33,6 +33,7 @@
   --amber:       #be8548;
   --amber-bright: #ffd17b;
   --amber-deep:   #7a4211;
+  --on-amber:     #1A1614; /* dark text on amber backgrounds */
 
   --fg-faint:        rgba(245,241,234,0.55);
   --hairline:        rgba(245,241,234,0.10);

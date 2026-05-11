@@ -1,5 +1,5 @@
 import api from './api';
-import { Project } from '@/types';
+import { Project, ProjectSummary } from '@/types';
 
 export interface CreateProjectPayload {
   title: string;
@@ -22,7 +22,7 @@ export const projectService = {
 
   // ─── Public ───────────────────────────────────────────────
 
-  getTop3: async (): Promise<Project[]> => {
+  getTop3: async (): Promise<ProjectSummary[]> => {
     const response = await api.get('/api/projects');
     return response.data;
   },

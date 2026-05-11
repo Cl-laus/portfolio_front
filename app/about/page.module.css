@@ -143,17 +143,6 @@
   color: var(--fg-muted);
 }
 .techList { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.techChip {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 14px;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--fg);
-}
 
 /* ── Social links ── */
 .links { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
