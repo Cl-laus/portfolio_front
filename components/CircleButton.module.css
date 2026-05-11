@@ -5,7 +5,7 @@
   width: 2.5em;
   height: 2.5em;
   border-radius: 50%;
-  border: 1px solid rgba(245,241,234,.4);
+  border: 1px solid color-mix(in srgb, var(--fg) 40%, transparent);
   color: var(--fg);
   cursor: pointer;
   transition: background .35s ease, border-color .35s ease, color .35s ease,
@@ -22,7 +22,7 @@
 .lg {
   width: 6rem;
   height: 6rem;
-  border-color: rgba(245,241,234,.5);
+  border-color: color-mix(in srgb, var(--fg) 50%, transparent);
   transition: background .45s ease, color .45s ease, border-color .45s ease,
               translate .45s var(--ease-snappy);
 }

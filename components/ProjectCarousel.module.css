@@ -35,7 +35,7 @@
   width: 2.5em;
   height: 2.5em;
   border-radius: 50%;
-  border: 1px solid rgba(245,241,234,.4);
+  border: 1px solid color-mix(in srgb, var(--fg) 40%, transparent);
   color: var(--fg);
   cursor: pointer;
   background: transparent;
@@ -64,7 +64,7 @@
   width: 0.3em;
   height: 0.3em;
   border-radius: 50%;
-  background: rgba(245,241,234,.4);
+  background: color-mix(in srgb, var(--fg) 40%, transparent);
   transition: background .3s ease, width .3s ease;
   cursor: pointer;
   border: 0;

@@ -31,15 +31,8 @@
   color: var(--fg-muted);
   max-width: 27em;
   line-height: 1.55;
-  opacity: 0.9;
+  opacity: 0.5;
   transition: opacity 500ms ease, color 500ms ease;
-}
-
-.featMeta { letter-spacing: var(--ls-meta); }
-
-.metaDot {
-  border-radius: 50%;
-  background: var(--fg-muted);
 }
 
 .featCtaLabel {
@@ -56,29 +49,20 @@
   overflow: hidden;
 }
 
-/* Dark overlay at rest — fades out on card hover */
-.featImageWrap::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(50, 45, 40, 0.65);
-  transition: opacity var(--dur-snap) var(--ease-snappy);
-  pointer-events: none;
-  z-index: 1;
-}
-.featured:hover .featImageWrap::after { opacity: 0; }
-
 .featImage {
   mix-blend-mode: lighten;
   filter: brightness(0.9) contrast(1.08) saturate(1.05);
+  opacity: 0.5;
+  transition: opacity var(--dur-snap) var(--ease-snappy);
 }
+.featured:hover .featImage { opacity: 1; }
 
 
 /* ── Hover: module-scoped ── */
 
 .featured:hover .titleRow     { transform: translateX(0.85em); }
 .featured:hover .featHairline { width: 4em; }
-.featured:hover .featDesc     { opacity: 1; color: #9F9C92; }
+.featured:hover .featDesc     { opacity: 1; }
 .featured:hover .ctaBtn       { translate: 0.85em 0; }
 
 .featured:hover .featCtaLabel,

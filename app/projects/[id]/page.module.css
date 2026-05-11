@@ -21,7 +21,7 @@
   opacity: 0.45;
 }
 
-.metaRow { border-top: 1px solid rgba(245,241,234,0.10); }
+.metaRow { border-top: 1px solid var(--separator); }
 
 .metaLabel { letter-spacing: var(--ls-wide); }
 
