@@ -14,6 +14,13 @@ export default function HeroSection({ info }: HeroSectionProps) {
   return (
     <section className={`${styles.heroSection} grid grid-cols-2 h-screen overflow-hidden`}>
 
+      <img
+        src="/hero-rock.png"
+        alt=""
+        aria-hidden="true"
+        className={styles.heroRock}
+      />
+
       <div className={`${styles.heroLeft} flex flex-col justify-center pl-20 max-w-2xl`}>
         <h1 className={`${styles.heroName} flex flex-col`}>
           <span>{firstName}</span>
