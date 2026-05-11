@@ -2,10 +2,11 @@ interface AdminCardProps {
   title: string;
   muted?: boolean;
   right?: React.ReactNode;
+  body?: boolean;        // wraps children in adm-card-body padding
   children: React.ReactNode;
 }
 
-export default function AdminCard({ title, muted, right, children }: AdminCardProps) {
+export default function AdminCard({ title, muted, right, body, children }: AdminCardProps) {
   return (
     <section className="adm-card">
       <div className="adm-card-head">
@@ -15,7 +16,7 @@ export default function AdminCard({ title, muted, right, children }: AdminCardPr
         </h2>
         {right}
       </div>
-      {children}
+      {body ? <div className="adm-card-body">{children}</div> : children}
     </section>
   );
 }

@@ -52,6 +52,8 @@ export interface Information {
   photoPath: string | null;
   aboutTitle: string | null;
   aboutText: string;
+  careerTitle: string | null;
+  careerText: string | null;
   email: string;
   cv: string | null;
 }

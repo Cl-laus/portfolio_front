@@ -3,15 +3,16 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/authService";
+import AdminField from "@/components/AdminField";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import styles from "./page.module.css";
 
 export default function BatcavePage() {
-  const [isAuth,    setIsAuth]   = useState<boolean | null>(null);
-  const [username,  setUsername] = useState("");
-  const [password,  setPassword] = useState("");
-  const [loading,   setLoading]  = useState(false);
-  const [error,     setError]    = useState("");
+  const [isAuth,   setIsAuth]   = useState<boolean | null>(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading,  setLoading]  = useState(false);
+  const [error,    setError]    = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -37,11 +38,7 @@ export default function BatcavePage() {
     if (e.key === "Enter") handleLogin();
   }
 
-  if (isAuth === null || isAuth === true) {
-    return (
-      <LoadingSpinner />
-    );
-  }
+  if (isAuth === null || isAuth === true) return <LoadingSpinner />;
 
   return (
     <div className={styles.page}>
@@ -53,33 +50,21 @@ export default function BatcavePage() {
         </div>
         <p className={styles.subtitle}>Administration du portfolio</p>
 
-        <div className="adm-field">
-          <label className="adm-field-label" htmlFor="username">Identifiant</label>
-          <input
-            className="adm-input"
-            id="username"
-            type="text"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            onKeyDown={handleKeyDown}
+        <AdminField label="Identifiant" htmlFor="username">
+          <input className="adm-input" id="username" type="text"
+            value={username} placeholder="Votre identifiant"
             autoComplete="username"
-            placeholder="Votre identifiant"
-          />
-        </div>
+            onChange={e => setUsername(e.target.value)}
+            onKeyDown={handleKeyDown} />
+        </AdminField>
 
-        <div className="adm-field">
-          <label className="adm-field-label" htmlFor="password">Mot de passe</label>
-          <input
-            className="adm-input"
-            id="password"
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            onKeyDown={handleKeyDown}
+        <AdminField label="Mot de passe" htmlFor="password">
+          <input className="adm-input" id="password" type="password"
+            value={password} placeholder="••••••••"
             autoComplete="current-password"
-            placeholder="••••••••"
-          />
-        </div>
+            onChange={e => setPassword(e.target.value)}
+            onKeyDown={handleKeyDown} />
+        </AdminField>
 
         {error && <p className={styles.error}>{error}</p>}
 

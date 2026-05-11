@@ -10,6 +10,7 @@ import { Information, Technology, SocialNetwork } from "@/types";
 import { informationService } from "@/services/informationService";
 import { technologyService } from "@/services/technologyService";
 import { socialNetworkService } from "@/services/socialNetworkService";
+import TechChip from "@/components/TechChip";
 import styles from "./page.module.css";
 
 function socialIcon(name: string) {
@@ -104,8 +105,8 @@ export default function AboutPage() {
                 <span className={styles.hairline} />
                 <span>01 — Hello</span>
               </div>
-              <h2>Designer-turned-developer.</h2>
-              <p>{info?.introText}</p>
+              <h2>{info?.aboutTitle}</h2>
+              <p>{info?.aboutText}</p>
             </div>
           </section>
 
@@ -119,14 +120,12 @@ export default function AboutPage() {
                 <span className={styles.hairline} />
                 <span>02 — Parcours</span>
               </div>
-              <h2>From Cinema 4D to TypeScript.</h2>
-              <p>{info?.aboutText}</p>
-              {info?.cv && (
-                <a className={styles.cvBtn} href={info.cv} download>
-                  <FontAwesomeIcon icon={faDownload} />
-                  Télécharger mon CV
-                </a>
-              )}
+              {info?.careerTitle && <h2>{info.careerTitle}</h2>}
+              {info?.careerText && <p>{info.careerText}</p>}
+              <a className={styles.cvBtn} href={info?.cv ?? '#'} download={!!info?.cv}>
+                <FontAwesomeIcon icon={faDownload} />
+                Télécharger mon CV
+              </a>
             </div>
           </section>
 
@@ -147,7 +146,7 @@ export default function AboutPage() {
                     <div className={styles.groupLabel}>{category}</div>
                     <div className={styles.techList}>
                       {items.map(t => (
-                        <span key={t.id} className={styles.techChip}>{t.name}</span>
+                        <TechChip key={t.id} name={t.name} />
                       ))}
                     </div>
                   </div>

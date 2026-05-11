@@ -21,9 +21,9 @@ export default function HeroSection({ info }: HeroSectionProps) {
         </h1>
         <div className={styles.heroTagline}>{info.tagLine}</div>
         <div className="flex flex-col gap-2">
-          <span>{info.jobTitle}</span>
-          <span>Lyon · FR</span>
-          <span>Disponible</span>
+          {(info.introText ?? '').split('\n').filter(Boolean).map((line, i) => (
+            <span key={i}>{line}</span>
+          ))}
         </div>
       </div>
 

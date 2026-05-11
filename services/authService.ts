@@ -1,6 +1,5 @@
 // services/authService.ts
 import api from './api';
-import { useRouter } from 'next/navigation';
 
 const TOKEN_KEY = 'token';
 
