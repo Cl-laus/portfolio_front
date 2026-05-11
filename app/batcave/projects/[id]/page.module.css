@@ -11,7 +11,7 @@
   border-radius: 0.875rem;
   overflow: hidden;
   border: 1px solid var(--separator);
-  background: linear-gradient(135deg, rgba(245,241,234,0.06), rgba(245,241,234,0.02));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--fg) 6%, transparent), color-mix(in srgb, var(--fg) 2%, transparent));
 }
 .thumbImg { width: 100%; height: 100%; object-fit: cover; }
 
@@ -32,7 +32,7 @@
   backdrop-filter: blur(8px);
   transition: background .25s ease, color .25s ease;
 }
-.thumbRemove:hover { background: var(--amber); color: #1A1614; }
+.thumbRemove:hover { background: var(--amber); color: var(--fg); }
 .thumbRemove svg { width: 0.75rem; height: 0.75rem; }
 
 .thumbBadge {

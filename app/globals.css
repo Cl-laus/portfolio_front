@@ -115,7 +115,7 @@
 .portfolio-footer {
   color: var(--fg-muted);
   font-size: 0.75rem;
-  border-top: 1px solid rgba(245,241,234,0.06);
+  border-top: 1px solid color-mix(in srgb, var(--fg) 6%, transparent);
 }
 
 

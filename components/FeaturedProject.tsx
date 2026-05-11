@@ -20,7 +20,6 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
   const categories = project.technologies?.map(t => t.category).filter(Boolean) ?? [];
   const cats       = categories.slice(0, 2).join(" · ");
   const meta       = [cats, year].filter(Boolean).join(" · ");
-  const metaItems  = [...categories.slice(0, 3), year ? String(year) : null].filter(Boolean) as string[];
 
   return (
     <a
@@ -42,17 +41,6 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
       <div className={`${styles.featDetail} grid grid-cols-2 gap-20 items-stretch mt-16 pl-20`}>
         <div className={styles.featuredLeft}>
           <p className={styles.featDesc}>{project.summary}</p>
-
-          {metaItems.length > 0 && (
-            <div className={`${styles.featMeta} label mt-6 flex gap-3 items-center`}>
-              {metaItems.map((item, i) => (
-                <span key={i} className="contents">
-                  {i > 0 && <span className={`${styles.metaDot} w-1 h-1 shrink-0 inline-block`} />}
-                  <span>{item}</span>
-                </span>
-              ))}
-            </div>
-          )}
 
           <div className="mt-auto self-end flex items-center gap-6 pb-8 pr-10">
             <span className={`${styles.featCtaLabel} label`}>Voir détail du projet</span>

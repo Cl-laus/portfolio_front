@@ -12,7 +12,7 @@
 
 .headLine, .projectDivider {
   height: 1px;
-  background: rgba(245,241,234,0.10);
+  background: var(--separator);
 }
 
 .headCount {
