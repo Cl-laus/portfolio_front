@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +25,7 @@ export default function ProjectPage({
 
   const [project, setProject]   = useState<Project | null>(null);
   const [allTechs, setAllTechs] = useState<Technology[]>([]);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -31,16 +33,15 @@ export default function ProjectPage({
       technologyService.getAll(),
     ])
       .then(([proj, techs]) => {
+        if (proj.displayOrder > 3) { setIsNotFound(true); return; }
         setProject(proj);
         setAllTechs(techs);
       })
-      .catch(console.error);
+      .catch(() => setIsNotFound(true));
   }, [projectId]);
 
-  if (!project)
-    return (
-      <LoadingSpinner />
-    );
+  if (isNotFound) notFound();
+  if (!project) return <LoadingSpinner />;
 
   const { title, description, links, images, createdAt } = project;
   const year = createdAt ? new Date(createdAt).getFullYear() : null;
