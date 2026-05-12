@@ -7,7 +7,7 @@
 
 /* ── Hover: global shared classes ── */
 
-.closed:hover :global(.closed-index)        { color: var(--amber); }
-.closed:hover :global(.closed-title)        { transform: translateY(-0.05em); }
-.closed:hover :global(.closed-title::after) { width: 100%; }
-.closed:hover :global(.closed-meta)         { opacity: 0.7; transform: translateX(0); }
+.closed:hover :global(.proj-index)        { color: var(--amber); }
+.closed:hover :global(.proj-title)        { transform: translateY(-0.05em); }
+.closed:hover :global(.proj-title::after) { width: 100%; }
+.closed:hover :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
