@@ -39,26 +39,24 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
           </div>
         ))
       ) : (
-        <div className={`${styles.slide} absolute inset-0 active`} style={{ background: "rgba(245,241,234,0.04)" }} />
+        <div className={`${styles.slide} ${styles.slideFallback} absolute inset-0 active`} />
       )}
 
       {images?.length > 1 && (
         <>
           <button
-            className={`${styles.arrow} inline-flex items-center justify-center absolute top-1/2 -translate-y-1/2 w-10 h-10 z-[3]`}
-            style={{ left: '1em' }}
+            className={`${styles.arrow} ${styles.arrowLeft} inline-flex items-center justify-center absolute top-1/2 -translate-y-1/2 w-10 h-10`}
             onClick={() => goTo(slide - 1)}
           >
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           <button
-            className={`${styles.arrow} inline-flex items-center justify-center absolute top-1/2 -translate-y-1/2 w-10 h-10 z-[3]`}
-            style={{ right: '1em' }}
+            className={`${styles.arrow} ${styles.arrowRight} inline-flex items-center justify-center absolute top-1/2 -translate-y-1/2 w-10 h-10`}
             onClick={() => goTo(slide + 1)}
           >
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
-          <div className={`${styles.dots} absolute left-1/2 bottom-4 -translate-x-1/2 z-[3] flex gap-2`}>
+          <div className={`${styles.dots} absolute left-1/2 bottom-4 -translate-x-1/2 flex gap-2`}>
             {images.map((_, i) => (
               <button
                 key={i}

@@ -61,7 +61,7 @@ export default function ProjectPage({
         {title}{year && ` · ${year}`}
       </div>
 
-      <article className={`${styles.card} grid [grid-template-columns:1.05fr_1fr] gap-20 items-stretch flex-1 min-h-0`}>
+      <article className={`${styles.card} grid gap-20 items-stretch flex-1 min-h-0`}>
 
         <ProjectCarousel images={images} title={title} />
 

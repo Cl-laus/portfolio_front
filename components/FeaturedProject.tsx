@@ -61,7 +61,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
                 alt={project.title}
               />
             ) : (
-              <div className={`${styles.featImage} img-cover`} style={{ background: "rgba(245,241,234,0.04)" }} />
+              <div className={`${styles.featImage} ${styles.featImageFallback} img-cover`} />
             )}
           </div>
         </div>

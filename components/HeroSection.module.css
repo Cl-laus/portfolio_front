@@ -20,6 +20,8 @@
   white-space: nowrap;
 }
 
+.heroIntro { color: var(--amber); }
+
 @media (max-width: 900px) {
   .heroSection {
     background-image: url('/hero.jpg');

@@ -1,0 +1,30 @@
+.code {
+  font-size: 0.75rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--amber);
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 500;
+  color: var(--fg);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.desc {
+  color: var(--fg-muted);
+  font-size: 1rem;
+  max-width: 28rem;
+}
+
+.backLink {
+  font-size: 0.75rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  transition: color .35s ease;
+}
+.backLink:hover { color: var(--amber); }
