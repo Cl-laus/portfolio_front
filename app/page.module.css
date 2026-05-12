@@ -11,7 +11,7 @@
 }
 
 .headLine, .projectDivider {
-  height: 1px;
+  /* height:1px now in Tailwind */
   background: var(--separator);
 }
 

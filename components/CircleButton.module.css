@@ -1,9 +1,4 @@
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5em;
-  height: 2.5em;
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--fg-muted) 40%, transparent);
   color: var(--fg-muted);
@@ -20,8 +15,6 @@
 
 /* Large — project navigation buttons */
 .lg {
-  width: 6rem;
-  height: 6rem;
   border-color: color-mix(in srgb, var(--fg-muted) 50%, transparent);
   transition: background .45s ease, color .45s ease, border-color .45s ease,
               translate .45s var(--ease-snappy);

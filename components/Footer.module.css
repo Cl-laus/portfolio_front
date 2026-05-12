@@ -1,13 +1,8 @@
 .footer {
-  height: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background: color-mix(in srgb, var(--amber) 12%, var(--bg-bot));
   border-top: 1px solid color-mix(in srgb, var(--amber-light) 55%, transparent);
   color: var(--amber-light);
   font-size: 0.65rem;
-  letter-spacing: 0.08em;
 }
 
 @media (max-width: 960px) {

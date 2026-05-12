@@ -58,7 +58,7 @@ export default function HomePage() {
       <section className="pt-48 px-24 pb-28">
         <div className={`${styles.sectionHead} flex items-center gap-4 mb-24`}>
           <span className={styles.sectionTitle}>Réalisations</span>
-          <span className={`${styles.headLine} flex-1`} />
+          <span className={`${styles.headLine} flex-1 h-px`} />
           <span className={styles.headCount}>
             {String(projects.length).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
           </span>
@@ -68,7 +68,7 @@ export default function HomePage() {
 
         {closed.map((project, i) => (
           <div key={project.id}>
-            <div className={`${styles.projectDivider} my-24`} />
+            <div className={`${styles.projectDivider} my-24 h-px`} />
             <ClosedProject
               project={project}
               index={String(i + 2).padStart(2, "0")}
