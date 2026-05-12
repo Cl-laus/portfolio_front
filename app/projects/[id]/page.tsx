@@ -54,7 +54,7 @@ export default function ProjectPage({
 
   return (
     <>
-    <main className={`${styles.page} flex flex-col min-h-screen pt-8 px-4 pb-8 desktop:pt-16 desktop:px-20 desktop:pb-14`}>
+    <main className={`${styles.page} flex flex-col min-h-screen pt-16 px-20 pb-14`}>
 
       {/* Title + year above the carousel */}
       <div className={`${styles.metaLabel} label mb-8`}>
