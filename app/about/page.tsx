@@ -89,6 +89,10 @@ export default function AboutPage() {
 
   return (
     <>
+      <div className={styles.mobileBg} aria-hidden="true">
+        <img src="/about-rock.jpg" alt="" />
+      </div>
+
       <div className={styles.stage}>
         <div
           className={`${styles.rockStage} sticky top-0 flex items-center justify-center z-[6]`}

@@ -21,7 +21,7 @@
   --bg-mid: #8b8989;
   --bg-bot: #363638;
   --fg:      #2c2722;
-  --fg-muted: #d3c4b4;
+  --fg-muted: #d3ccc5;
 
   --amber: #ffbd5b;
 
@@ -163,5 +163,6 @@
    ========================= */
 
 @media (max-width: 900px) {
-  .proj-title { font-size: 1.25rem; }
+  .proj-title  { font-size: 1.25rem; }
+  .proj-index  { padding-top: 0; }
 }
