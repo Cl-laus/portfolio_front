@@ -24,7 +24,7 @@
   .heroSection {
     background-image: url('/hero.jpg');
     background-size: cover;
-    background-position: right bottom;
+    background-position: right -200px bottom 0;
   }
   .heroContent { padding-left: 1.6em; }
   .heroName    { font-size: 4.5em; }
