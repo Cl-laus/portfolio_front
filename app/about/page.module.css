@@ -140,11 +140,11 @@
     object-position: center;
     opacity: 1;
   }
-  /* Toutes les cards — même largeur que col01 */
+  /* Toutes les cards — pleine largeur avec padding */
   .col {
     text-align: left;
     width: 100%;
-    max-width: 340px !important;
+    max-width: 100%;
     background: color-mix(in srgb, var(--bg-mid) 40%, transparent);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -152,14 +152,14 @@
     border-radius: 1rem;
     padding: 2rem;
   }
-  /* Cards droites alignées comme col01 */
+  /* Cards droites — même largeur que col01 */
   .block.right .colRight {
     grid-column: 1 !important;
     justify-self: start !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
     width: 100% !important;
-    max-width: 340px !important;
+    max-width: 100% !important;
   }
 }
 
