@@ -22,3 +22,30 @@
   from { transform: translateX(-60vw); }
   to   { transform: translateX(100vw); }
 }
+
+/* ── Version verticale ── */
+.separatorV {
+  background: color-mix(in srgb, var(--amber) 18%, transparent);
+  border-top:    1px solid color-mix(in srgb, var(--amber) 55%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--amber) 28%, transparent);
+}
+
+.separatorV::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  height: 60vh;
+  background: linear-gradient(
+    to bottom,
+    transparent  0%,
+    var(--amber) 50%,
+    transparent 100%
+  );
+  filter: blur(5px);
+  animation: sweepTTB 120s linear infinite;
+}
+
+@keyframes sweepTTB {
+  from { transform: translateY(-60vh); }
+  to   { transform: translateY(100vh); }
+}
