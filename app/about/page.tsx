@@ -90,7 +90,7 @@ export default function AboutPage() {
       </div>
 
       <div className={styles.stage}>
-        <div className={styles.rockStage} aria-hidden="true">
+        <div className={`${styles.rockStage} sticky top-0 flex items-center justify-center pointer-events-none`} aria-hidden="true">
           <div className={styles.rockGlow} />
           <GlowSeparator vertical />
           <img src="/about-rock.jpg" alt="" />
@@ -102,11 +102,11 @@ export default function AboutPage() {
             <img src="/about-rock.jpg" alt="" />
           </div>
 
-          <div className={styles.blocks}>
+          <div className={`${styles.blocks} flex flex-col`}>
 
             {/* 01 — Hello */}
             <section className={`${styles.block} ${styles.left}`}>
-              <div className={styles.col} ref={el => { colRefs.current[0] = el; }}>
+              <div className={`${styles.col} min-w-0`} ref={el => { colRefs.current[0] = el; }}>
                 <div className={styles.eyebrow}>
                   <span className={styles.hairline} />
                   <span>01 — Hello</span>
@@ -118,7 +118,7 @@ export default function AboutPage() {
 
             {/* 02 — Parcours */}
             <section className={`${styles.block} ${styles.right}`}>
-              <div className={styles.col} ref={el => { colRefs.current[1] = el; }}>
+              <div className={`${styles.col} min-w-0`} ref={el => { colRefs.current[1] = el; }}>
                 <div className={styles.eyebrow}>
                   <span className={styles.hairline} />
                   <span>02 — Parcours</span>
@@ -136,7 +136,7 @@ export default function AboutPage() {
 
             {/* 03 — Stack */}
             <section className={`${styles.block} ${styles.left}`}>
-              <div className={styles.col} ref={el => { colRefs.current[2] = el; }}>
+              <div className={`${styles.col} min-w-0`} ref={el => { colRefs.current[2] = el; }}>
                 <div className={styles.eyebrow}>
                   <span className={styles.hairline} />
                   <span>03 — Stack</span>
@@ -157,7 +157,7 @@ export default function AboutPage() {
 
             {/* 04 — Liens */}
             <section className={`${styles.block} ${styles.right}`}>
-              <div className={styles.col} ref={el => { colRefs.current[3] = el; }}>
+              <div className={`${styles.col} min-w-0`} ref={el => { colRefs.current[3] = el; }}>
                 <div className={styles.eyebrow}>
                   <span className={styles.hairline} />
                   <span>04 — Liens</span>
@@ -183,7 +183,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className={styles.footerWrap}>
+      <div className={`${styles.footerWrap} relative`}>
         <Footer />
       </div>
     </>
