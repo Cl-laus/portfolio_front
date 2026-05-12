@@ -38,11 +38,11 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
         {meta && <span className="proj-meta label pt-3 self-start">{meta}</span>}
       </div>
 
-      <div className={`${styles.featDetail} grid desktop:grid-cols-2 desktop:gap-20 desktop:mt-16 desktop:pl-20 mt-6 gap-4`}>
+      <div className={`${styles.featDetail} grid grid-cols-2 gap-20 items-stretch mt-16 pl-20`}>
         <div className={`${styles.featuredLeft} flex flex-col`}>
           <p className={`${styles.featDesc} text`}>{project.summary}</p>
 
-          <div className={`${styles.ctaArea} mt-auto self-end flex items-center gap-6 desktop:pb-8 desktop:pr-10`}>
+          <div className={`${styles.ctaArea} mt-auto self-end flex items-center gap-6 pb-8 pr-10`}>
             <span className={`${styles.featCtaLabel} label`}>Voir détail du projet</span>
             <CircleButton
               icon={<FontAwesomeIcon icon={faArrowRight} />}
