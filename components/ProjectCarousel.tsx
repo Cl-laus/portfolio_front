@@ -31,30 +31,38 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
   };
 
   return (
-    <section className={styles.carousel} aria-label="Project screenshots">
+    <section className={`${styles.carousel} relative overflow-hidden`} aria-label="Project screenshots">
       {images?.length > 0 ? (
         images.map((img, i) => (
-          <div key={img.id} className={`${styles.slide}${i === slide ? " active" : ""}`}>
+          <div key={img.id} className={`${styles.slide} absolute inset-0${i === slide ? " active" : ""}`}>
             <img className="img-cover" src={`${API_URL}${img.url}`} alt={`${title} — ${i + 1}`} />
           </div>
         ))
       ) : (
-        <div className={`${styles.slide} active`} style={{ background: "rgba(245,241,234,0.04)" }} />
+        <div className={`${styles.slide} absolute inset-0 active`} style={{ background: "rgba(245,241,234,0.04)" }} />
       )}
 
       {images?.length > 1 && (
         <>
-          <button className={`${styles.arrow} ${styles.arrowPrev}`} onClick={() => goTo(slide - 1)}>
+          <button
+            className={`${styles.arrow} inline-flex items-center justify-center absolute top-1/2 -translate-y-1/2 w-10 h-10 z-[3]`}
+            style={{ left: '1em' }}
+            onClick={() => goTo(slide - 1)}
+          >
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
-          <button className={`${styles.arrow} ${styles.arrowNext}`} onClick={() => goTo(slide + 1)}>
+          <button
+            className={`${styles.arrow} inline-flex items-center justify-center absolute top-1/2 -translate-y-1/2 w-10 h-10 z-[3]`}
+            style={{ right: '1em' }}
+            onClick={() => goTo(slide + 1)}
+          >
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
-          <div className={`${styles.dots} flex gap-2`}>
+          <div className={`${styles.dots} absolute left-1/2 bottom-4 -translate-x-1/2 z-[3] flex gap-2`}>
             {images.map((_, i) => (
               <button
                 key={i}
-                className={`${styles.dot}${i === slide ? " active" : ""}`}
+                className={`${styles.dot} p-0${i === slide ? " active" : ""}`}
                 onClick={() => setSlide(i)}
               />
             ))}

@@ -5,5 +5,5 @@ interface TechChipProps {
 }
 
 export default function TechChip({ name }: TechChipProps) {
-  return <span className={styles.chip}>{name}</span>;
+  return <span className={`${styles.chip} inline-flex items-center px-3.5 py-1.5 whitespace-nowrap`}>{name}</span>;
 }

@@ -1,5 +1,4 @@
 .featured {
-  display: block;
   cursor: pointer;
 }
 
@@ -10,12 +9,6 @@
 }
 
 .featDetail { min-height: 30em; }
-
-.featuredLeft,
-.featuredRight {
-  display: flex;
-  flex-direction: column;
-}
 
 .featHairline {
   height: 1px;
@@ -41,11 +34,7 @@
 }
 
 .featImageWrap {
-  position: relative;
-  width: 100%;
-  flex: 1;
   min-height: 16em;
-  overflow: hidden;
 }
 
 .featImage {

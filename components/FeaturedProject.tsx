@@ -23,7 +23,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
 
   return (
     <a
-      className={styles.featured}
+      className={`${styles.featured} block`}
       href={`/projects/${project.id}`}
       onClick={(e) => { e.preventDefault(); router.push(`/projects/${project.id}`); }}
     >
@@ -39,7 +39,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
       </div>
 
       <div className={`${styles.featDetail} grid grid-cols-2 gap-20 items-stretch mt-16 pl-20`}>
-        <div className={styles.featuredLeft}>
+        <div className={`${styles.featuredLeft} flex flex-col`}>
           <p className={styles.featDesc}>{project.summary}</p>
 
           <div className="mt-auto self-end flex items-center gap-6 pb-8 pr-10">
@@ -52,8 +52,8 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
           </div>
         </div>
 
-        <div className={styles.featuredRight}>
-          <div className={`${styles.featImageWrap} w-full`}>
+        <div className={`${styles.featuredRight} flex flex-col`}>
+          <div className={`${styles.featImageWrap} relative w-full flex-1 overflow-hidden`}>
             {project.image ? (
               <img
                 className={`${styles.featImage} img-cover`}

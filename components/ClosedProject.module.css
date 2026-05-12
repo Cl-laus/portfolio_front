@@ -1,5 +1,4 @@
 .closed {
-  width: 100%;
   cursor: pointer;
   transition: transform var(--dur-snap) var(--ease-snappy);
 }

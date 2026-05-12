@@ -90,20 +90,30 @@ export default function AboutPage() {
   return (
     <>
       <div className={styles.stage}>
-        <div className={styles.rockStage} aria-hidden="true">
-          <div className={styles.rockGlow} />
-          <div className={styles.vertSep} />
+        <div
+          className={`${styles.rockStage} sticky top-0 flex items-center justify-center z-[6]`}
+          style={{ height: '100vh', width: '100vw' }}
+          aria-hidden="true"
+        >
+          <div className={`${styles.rockGlow} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[100vw]`}
+            style={{ width: '900px', height: '900px' }}
+          />
+          <div className={`${styles.vertSep} relative flex-shrink-0`} style={{ width: '10px', height: '100vh' }} />
           <img src="/about-rock.jpg" alt="" />
-          <div className={styles.vertSep} />
+          <div className={`${styles.vertSep} relative flex-shrink-0`} style={{ width: '10px', height: '100vh' }} />
         </div>
 
-        <div className={styles.scrollWrap}>
-        <div className={styles.blocks}>
+        <div className={`${styles.scrollWrap} relative z-[7] max-w-[1480px] mx-auto px-24`}
+          style={{ marginTop: '-100vh' }}
+        >
+        <div className={`${styles.blocks} relative z-[4] flex flex-col`}
+          style={{ gap: '400px', padding: '35vh 0 240px' }}
+        >
 
           {/* 01 — Hello */}
-          <section className={`${styles.block} ${styles.left}`}>
-            <div className={`${styles.col} ${styles.colLeft}`} ref={el => { colRefs.current[0] = el; }}>
-              <div className={styles.eyebrow}>
+          <section className={`${styles.block} ${styles.left} grid grid-cols-2 items-start`}>
+            <div className={`${styles.col} ${styles.colLeft} min-w-0`} ref={el => { colRefs.current[0] = el; }}>
+              <div className={`${styles.eyebrow} flex items-center gap-3 mb-[18px]`}>
                 <span className={styles.hairline} />
                 <span>01 — Hello</span>
               </div>
@@ -113,16 +123,16 @@ export default function AboutPage() {
           </section>
 
           {/* 02 — Parcours */}
-          <section className={`${styles.block} ${styles.right}`}>
-            <div className={`${styles.col} ${styles.colRight}`} ref={el => { colRefs.current[1] = el; }}>
-              <div className={styles.eyebrow}>
+          <section className={`${styles.block} ${styles.right} grid grid-cols-2 items-start`}>
+            <div className={`${styles.col} ${styles.colRight} min-w-0`} ref={el => { colRefs.current[1] = el; }}>
+              <div className={`${styles.eyebrow} flex items-center gap-3 mb-[18px]`}>
                 <span className={styles.hairline} />
                 <span>02 — Parcours</span>
               </div>
               {info?.careerTitle && <h2>{info.careerTitle}</h2>}
               {info?.careerText && <p>{info.careerText}</p>}
               {info?.cv && (
-                <a className={styles.cvBtn} href={info.cv} download>
+                <a className={`${styles.cvBtn} mt-6 inline-flex items-center gap-3 px-[22px] py-[14px]`} href={info.cv} download>
                   <FontAwesomeIcon icon={faDownload} />
                   Télécharger mon CV
                 </a>
@@ -131,18 +141,18 @@ export default function AboutPage() {
           </section>
 
           {/* 03 — Stack */}
-          <section className={`${styles.block} ${styles.left}`}>
-            <div className={`${styles.col} ${styles.colLeft}`} ref={el => { colRefs.current[2] = el; }}>
-              <div className={styles.eyebrow}>
+          <section className={`${styles.block} ${styles.left} grid grid-cols-2 items-start`}>
+            <div className={`${styles.col} ${styles.colLeft} min-w-0`} ref={el => { colRefs.current[2] = el; }}>
+              <div className={`${styles.eyebrow} flex items-center gap-3 mb-[18px]`}>
                 <span className={styles.hairline} />
                 <span>03 — Stack</span>
               </div>
               <h2>What I build with.</h2>
-              <div className={styles.techGroups}>
+              <div className={`${styles.techGroups} flex flex-col mt-2`} style={{ gap: '22px' }}>
                 {Object.entries(techGroups).map(([category, items]) => (
-                  <div key={category} className={styles.techGroup}>
+                  <div key={category} className={`${styles.techGroup} flex flex-col gap-2.5`}>
                     <div className={styles.groupLabel}>{category}</div>
-                    <div className={styles.techList}>
+                    <div className={`${styles.techList} flex gap-2.5 items-center flex-wrap`}>
                       {items.map(t => <TechChip key={t.id} name={t.name} />)}
                     </div>
                   </div>
@@ -152,9 +162,9 @@ export default function AboutPage() {
           </section>
 
           {/* 04 — Liens */}
-          <section className={`${styles.block} ${styles.right}`}>
-            <div className={`${styles.col} ${styles.colRight}`} ref={el => { colRefs.current[3] = el; }}>
-              <div className={styles.eyebrow}>
+          <section className={`${styles.block} ${styles.right} grid grid-cols-2 items-start`}>
+            <div className={`${styles.col} ${styles.colRight} min-w-0`} ref={el => { colRefs.current[3] = el; }}>
+              <div className={`${styles.eyebrow} flex items-center gap-3 mb-[18px]`}>
                 <span className={styles.hairline} />
                 <span>04 — Liens</span>
               </div>
@@ -164,7 +174,7 @@ export default function AboutPage() {
                   ? `Disponible par email à ${info.email}.`
                   : "I'm most active on GitHub."}
               </p>
-              <div className={styles.links}>
+              <div className={`${styles.links} flex gap-3 mt-2 flex-wrap`}>
                 {socials.map(s => (
                   <CircleButton key={s.id} href={s.url} icon={socialIcon(s.name)} />
                 ))}
@@ -179,7 +189,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className={styles.footerWrap}>
+      <div className={`${styles.footerWrap} relative z-[8]`}>
         <Footer />
       </div>
     </>

@@ -18,7 +18,7 @@ export default function ClosedProject({ project, index, meta }: ClosedProjectPro
 
   return (
     <div
-      className={`${styles.closed} flex items-center justify-between gap-6`}
+      className={`${styles.closed} w-full flex items-center justify-between gap-6`}
       onClick={() => router.push(`/projects/${project.id}`)}
     >
       <div className="flex items-baseline gap-6">

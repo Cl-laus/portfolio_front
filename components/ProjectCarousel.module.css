@@ -1,14 +1,12 @@
 .carousel {
-  position: relative;
-  overflow: hidden;
+  /* position:relative, overflow:hidden now in Tailwind */
   background: var(--bg-top);
   min-height: 28em;
 }
 
 
 .slide {
-  position: absolute;
-  inset: 0;
+  /* position:absolute, inset:0 now in Tailwind */
   opacity: 0;
   transition: opacity .9s cubic-bezier(.4,0,.2,1);
 }
@@ -26,21 +24,14 @@
 
 /* Self-contained arrow buttons — no shared component needed */
 .arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 2.5em;
-  height: 2.5em;
+  /* display:inline-flex, align-items:center, justify-content:center,
+     position:absolute, top:50%, transform:translateY(-50%), width/height, z-index now in Tailwind */
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--fg) 40%, transparent);
   color: var(--fg);
   cursor: pointer;
   background: transparent;
   transition: background .35s ease, border-color .35s ease, color .35s ease;
-  z-index: 3;
 }
 .arrow:hover {
   background: var(--fg);
@@ -49,15 +40,10 @@
 }
 .arrow svg { width: 0.875em; height: 0.875em; }
 
-.arrowPrev { left: 1em; }
-.arrowNext { right: 1em; }
+/* .arrowPrev, .arrowNext left/right via inline style (em values) */
 
 .dots {
-  position: absolute;
-  left: 50%;
-  bottom: 1rem;
-  transform: translateX(-50%);
-  z-index: 3;
+  /* position:absolute, left:50%, bottom:1rem, transform:translateX(-50%), z-index, flex, gap now in Tailwind */
 }
 
 .dot {
@@ -68,6 +54,6 @@
   transition: background .3s ease, width .3s ease;
   cursor: pointer;
   border: 0;
-  padding: 0;
+  /* padding:0 now in Tailwind */
 }
 .dot:global(.active) { background: var(--amber-bright); width: 1.1em; border-radius: 0.15em; }
