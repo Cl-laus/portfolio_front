@@ -88,7 +88,7 @@ export default function ProjectPage({
               </div>
             )}
 
-            <div className="flex flex-col items-end gap-4">
+            <div className={`${styles.linksCol} flex flex-col items-end gap-4`}>
               <div className={`${styles.metaLabel} label`}>Links</div>
               {links && Object.keys(links).length > 0 ? (
                 <div className="flex gap-3">
