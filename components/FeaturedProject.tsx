@@ -40,7 +40,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
 
       <div className={`${styles.featDetail} grid grid-cols-2 gap-20 items-stretch mt-16 pl-20`}>
         <div className={`${styles.featuredLeft} flex flex-col`}>
-          <p className={styles.featDesc}>{project.summary}</p>
+          <p className={`${styles.featDesc} text`}>{project.summary}</p>
 
           <div className="mt-auto self-end flex items-center gap-6 pb-8 pr-10">
             <span className={`${styles.featCtaLabel} label`}>Voir détail du projet</span>

@@ -70,7 +70,7 @@ export default function ProjectPage({
           {/* Description — double newline = paragraph break */}
           <div className={styles.contentTop}>
             {description && description.split(/\n\n+/).map((para, i) => (
-              <p key={i}>{para.trim()}</p>
+              <p key={i} className="text">{para.trim()}</p>
             ))}
           </div>
 
