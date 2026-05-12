@@ -131,12 +131,10 @@ export default function AboutPage() {
                 </div>
                 {info?.careerTitle && <h2 className="title">{info.careerTitle}</h2>}
                 {info?.careerText  && <p  className="text">{info.careerText}</p>}
-                {info?.cv && (
-                  <a className={`${styles.cvBtn} inline-flex items-center gap-3 mt-6 py-3 px-5`} href={info.cv} download>
-                    <FontAwesomeIcon icon={faDownload} />
-                    Télécharger mon CV
-                  </a>
-                )}
+                <a className={`${styles.cvBtn} inline-flex items-center gap-3 mt-6 py-3 px-5`} href={info?.cv ?? undefined} download={!!info?.cv}>
+                  <FontAwesomeIcon icon={faDownload} />
+                  Télécharger mon CV
+                </a>
               </div>
             </section>
 
