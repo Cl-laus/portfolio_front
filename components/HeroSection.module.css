@@ -1,11 +1,8 @@
 .heroSection {
-  background-image: url('/hero-rock.png');
+  background-image: url('/hero.jpg');
   background-size: cover;
   background-position: right bottom;
 }
-
-.heroLeft   { z-index: 1; }
-.heroCenter { z-index: 1; transform: translateX(-150px); }
 
 .heroName {
   font-size: 8em;
@@ -20,47 +17,11 @@
   font-size: 2em;
   font-weight: 400;
   color: var(--fg-muted);
-}
-
-.scrollFissure {
-  flex: 1;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    color-mix(in srgb, var(--amber) 95%, transparent) 0%,
-    color-mix(in srgb, var(--amber) 85%, transparent) 70%,
-    transparent 100%
-  );
-  box-shadow: 0 0 0.7em color-mix(in srgb, var(--amber) 55%, transparent),
-              0 0 1.6em color-mix(in srgb, var(--amber) 25%, transparent);
-  transform-origin: left center;
-  transform: scaleX(0);
-  animation: scrollLineIn 1.4s var(--ease-snappy) .25s forwards;
-}
-
-.scrollLabel {
   white-space: nowrap;
-  font-size: 1.3em;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--fg);
-  opacity: 0;
-  transform: translateX(50px);
-  animation: fadeIn .8s ease 1.4s forwards;
-}
-
-@keyframes scrollLineIn {
-  to { transform: scaleX(1); }
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; }
 }
 
 @media (max-width: 900px) {
-  .heroSection  { grid-template-columns: 1fr; }
-  .heroLeft     { padding: 0 1.6em; max-width: none; }
-  .heroName     { font-size: 4.5em; }
-  .heroTagline  { font-size: 1.5em; }
-  .heroCenter   { display: none; }
+  .heroContent { padding-left: 1.6em; }
+  .heroName    { font-size: 4.5em; }
+  .heroTagline { font-size: 1.5em; white-space: normal; }
 }

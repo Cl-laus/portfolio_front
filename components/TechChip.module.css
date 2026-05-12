@@ -1,12 +1,15 @@
 .chip {
   display: inline-flex;
   align-items: center;
-  padding: 8px 14px;
+  padding: 6px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(216,142,61,0.45);
-  color: var(--amber-bright);
-  background: rgba(216,142,61,0.08);
+  border: 1px solid rgba(245, 200, 122, 0.4);
+  color: var(--amber-light);
+  background: rgba(245, 200, 122, 0.07);
+  box-shadow: 0 0 10px rgba(245, 200, 122, 0.1),
+              inset 0 1px 0 rgba(245, 200, 122, 0.1);
   font-size: 12px;
   letter-spacing: 0.08em;
   white-space: nowrap;
+  text-shadow: 0 0 8px rgba(245, 200, 122, 0.45);
 }

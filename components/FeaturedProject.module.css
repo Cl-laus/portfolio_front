@@ -20,7 +20,7 @@
 .featHairline {
   height: 1px;
   width: 2em;
-  background: var(--fg);
+  background: var(--amber);
   transition: width var(--dur-snap) var(--ease-snappy);
 }
 
@@ -45,14 +45,12 @@
   width: 100%;
   flex: 1;
   min-height: 16em;
-  background: var(--bg);
   overflow: hidden;
 }
 
 .featImage {
-  mix-blend-mode: lighten;
   filter: brightness(0.9) contrast(1.08) saturate(1.05);
-  opacity: 0.5;
+  opacity: 0.15;
   transition: opacity var(--dur-snap) var(--ease-snappy);
 }
 .featured:hover .featImage { opacity: 1; }
@@ -66,12 +64,12 @@
 .featured:hover .ctaBtn       { translate: 0.85em 0; }
 
 .featured:hover .featCtaLabel,
-.featCtaLabel:hover           { color: var(--amber-bright); }
+.featCtaLabel:hover           { color: var(--amber); }
 
 
 /* ── Hover: global shared classes ── */
 
-.featured:hover :global(.closed-index)        { color: var(--amber-bright); }
+.featured:hover :global(.closed-index)        { color: var(--amber); }
 .featured:hover :global(.closed-title)        { transform: translateY(-0.05em); }
 .featured:hover :global(.closed-title::after) { width: 100%; }
 .featured:hover :global(.closed-meta)         { opacity: 0.7; transform: translateX(0); }

@@ -29,7 +29,7 @@
   letter-spacing: var(--ls-wide);
   transition: color .35s ease;
 }
-.backLink:hover { color: var(--amber-bright); }
+.backLink:hover { color: var(--amber); }
 .backLink svg   { width: 0.875em; height: 0.875em; }
 
 

@@ -12,26 +12,19 @@ export default function HeroSection({ info }: HeroSectionProps) {
   const lastName = rest.join(' ');
 
   return (
-    <section className={`${styles.heroSection} grid grid-cols-2 h-screen overflow-hidden`}>
-
-      <div className={`${styles.heroLeft} flex flex-col justify-center pl-20 max-w-2xl`}>
+    <section className={`${styles.heroSection} h-screen flex items-center overflow-hidden`}>
+      <div className={`${styles.heroContent} flex flex-col pl-20`}>
         <h1 className={`${styles.heroName} flex flex-col`}>
           <span>{firstName}</span>
           <span>{lastName}</span>
         </h1>
         <div className={styles.heroTagline}>{info.tagLine}</div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2" style={{ color: 'var(--amber)' }}>
           {(info.introText ?? '').split('\n').filter(Boolean).map((line, i) => (
             <span key={i}>{line}</span>
           ))}
         </div>
       </div>
-
-      <div className={`${styles.heroCenter} flex items-center`}>
-        <div className={styles.scrollFissure} />
-        <div className={`${styles.scrollLabel} pl-5 pr-20`}>Découvrir</div>
-      </div>
-
     </section>
   );
 }
