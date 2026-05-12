@@ -117,8 +117,8 @@ export default function AboutPage() {
                 <span className={styles.hairline} />
                 <span>01 — Hello</span>
               </div>
-              <h2>{info?.aboutTitle}</h2>
-              <p>{info?.aboutText}</p>
+              <h2 className="title">{info?.aboutTitle}</h2>
+              <p className="text">{info?.aboutText}</p>
             </div>
           </section>
 
@@ -129,8 +129,8 @@ export default function AboutPage() {
                 <span className={styles.hairline} />
                 <span>02 — Parcours</span>
               </div>
-              {info?.careerTitle && <h2>{info.careerTitle}</h2>}
-              {info?.careerText && <p>{info.careerText}</p>}
+              {info?.careerTitle && <h2 className="title">{info.careerTitle}</h2>}
+              {info?.careerText && <p className="text">{info.careerText}</p>}
               {info?.cv && (
                 <a className={`${styles.cvBtn} mt-6 inline-flex items-center gap-3 px-[22px] py-[14px]`} href={info.cv} download>
                   <FontAwesomeIcon icon={faDownload} />
@@ -147,7 +147,7 @@ export default function AboutPage() {
                 <span className={styles.hairline} />
                 <span>03 — Stack</span>
               </div>
-              <h2>What I build with.</h2>
+              <h2 className="title">What I build with.</h2>
               <div className={`${styles.techGroups} flex flex-col mt-2`} style={{ gap: '22px' }}>
                 {Object.entries(techGroups).map(([category, items]) => (
                   <div key={category} className={`${styles.techGroup} flex flex-col gap-2.5`}>
@@ -168,8 +168,8 @@ export default function AboutPage() {
                 <span className={styles.hairline} />
                 <span>04 — Liens</span>
               </div>
-              <h2>Find me online.</h2>
-              <p>
+              <h2 className="title">Find me online.</h2>
+              <p className="text">
                 {info?.email
                   ? `Disponible par email à ${info.email}.`
                   : "I'm most active on GitHub."}
