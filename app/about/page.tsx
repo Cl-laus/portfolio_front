@@ -63,8 +63,8 @@ export default function AboutPage() {
         const dist    = r.top + r.height / 2 - center;
         const absDist = Math.abs(dist);
         const p = absDist <= fadeIn  ? 1
-              : absDist >= fadeOut ? 0
-              : 1 - (absDist - fadeIn) / (fadeOut - fadeIn);
+                : absDist >= fadeOut ? 0
+                : 1 - (absDist - fadeIn) / (fadeOut - fadeIn);
 
         el.style.setProperty("--p",   p.toFixed(3));
         el.style.setProperty("--dir", dist >= 0 ? "1" : "-1");
@@ -89,20 +89,26 @@ export default function AboutPage() {
         <img src="/about-rock.jpg" alt="" />
       </div>
 
-      <div className={styles.stage}>
-        <div className={`${styles.rockStage} sticky top-0 flex items-center justify-center pointer-events-none`} aria-hidden="true">
-          <div className={styles.rockGlow} />
+      <div className={`${styles.stage} relative`}>
+
+        {/* Image de fond — sticky, pleine fenêtre */}
+        <div
+          className={`${styles.rockStage} sticky top-0 h-screen w-screen flex items-center justify-center pointer-events-none`}
+          aria-hidden="true"
+        >
+          <div className={`${styles.rockGlow} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`} />
           <GlowSeparator vertical />
           <img src="/about-rock.jpg" alt="" />
           <GlowSeparator vertical />
         </div>
 
-        <div className={styles.scrollWrap}>
+        {/* Contenu scrollable */}
+        <div className={`${styles.scrollWrap} relative`}>
           <div className={styles.tabletPhoto} aria-hidden="true">
             <img src="/about-rock.jpg" alt="" />
           </div>
 
-          <div className={`${styles.blocks} flex flex-col`}>
+          <div className={`${styles.blocks} flex flex-col gap-96`}>
 
             {/* 01 — Hello */}
             <section className={`${styles.block} ${styles.left}`}>
@@ -126,7 +132,7 @@ export default function AboutPage() {
                 {info?.careerTitle && <h2 className="title">{info.careerTitle}</h2>}
                 {info?.careerText  && <p  className="text">{info.careerText}</p>}
                 {info?.cv && (
-                  <a className={styles.cvBtn} href={info.cv} download>
+                  <a className={`${styles.cvBtn} inline-flex items-center gap-3 mt-6 py-3 px-5`} href={info.cv} download>
                     <FontAwesomeIcon icon={faDownload} />
                     Télécharger mon CV
                   </a>
@@ -142,11 +148,11 @@ export default function AboutPage() {
                   <span>03 — Stack</span>
                 </div>
                 <h2 className="title">What I build with.</h2>
-                <div className={styles.techGroups}>
+                <div className="flex flex-col gap-5 mt-2">
                   {Object.entries(techGroups).map(([category, items]) => (
-                    <div key={category} className={styles.techGroup}>
+                    <div key={category} className="flex flex-col gap-2">
                       <div className={styles.groupLabel}>{category}</div>
-                      <div className={styles.techList}>
+                      <div className="flex gap-2 items-center flex-wrap">
                         {items.map(t => <TechChip key={t.id} name={t.name} />)}
                       </div>
                     </div>
@@ -168,7 +174,7 @@ export default function AboutPage() {
                     ? `Disponible par email à ${info.email}.`
                     : "I'm most active on GitHub."}
                 </p>
-                <div className={styles.links}>
+                <div className="flex gap-3 mt-2 flex-wrap">
                   {socials.map(s => (
                     <CircleButton key={s.id} href={s.url} icon={socialIcon(s.name)} />
                   ))}
