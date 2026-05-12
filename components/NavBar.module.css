@@ -6,9 +6,8 @@
 }
 .navLink:hover { color: var(--amber); }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .nav {
-    position: absolute !important;
     background: rgba(157, 158, 161, 0.45);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);

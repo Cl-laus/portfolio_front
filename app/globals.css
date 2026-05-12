@@ -10,6 +10,9 @@
   --color-amber: var(--amber);
   --color-border: var(--separator);
   --font-sans: var(--font-euclid), system-ui, sans-serif;
+
+  /* Breakpoint unique : mobile < 960px, desktop >= 960px */
+  --breakpoint-desktop: 960px;
 }
 
 /* =========================
