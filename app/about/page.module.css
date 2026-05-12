@@ -193,7 +193,7 @@
   .rockStage  { display: none !important; }
   .tabletPhoto { display: none; }
   .scrollWrap { margin-top: 0 !important; padding: 0 1.5rem; }
-  .blocks { gap: 60px !important; padding: 3rem 0 4rem !important; }
+  .blocks { gap: 60px !important; padding: 8rem 0 4rem !important; }
   .block { grid-template-columns: 1fr !important; gap: 12px; }
   .block.left .colLeft,
   .block.right .colRight {
