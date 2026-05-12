@@ -55,7 +55,7 @@ export default function HomePage() {
       <HeroSection info={info} />
       <GlowSeparator />
 
-      <section className="pt-48 px-24 pb-28">
+      <section className="pt-16 px-12 pb-16">
         <div className={`${styles.sectionHead} flex items-center gap-4 mb-24`}>
           <span className={styles.sectionTitle}>Réalisations</span>
           <span className={`${styles.headLine} flex-1 h-px`} />

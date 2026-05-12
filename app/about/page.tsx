@@ -106,6 +106,10 @@ export default function AboutPage() {
         <div className={`${styles.scrollWrap} relative z-[7] max-w-[1480px] mx-auto px-24`}
           style={{ marginTop: '-100vh' }}
         >
+          <div className={styles.tabletPhoto} aria-hidden="true">
+            <img src="/about-rock.jpg" alt="" />
+          </div>
+
         <div className={`${styles.blocks} relative z-[4] flex flex-col`}
           style={{ gap: '400px', padding: '35vh 0 240px' }}
         >
