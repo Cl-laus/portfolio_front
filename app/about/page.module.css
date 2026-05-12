@@ -65,6 +65,9 @@
 .colRight { width: 340px; margin-right: -4rem; }
 
 
+/* Photo tablet-only — cachée sur desktop */
+.tabletPhoto { display: none; }
+
 /* ── Block content ── */
 .eyebrow {
   font-size: 11px;
@@ -118,12 +121,45 @@
   z-index: 8;
 }
 
-/* ── Mobile ── */
-@media (max-width: 960px) {
-  .scrollWrap { padding: 0 24px; }
-  .blocks { gap: 100px; padding: 100px 0 160px; }
-  .block { grid-template-columns: 1fr; gap: 24px; }
-  .colLeft, .colRight { max-width: 100%; grid-column: 1 !important; justify-self: start !important; }
-  .rockStage img { width: 90vw; max-height: 70vh; }
-  .rockGlow { display: none; }
+/* ── Tablet (600–959px) : photo colonne droite, textes empilés à gauche ── */
+@media (min-width: 600px) and (max-width: 959px) {
+  .rockStage  { display: none !important; }
+  .scrollWrap { margin-top: 0 !important; padding: 0 2rem; display: flex; gap: 2rem; align-items: flex-start; }
+  .tabletPhoto {
+    display: block;
+    position: sticky;
+    top: 5rem;
+    width: 220px;
+    flex-shrink: 0;
+    order: 2;
+  }
+  .tabletPhoto img { width: 100%; height: auto; object-fit: contain; }
+  .blocks { gap: 80px !important; padding: 4rem 0 6rem !important; flex: 1; order: 1; }
+  .block { grid-template-columns: 1fr !important; gap: 16px; }
+  .block.left .colLeft,
+  .block.right .colRight {
+    grid-column: 1 !important;
+    justify-self: start !important;
+    max-width: 100%;
+    width: auto !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* ── Mobile (<600px) : textes uniquement ── */
+@media (max-width: 599px) {
+  .rockStage  { display: none !important; }
+  .tabletPhoto { display: none; }
+  .scrollWrap { margin-top: 0 !important; padding: 0 1.5rem; }
+  .blocks { gap: 60px !important; padding: 3rem 0 4rem !important; }
+  .block { grid-template-columns: 1fr !important; gap: 12px; }
+  .block.left .colLeft,
+  .block.right .colRight {
+    grid-column: 1 !important;
+    justify-self: start !important;
+    max-width: 100%;
+    width: auto !important;
+    margin-right: 0 !important;
+  }
+  .block h2 { font-size: clamp(22px, 6vw, 28px); }
 }

@@ -47,7 +47,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
             <CircleButton
               icon={<FontAwesomeIcon icon={faArrowRight} />}
               size="lg"
-              className={styles.ctaBtn}
+              className={`${styles.ctaBtn} shrink-0`}
             />
           </div>
         </div>

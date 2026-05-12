@@ -1,7 +1,7 @@
 .heroSection {
   background-image: url('/hero.jpg');
   background-size: cover;
-  background-position: right bottom;
+  background-position: left bottom;
 }
 
 .heroName {
