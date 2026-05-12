@@ -8,13 +8,6 @@
   margin-left: calc(50% - 50vw);
   pointer-events: none;
 }
-.rockStage img {
-  height: 100vh;
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 40px 80px rgba(0,0,0,0.55))
-          drop-shadow(0 0 100px rgba(216,142,61,0.20));
-}
 .rockGlow {
   background: radial-gradient(circle at 50% 50%,
     color-mix(in srgb, var(--amber) 22%, transparent) 0%,
@@ -56,6 +49,13 @@
   transform: translateY(calc((1 - var(--p, 0)) * var(--dir, 1) * 40px));
   transition: opacity .25s linear, transform .25s linear;
   will-change: opacity, transform;
+  text-align: left;
+  background: color-mix(in srgb, var(--bg-mid) 40%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--fg-muted) 15%, transparent);
+  border-radius: 1rem;
+  padding: 2rem;
 }
 
 .block.left  .colLeft  { grid-column: 1; }

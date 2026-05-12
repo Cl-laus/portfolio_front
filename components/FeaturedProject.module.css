@@ -63,6 +63,9 @@
 /* ── Mobile ── */
 
 @media (max-width: 900px) {
-  .featDetail    { grid-template-columns: 1fr; gap: 3rem; margin-top: 2.5rem; padding-left: 0; min-height: auto; }
-  .featImageWrap { min-height: 12em; }
+  .featDetail    { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem; padding-left: 0; min-height: auto; }
+  .featuredRight { order: -1; }
+  .featImageWrap { min-height: 14em; }
+  .featImage     { opacity: 1 !important; }
+  .featDesc      { max-width: 100%; }
 }

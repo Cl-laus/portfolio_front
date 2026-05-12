@@ -91,16 +91,16 @@ export default function AboutPage() {
     <>
       <div className={styles.stage}>
         <div
-          className={`${styles.rockStage} sticky top-0 flex items-center justify-center z-[6]`}
+          className={`${styles.rockStage} sticky top-0 z-[6] overflow-hidden`}
           style={{ height: '100vh', width: '100vw' }}
           aria-hidden="true"
         >
+          <img className="absolute inset-0 w-full h-full object-cover object-center" src="/about-rock.jpg" alt="" />
           <div className={`${styles.rockGlow} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[100vw]`}
             style={{ width: '900px', height: '900px' }}
           />
-          <div className={`${styles.vertSep} relative flex-shrink-0`} style={{ width: '10px', height: '100vh' }} />
-          <img src="/about-rock.jpg" alt="" />
-          <div className={`${styles.vertSep} relative flex-shrink-0`} style={{ width: '10px', height: '100vh' }} />
+          <div className={`${styles.vertSep} absolute top-0 bottom-0`} style={{ left: 0, width: '10px' }} />
+          <div className={`${styles.vertSep} absolute top-0 bottom-0`} style={{ right: 0, width: '10px' }} />
         </div>
 
         <div className={`${styles.scrollWrap} relative z-[7] max-w-[1480px] mx-auto px-24`}
