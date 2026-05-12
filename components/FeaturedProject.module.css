@@ -56,10 +56,10 @@
 
 /* ── Hover: global shared classes ── */
 
-.featured:hover :global(.closed-index)        { color: var(--amber); }
-.featured:hover :global(.closed-title)        { transform: translateY(-0.05em); }
-.featured:hover :global(.closed-title::after) { width: 100%; }
-.featured:hover :global(.closed-meta)         { opacity: 0.7; transform: translateX(0); }
+.featured:hover :global(.proj-index)        { color: var(--amber); }
+.featured:hover :global(.proj-title)        { transform: translateY(-0.05em); }
+.featured:hover :global(.proj-title::after) { width: 100%; }
+.featured:hover :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
 /* ── Mobile ── */
 
 @media (max-width: 900px) {

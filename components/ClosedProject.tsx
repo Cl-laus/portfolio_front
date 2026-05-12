@@ -22,9 +22,9 @@ export default function ClosedProject({ project, index, meta }: ClosedProjectPro
       onClick={() => router.push(`/projects/${project.id}`)}
     >
       <div className="flex items-baseline gap-6">
-        <span className="closed-index pt-3 self-start">{index} /</span>
-        <h2 className="closed-title inline-block m-0">{project.title}</h2>
-        {meta && <span className="closed-meta label pt-3 self-start">{meta}</span>}
+        <span className="proj-index pt-3 self-start">{index} /</span>
+        <h2 className="proj-title inline-block m-0">{project.title}</h2>
+        {meta && <span className="proj-meta label pt-3 self-start">{meta}</span>}
       </div>
       <CircleButton
         icon={<FontAwesomeIcon icon={faArrowRight} />}

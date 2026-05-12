@@ -119,14 +119,14 @@
    FeaturedProject + ClosedProject
    ========================= */
 
-.closed-index {
+.proj-index {
   font-size: 0.7em;
   color: var(--fg-muted);
   letter-spacing: var(--ls-meta);
   transition: color var(--dur-fade) ease;
 }
 
-.closed-title {
+.proj-title {
   position: relative;
   font-size: 3.5rem;
   font-weight: 500;
@@ -137,7 +137,7 @@
   transition: transform var(--dur-snap) var(--ease-snappy);
 }
 
-.closed-title::after {
+.proj-title::after {
   content: "";
   position: absolute;
   left: 0;
@@ -150,7 +150,7 @@
   transition: width 650ms var(--ease-snappy);
 }
 
-.closed-meta {
+.proj-meta {
   letter-spacing: var(--ls-meta);
   opacity: 0;
   transform: translateX(-0.5em);
@@ -163,5 +163,5 @@
    ========================= */
 
 @media (max-width: 900px) {
-  .closed-title     { font-size: 2.5rem; }
+  .proj-title     { font-size: 2.5rem; }
 }

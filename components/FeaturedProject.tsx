@@ -33,9 +33,9 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
       </div>
 
       <div className={`${styles.titleRow} flex items-baseline gap-6`}>
-        <span className="closed-index pt-3 self-start">01 /</span>
-        <h2 className="closed-title inline-block m-0">{project.title}</h2>
-        {meta && <span className="closed-meta label pt-3 self-start">{meta}</span>}
+        <span className="proj-index pt-3 self-start">01 /</span>
+        <h2 className="proj-title inline-block m-0">{project.title}</h2>
+        {meta && <span className="proj-meta label pt-3 self-start">{meta}</span>}
       </div>
 
       <div className={`${styles.featDetail} grid grid-cols-2 gap-20 items-stretch mt-16 pl-20`}>
