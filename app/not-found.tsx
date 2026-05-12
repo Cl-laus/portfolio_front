@@ -18,7 +18,7 @@ export default function NotFound() {
         fontSize: '0.75rem',
         letterSpacing: '0.32em',
         textTransform: 'uppercase',
-        color: 'var(--amber-bright)',
+        color: 'var(--amber)',
         fontFamily: 'var(--font-geist-mono), monospace',
       }}>
         404
@@ -49,7 +49,7 @@ export default function NotFound() {
         color: 'var(--fg-muted)',
         transition: 'color .35s ease',
       }}
-        onMouseEnter={e => (e.currentTarget.style.color = 'var(--amber-bright)')}
+        onMouseEnter={e => (e.currentTarget.style.color = 'var(--amber)')}
         onMouseLeave={e => (e.currentTarget.style.color = 'var(--fg-muted)')}
       >
         ← Retour à l&apos;accueil

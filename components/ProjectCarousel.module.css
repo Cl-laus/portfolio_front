@@ -1,12 +1,9 @@
 .carousel {
-  /* position:relative, overflow:hidden now in Tailwind */
   background: var(--bg-top);
   min-height: 28em;
 }
 
-
 .slide {
-  /* position:absolute, inset:0 now in Tailwind */
   opacity: 0;
   transition: opacity .9s cubic-bezier(.4,0,.2,1);
 }
@@ -16,16 +13,18 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(50,45,40,.18) 0%, rgba(50,45,40,0) 30%, rgba(50,45,40,.45) 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--fg) 18%, transparent) 0%,
+    transparent 30%,
+    color-mix(in srgb, var(--fg) 45%, transparent) 100%
+  );
   pointer-events: none;
 }
 
 .slide img { filter: brightness(.9) contrast(1.05) saturate(1.04); }
 
-/* Self-contained arrow buttons — no shared component needed */
 .arrow {
-  /* display:inline-flex, align-items:center, justify-content:center,
-     position:absolute, top:50%, transform:translateY(-50%), width/height, z-index now in Tailwind */
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--fg) 40%, transparent);
   color: var(--fg);
@@ -36,15 +35,9 @@
 .arrow:hover {
   background: var(--fg);
   border-color: var(--fg);
-  color: var(--bg);
+  color: var(--fg-muted);
 }
 .arrow svg { width: 0.875em; height: 0.875em; }
-
-/* .arrowPrev, .arrowNext left/right via inline style (em values) */
-
-.dots {
-  /* position:absolute, left:50%, bottom:1rem, transform:translateX(-50%), z-index, flex, gap now in Tailwind */
-}
 
 .dot {
   width: 0.3em;
@@ -54,6 +47,5 @@
   transition: background .3s ease, width .3s ease;
   cursor: pointer;
   border: 0;
-  /* padding:0 now in Tailwind */
 }
-.dot:global(.active) { background: var(--amber-bright); width: 1.1em; border-radius: 0.15em; }
+.dot:global(.active) { background: var(--amber); width: 1.1em; border-radius: 0.15em; }

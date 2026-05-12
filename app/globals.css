@@ -8,8 +8,6 @@
   --color-foreground: var(--fg);
   --color-muted: var(--fg-muted);
   --color-amber: var(--amber);
-  --color-amber-bright: var(--amber-bright);
-  --color-amber-light: var(--amber-light);
   --color-border: var(--separator);
   --font-sans: var(--font-euclid), system-ui, sans-serif;
 }
@@ -22,13 +20,10 @@
   --bg-top: #9d9ea1;
   --bg-mid: #8b8989;
   --bg-bot: #363638;
-  --bg:     #1a1918; /* texte inversé sur boutons au hover */
   --fg:      #2c2722;
   --fg-muted: #d3c4b4;
 
-  --amber:        #ffbd5b;
-  --amber-bright: #a86830;
-  --amber-light:  #f5c87a;
+  --amber: #ffbd5b;
 
   --separator: rgba(26,25,24,0.12);
 

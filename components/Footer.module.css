@@ -1,7 +1,7 @@
 .footer {
   background: color-mix(in srgb, var(--amber) 12%, var(--bg-bot));
-  border-top: 1px solid color-mix(in srgb, var(--amber-light) 55%, transparent);
-  color: var(--amber-light);
+  border-top: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
+  color: var(--amber);
   font-size: 0.65rem;
 }
 
