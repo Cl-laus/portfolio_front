@@ -1,5 +1,12 @@
 import styles from "./GlowSeparator.module.css";
 
-export default function GlowSeparator() {
-  return <div className={`${styles.separator} relative w-full h-1.5`} aria-hidden="true" />;
+interface Props {
+  vertical?: boolean;
+}
+
+export default function GlowSeparator({ vertical }: Props) {
+  if (vertical) {
+    return <div className={`${styles.separatorV} relative w-1 h-screen flex-shrink-0`} aria-hidden="true" />;
+  }
+  return <div className={`${styles.separator} relative w-full h-1`} aria-hidden="true" />;
 }

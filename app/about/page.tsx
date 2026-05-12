@@ -12,6 +12,7 @@ import { socialNetworkService } from "@/services/socialNetworkService";
 import TechChip from "@/components/TechChip";
 import CircleButton from "@/components/CircleButton";
 import Footer from "@/components/Footer";
+import GlowSeparator from "@/components/GlowSeparator";
 import styles from "./page.module.css";
 
 function socialIcon(name: string) {
@@ -102,9 +103,9 @@ export default function AboutPage() {
           <div className={`${styles.rockGlow} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[100vw]`}
             style={{ width: '900px', height: '900px' }}
           />
-          <div className={`${styles.vertSep} relative flex-shrink-0`} style={{ width: '10px', height: '100vh' }} />
+          <GlowSeparator vertical />
           <img src="/about-rock.jpg" alt="" />
-          <div className={`${styles.vertSep} relative flex-shrink-0`} style={{ width: '10px', height: '100vh' }} />
+          <GlowSeparator vertical />
         </div>
 
         <div className={`${styles.scrollWrap} relative z-[7] max-w-[1480px] mx-auto px-24`}
