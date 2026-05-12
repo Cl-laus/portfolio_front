@@ -67,7 +67,7 @@
   .featuredLeft  { display: contents; }
   .featDesc      { order: 1; max-width: 100%; }
   .featuredRight { order: 2; }
-  .ctaArea       { order: 3; align-self: center; padding: 0; }
+  .ctaArea       { order: 3; justify-content: flex-end; padding-right: 0 !important; width: 100%; }
   .featImageWrap { min-height: 14em; }
   .featImage     { opacity: 1 !important; }
 }
