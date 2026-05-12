@@ -17,8 +17,8 @@
 }
 .rockGlow {
   background: radial-gradient(circle at 50% 50%,
-    rgba(216,142,61,0.22) 0%,
-    rgba(216,142,61,0.06) 35%,
+    color-mix(in srgb, var(--amber) 22%, transparent) 0%,
+    color-mix(in srgb, var(--amber)  6%, transparent) 35%,
     transparent 65%);
   pointer-events: none;
   filter: blur(20px);
@@ -27,8 +27,8 @@
 /* ── Vertical glow separators flanking the rock image ── */
 .vertSep {
   background: color-mix(in srgb, var(--amber) 18%, transparent);
-  border-left:  1px solid color-mix(in srgb, var(--amber-light) 55%, transparent);
-  border-right: 1px solid color-mix(in srgb, var(--amber-light) 28%, transparent);
+  border-left:  1px solid color-mix(in srgb, var(--amber) 55%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--amber) 28%, transparent);
 }
 
 .vertSep::after {
@@ -38,9 +38,9 @@
   height: 60vh;
   background: linear-gradient(
     to bottom,
-    transparent        0%,
-    var(--amber-light) 50%,
-    transparent        100%
+    transparent  0%,
+    var(--amber) 50%,
+    transparent 100%
   );
   filter: blur(5px);
   animation: sweepTTB 120s linear infinite;
