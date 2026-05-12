@@ -1,14 +1,15 @@
 .footer {
-  color: var(--fg-muted);
-  font-size: 0.75rem;
-  border-top: 1px solid color-mix(in srgb, var(--fg) 6%, transparent);
+  height: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3.5rem 6rem;
+  background: color-mix(in srgb, var(--amber) 12%, var(--bg-bot));
+  border-top: 1px solid color-mix(in srgb, var(--amber-light) 55%, transparent);
+  color: var(--amber-light);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
 }
 
-
 @media (max-width: 960px) {
-  .footer { padding: 2.5rem 1.5rem; }
+  .footer { padding: 0 1.5rem; }
 }
