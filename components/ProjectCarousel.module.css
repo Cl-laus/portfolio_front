@@ -24,6 +24,8 @@
 
 .slide img { filter: brightness(.9) contrast(1.05) saturate(1.04); }
 
+.slideFallback { background: rgba(245, 241, 234, 0.04); }
+
 .arrow {
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--fg) 40%, transparent);
@@ -31,6 +33,7 @@
   cursor: pointer;
   background: transparent;
   transition: background .35s ease, border-color .35s ease, color .35s ease;
+  z-index: 3;
 }
 .arrow:hover {
   background: var(--fg);
@@ -38,6 +41,11 @@
   color: var(--fg-muted);
 }
 .arrow svg { width: 0.875em; height: 0.875em; }
+
+.arrowLeft  { left: 1em; }
+.arrowRight { right: 1em; }
+
+.dots { z-index: 3; }
 
 .dot {
   width: 0.3em;

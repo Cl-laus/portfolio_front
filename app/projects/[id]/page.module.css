@@ -1,3 +1,5 @@
+.card { grid-template-columns: 1.05fr 1fr; }
+
 .contentTop p {
   font-size: 1rem;
 }
