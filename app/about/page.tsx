@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
@@ -35,6 +35,8 @@ export default function AboutPage() {
   const [techs,   setTechs]   = useState<Technology[]>([]);
   const [socials, setSocials] = useState<SocialNetwork[]>([]);
 
+  const colRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   useEffect(() => {
     Promise.all([
       informationService.get(),
@@ -44,25 +46,63 @@ export default function AboutPage() {
       .catch(console.error);
   }, []);
 
+  useEffect(() => {
+    const cols = colRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (!cols.length) return;
+
+    let raf: number | null = null;
+
+    const update = () => {
+      raf = null;
+      const vh      = window.innerHeight;
+      const center  = vh / 2;
+      const fadeIn  = vh * 0.25;
+      const fadeOut = vh * 0.60;
+
+      for (const el of cols) {
+        const r        = el.getBoundingClientRect();
+        const elCenter = r.top + r.height / 2;
+        const dist     = elCenter - center;
+        const absDist  = Math.abs(dist);
+
+        let p: number;
+        if (absDist <= fadeIn)       p = 1;
+        else if (absDist >= fadeOut) p = 0;
+        else p = 1 - (absDist - fadeIn) / (fadeOut - fadeIn);
+
+        el.style.setProperty("--p",   p.toFixed(3));
+        el.style.setProperty("--dir", dist >= 0 ? "1" : "-1");
+      }
+    };
+
+    const onScroll = () => { if (raf == null) raf = requestAnimationFrame(update); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [info, techs, socials]);
+
   const techGroups = groupByCategory(techs.filter(t => t.visible));
 
   return (
     <>
-      {/* Fixed rock backdrop */}
-      <div className={styles.rockStage} aria-hidden="true">
-        <div className={styles.rockGlow} />
-        <img src="/about-rock.jpg" alt="" />
-      </div>
+      <div className={styles.stage}>
+        <div className={styles.rockStage} aria-hidden="true">
+          <div className={styles.rockGlow} />
+          <div className={styles.vertSep} />
+          <img src="/about-rock.jpg" alt="" />
+          <div className={styles.vertSep} />
+        </div>
 
-      {/* Gradient mask — above content, below nav and footer */}
-      <div className={styles.scrollMask} aria-hidden="true" />
-
-      <div className={styles.scrollWrap}>
+        <div className={styles.scrollWrap}>
         <div className={styles.blocks}>
 
           {/* 01 — Hello */}
           <section className={`${styles.block} ${styles.left}`}>
-            <div className={`${styles.col} ${styles.colLeft}`}>
+            <div className={`${styles.col} ${styles.colLeft}`} ref={el => { colRefs.current[0] = el; }}>
               <div className={styles.eyebrow}>
                 <span className={styles.hairline} />
                 <span>01 — Hello</span>
@@ -74,7 +114,7 @@ export default function AboutPage() {
 
           {/* 02 — Parcours */}
           <section className={`${styles.block} ${styles.right}`}>
-            <div className={`${styles.col} ${styles.colRight}`}>
+            <div className={`${styles.col} ${styles.colRight}`} ref={el => { colRefs.current[1] = el; }}>
               <div className={styles.eyebrow}>
                 <span className={styles.hairline} />
                 <span>02 — Parcours</span>
@@ -92,7 +132,7 @@ export default function AboutPage() {
 
           {/* 03 — Stack */}
           <section className={`${styles.block} ${styles.left}`}>
-            <div className={`${styles.col} ${styles.colLeft}`}>
+            <div className={`${styles.col} ${styles.colLeft}`} ref={el => { colRefs.current[2] = el; }}>
               <div className={styles.eyebrow}>
                 <span className={styles.hairline} />
                 <span>03 — Stack</span>
@@ -113,7 +153,7 @@ export default function AboutPage() {
 
           {/* 04 — Liens */}
           <section className={`${styles.block} ${styles.right}`}>
-            <div className={`${styles.col} ${styles.colRight}`}>
+            <div className={`${styles.col} ${styles.colRight}`} ref={el => { colRefs.current[3] = el; }}>
               <div className={styles.eyebrow}>
                 <span className={styles.hairline} />
                 <span>04 — Liens</span>
@@ -135,6 +175,7 @@ export default function AboutPage() {
             </div>
           </section>
 
+        </div>
         </div>
       </div>
 

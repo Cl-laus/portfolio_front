@@ -13,6 +13,7 @@ import ProjectCarousel from "@/components/ProjectCarousel";
 import CircleButton from "@/components/CircleButton";
 import TechChip from "@/components/TechChip";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import Footer from "@/components/Footer";
 import styles from "./page.module.css";
 
 export default function ProjectPage({
@@ -52,6 +53,7 @@ export default function ProjectPage({
   const projectTechs = allTechs.filter((tech) => techIds.includes(tech.id));
 
   return (
+    <>
     <main className={`${styles.page} flex flex-col min-h-screen pt-16 px-20 pb-14`}>
 
       {/* Title + year above the carousel */}
@@ -119,5 +121,7 @@ export default function ProjectPage({
       </Link>
 
     </main>
+    <Footer />
+    </>
   );
 }

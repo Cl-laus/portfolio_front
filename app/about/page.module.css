@@ -1,11 +1,16 @@
-/* ── Rock backdrop — sticky so footer physically pushes it up ── */
+/* ── Stage wrapper — sticky containing block so footer pushes image up ── */
+.stage {
+  position: relative;
+}
+
+/* ── Rock backdrop ── */
 .rockStage {
   position: sticky;
   top: 0;
   height: 100vh;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  z-index: 0;
+  z-index: 6;
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -34,10 +39,41 @@
   filter: blur(20px);
 }
 
-/* ── Scroll container — overlaps the sticky rock ── */
+/* ── Vertical glow separators flanking the rock image ── */
+.vertSep {
+  width: 10px;
+  height: 100vh;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--amber) 18%, transparent);
+  border-left:  1px solid color-mix(in srgb, var(--amber-light) 55%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--amber-light) 28%, transparent);
+  position: relative;
+}
+
+.vertSep::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  height: 60vh;
+  background: linear-gradient(
+    to bottom,
+    transparent        0%,
+    var(--amber-light) 50%,
+    transparent        100%
+  );
+  filter: blur(5px);
+  animation: sweepTTB 120s linear infinite;
+}
+
+@keyframes sweepTTB {
+  from { transform: translateY(-60vh); }
+  to   { transform: translateY(100vh); }
+}
+
+/* ── Scroll container — inside .stage, overlaps the sticky rock ── */
 .scrollWrap {
   position: relative;
-  z-index: 4;
+  z-index: 7;
   max-width: 1480px;
   margin-top: -100vh;
   margin-left: auto;
@@ -51,39 +87,31 @@
   z-index: 4;
   display: flex;
   flex-direction: column;
-  gap: 220px;
-  padding: 140px 0 240px;
+  gap: 400px;
+  padding: 35vh 0 240px;
 }
 
 .block {
   display: grid;
-  grid-template-columns: 1fr 360px 1fr;
-  gap: 64px;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
   align-items: start;
 }
 
-.col { min-width: 0; }
+.col {
+  min-width: 0;
+  opacity: var(--p, 0);
+  transform: translateY(calc((1 - var(--p, 0)) * var(--dir, 1) * 40px));
+  transition: opacity .25s linear, transform .25s linear;
+  will-change: opacity, transform;
+}
 
 .block.left  .colLeft  { grid-column: 1; }
-.block.right .colRight { grid-column: 3; justify-self: end; }
+.block.right .colRight { grid-column: 2; margin-left: auto; }
 
-.colLeft,
-.colRight { max-width: 460px; }
+.colLeft  { max-width: 340px; overflow-wrap: break-word; }
+.colRight { width: 340px; margin-right: -4rem; }
 
-/* Gradient mask — handles visibility via CSS, no JS needed */
-.scrollMask {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 5; /* above content (z-4), below footer (z-10) and nav (z-50) */
-  background: linear-gradient(
-    to bottom,
-    var(--bg-top) 0%,
-    transparent 28%,
-    transparent 72%,
-    var(--bg-top) 100%
-  );
-}
 
 /* ── Block content ── */
 .eyebrow {
@@ -159,10 +187,10 @@
 /* ── Social links ── */
 .links { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
 
-/* Footer wrapper — above the mask (z-5), no solid background needed */
+/* Footer wrapper — outside .stage, appears after image scrolls up */
 .footerWrap {
   position: relative;
-  z-index: 6;
+  z-index: 8;
 }
 
 /* ── Mobile ── */
