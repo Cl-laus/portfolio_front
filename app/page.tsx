@@ -55,8 +55,8 @@ export default function HomePage() {
       <HeroSection info={info} />
       <GlowSeparator />
 
-      <section className="pt-6 px-4 pb-6 desktop:pt-16 desktop:px-20 desktop:pb-16 desktop:mr-10">
-        <div className={`${styles.sectionHead} flex items-center gap-4 mb-8 desktop:mb-24`}>
+      <section className={`${styles.projectsSection} pt-16 px-20 pb-16 mr-10`}>
+        <div className={`${styles.sectionHead} flex items-center gap-4 mb-24`}>
           <span className={styles.sectionTitle}>Réalisations</span>
           <span className={`${styles.headLine} flex-1 h-px`} />
           <span className={styles.headCount}>
@@ -68,7 +68,7 @@ export default function HomePage() {
 
         {closed.map((project, i) => (
           <div key={project.id}>
-            <div className={`${styles.projectDivider} my-8 desktop:my-24 h-px`} />
+            <div className={`${styles.projectDivider} my-24 h-px`} />
             <ClosedProject
               project={project}
               index={String(i + 2).padStart(2, "0")}

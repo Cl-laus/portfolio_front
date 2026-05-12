@@ -21,5 +21,8 @@
 }
 
 @media (max-width: 900px) {
+  .projectsSection { padding: 1.5rem 1rem; margin-right: 0; }
+  .sectionHead { margin-bottom: 2rem; }
+  .projectDivider { margin-top: 2rem; margin-bottom: 2rem; }
   .sectionTitle { font-size: 1.3rem; }
 }
