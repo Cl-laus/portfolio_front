@@ -14,7 +14,7 @@ export default function NavBar() {
   if (isBatcave) return null;
 
   return (
-    <nav className="fixed top-4 right-4 flex gap-3 z-50 px-4 py-2 rounded-full backdrop-blur-sm" style={{ background: 'rgba(157,158,161,0.45)' }}>
+    <nav className={`${styles.nav} fixed top-4 right-4 flex gap-3 z-50 px-4 py-2 rounded-full`}>
 
       {!isHome && (
         <button onClick={() => router.push("/")} className={styles.navLink}>

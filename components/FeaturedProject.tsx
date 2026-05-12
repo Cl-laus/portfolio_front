@@ -42,7 +42,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
         <div className={`${styles.featuredLeft} flex flex-col`}>
           <p className={`${styles.featDesc} text`}>{project.summary}</p>
 
-          <div className="mt-auto self-end flex items-center gap-6 pb-8 pr-10">
+          <div className={`${styles.ctaArea} mt-auto self-end flex items-center gap-6 pb-8 pr-10`}>
             <span className={`${styles.featCtaLabel} label`}>Voir détail du projet</span>
             <CircleButton
               icon={<FontAwesomeIcon icon={faArrowRight} />}

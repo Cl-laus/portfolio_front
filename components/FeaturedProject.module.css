@@ -64,8 +64,10 @@
 
 @media (max-width: 900px) {
   .featDetail    { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem; padding-left: 0; min-height: auto; }
-  .featuredRight { order: -1; }
+  .featuredLeft  { display: contents; }
+  .featDesc      { order: 1; max-width: 100%; }
+  .featuredRight { order: 2; }
+  .ctaArea       { order: 3; align-self: center; padding: 0; }
   .featImageWrap { min-height: 14em; }
   .featImage     { opacity: 1 !important; }
-  .featDesc      { max-width: 100%; }
 }
