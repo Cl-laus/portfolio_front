@@ -4,4 +4,4 @@
   cursor: pointer;
   transition: color 0.3s ease;
 }
-.navLink:hover { color: var(--amber-bright); }
+.navLink:hover { color: var(--amber); }

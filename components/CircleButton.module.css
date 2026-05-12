@@ -5,15 +5,15 @@
   width: 2.5em;
   height: 2.5em;
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--fg) 40%, transparent);
-  color: var(--fg);
+  border: 1px solid color-mix(in srgb, var(--fg-muted) 40%, transparent);
+  color: var(--fg-muted);
   cursor: pointer;
   transition: background .35s ease, border-color .35s ease, color .35s ease,
               translate .35s var(--ease-snappy);
 }
 .btn:hover {
-  background: var(--fg);
-  border-color: var(--fg);
+  background: var(--fg-muted);
+  border-color: var(--fg-muted);
   color: var(--bg-mid);
 }
 .btn svg { width: 1em; height: 1em; }
@@ -22,7 +22,7 @@
 .lg {
   width: 6rem;
   height: 6rem;
-  border-color: color-mix(in srgb, var(--fg) 50%, transparent);
+  border-color: color-mix(in srgb, var(--fg-muted) 50%, transparent);
   transition: background .45s ease, color .45s ease, border-color .45s ease,
               translate .45s var(--ease-snappy);
 }

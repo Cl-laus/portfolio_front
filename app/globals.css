@@ -9,6 +9,7 @@
   --color-muted: var(--fg-muted);
   --color-amber: var(--amber);
   --color-amber-bright: var(--amber-bright);
+  --color-amber-light: var(--amber-light);
   --color-border: var(--separator);
   --font-sans: var(--font-euclid), system-ui, sans-serif;
 }
@@ -17,18 +18,19 @@
    DESIGN TOKENS
    ========================= */
 :root {
-  /* Colors */
-  --bg-top: #322D28;
-  --bg-mid: #504b45;
-  --bg-bot: #80776b;
-  --bg:     #3D3832; /* texte inversé sur boutons au hover */
-  --fg:      #F5F1EA;
-  --fg-muted: #B5B0A4;
+  /* Colors — TEST palette grise (inspirée image hero) */
+  --bg-top: #9d9ea1;
+  --bg-mid: #8b8989;
+  --bg-bot: #363638;
+  --bg:     #1a1918; /* texte inversé sur boutons au hover */
+  --fg:      #2c2722;
+  --fg-muted: #d3c4b4;
 
-  --amber:       #be8548;
-  --amber-bright: #ffd17b;
+  --amber:        #ffbd5b;
+  --amber-bright: #a86830;
+  --amber-light:  #f5c87a;
 
-  --separator: rgba(245,241,234,0.10);
+  --separator: rgba(26,25,24,0.12);
 
   /* Motion */
   --ease-snappy: cubic-bezier(.2,.7,.2,1);
@@ -58,8 +60,8 @@
     background: linear-gradient(
       to bottom,
       var(--bg-top) 0%,
-      var(--bg-mid) 65%,
-      var(--bg-bot) 90%
+      var(--bg-mid) 50%,
+      var(--bg-bot) 100%
     );
     background-attachment: fixed;
     color: var(--fg);

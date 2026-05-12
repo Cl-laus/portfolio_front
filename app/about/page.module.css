@@ -1,7 +1,10 @@
-/* ── Rock backdrop ── */
+/* ── Rock backdrop — sticky so footer physically pushes it up ── */
 .rockStage {
-  position: fixed;
-  inset: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
   z-index: 0;
   pointer-events: none;
   display: flex;
@@ -9,9 +12,8 @@
   justify-content: center;
 }
 .rockStage img {
-  width: min(720px, 70vw);
-  height: auto;
-  max-height: 88vh;
+  height: 100vh;
+  width: auto;
   object-fit: contain;
   filter: drop-shadow(0 40px 80px rgba(0,0,0,0.55))
           drop-shadow(0 0 100px rgba(216,142,61,0.20));
@@ -32,11 +34,14 @@
   filter: blur(20px);
 }
 
-/* ── Scroll container ── */
+/* ── Scroll container — overlaps the sticky rock ── */
 .scrollWrap {
   position: relative;
+  z-index: 4;
   max-width: 1480px;
-  margin: 0 auto;
+  margin-top: -100vh;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0 96px;
 }
 
@@ -85,7 +90,7 @@
   font-size: 11px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--amber-bright);
+  color: var(--amber);
   margin-bottom: 18px;
   display: flex;
   align-items: center;
@@ -121,15 +126,15 @@
   font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--fg);
+  color: var(--fg-muted);
   cursor: pointer;
   background: transparent;
   transition: background .35s ease, color .35s ease, border-color .35s ease, translate .35s var(--ease-snappy);
 }
 .cvBtn:hover {
-  background: var(--fg);
+  background: var(--fg-muted);
   color: var(--bg-mid);
-  border-color: var(--fg);
+  border-color: var(--fg-muted);
   translate: 0 -2px;
 }
 .cvBtn svg { width: 14px; height: 14px; }

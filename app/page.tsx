@@ -9,6 +9,7 @@ import FeaturedProject from "@/components/FeaturedProject";
 import ClosedProject   from "@/components/ClosedProject";
 import LoadingSpinner  from "@/components/LoadingSpinner";
 import Footer from "@/components/Footer";
+import GlowSeparator from "@/components/GlowSeparator";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -52,6 +53,7 @@ export default function HomePage() {
   return (
     <>
       <HeroSection info={info} />
+      <GlowSeparator />
 
       <section className="pt-48 px-24 pb-28">
         <div className={`${styles.sectionHead} flex items-center gap-4 mb-24`}>
