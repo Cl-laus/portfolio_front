@@ -31,7 +31,7 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
   };
 
   return (
-    <section className={`${styles.carousel} relative overflow-hidden`} aria-label="Project screenshots">
+    <section className={`${styles.carousel} h-full relative overflow-hidden`} aria-label="Project screenshots">
       {images?.length > 0 ? (
         images.map((img, i) => (
           <div key={img.id} className={`${styles.slide} absolute inset-0${i === slide ? " active" : ""}`}>
