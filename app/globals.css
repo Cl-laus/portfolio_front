@@ -20,11 +20,11 @@
    ========================= */
 :root {
   /* Colors — TEST palette grise (inspirée image hero) */
-  --bg-top: #9d9ea1;
-  --bg-mid: #8b8989;
-  --bg-bot: #363638;
+  --bg-top: #cecece;
+  --bg-mid: #94989c;
+  --bg-bot: #515152;
   --fg:      #2c2722;
-  --fg-muted: #d3ccc5;
+  --fg-muted: #e7dfd8;
 
   --amber: #ffbd5b;
 
