@@ -67,11 +67,8 @@ export default function ProjectPage({
 
         <section className="flex flex-col justify-between py-2">
 
-          {/* Description — double newline = paragraph break */}
           <div className={styles.contentTop}>
-            {description && description.split(/\n\n+/).map((para, i) => (
-              <p key={i} className="text">{para.trim()}</p>
-            ))}
+            {description && <p className="text">{description.trim()}</p>}
           </div>
 
           {/* Technologies + Links */}
