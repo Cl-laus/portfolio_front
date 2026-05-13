@@ -152,16 +152,17 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
+    transform: translateZ(0); /* force GPU layer pour backdrop-filter */
   }
   .col {
     text-align: left;
     width: 100%;
     max-width: 100%;
     padding: 2rem;
-    background: color-mix(in srgb, var(--bg-mid) 40%, transparent);
+    background: color-mix(in srgb, var(--bg-mid) 72%, transparent);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid color-mix(in srgb, var(--fg-muted) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--fg-muted) 20%, transparent);
     border-radius: 1rem;
   }
   .block.right .col {
