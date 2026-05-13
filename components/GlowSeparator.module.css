@@ -1,7 +1,7 @@
 /* ── Séparateur (horizontal) ── */
 .separator {
-  background: color-mix(in srgb, var(--amber) 18%, transparent);
-  border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
+  background: color-mix(in srgb, var(--amber) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--amber) 60%, transparent);
   overflow: hidden;
 }
 
@@ -10,8 +10,15 @@
   position: absolute;
   top: 0; bottom: 0; left: 0;
   width: 60%;
-  background: linear-gradient(to right, transparent 0%, var(--amber) 50%, transparent 100%);
-  filter: blur(4px);
+  background: linear-gradient(
+    to right,
+    transparent                                0%,
+    var(--amber)                              30%,
+    color-mix(in srgb, var(--amber) 40%, white) 50%,  /* centre brillant */
+    var(--amber)                              70%,
+    transparent                              100%
+  );
+  filter: blur(2px);
   animation-name: sweepLTR;
   animation-duration: 5s;
   animation-timing-function: linear;
