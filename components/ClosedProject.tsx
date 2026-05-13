@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { ProjectSummary } from "@/types";
 import CircleButton from "./CircleButton";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import styles from "./ClosedProject.module.css";
 
 interface ClosedProjectProps {
@@ -16,8 +17,12 @@ interface ClosedProjectProps {
 export default function ClosedProject({ project, index, meta }: ClosedProjectProps) {
   const router = useRouter();
 
+  // Sur mobile (pas de hover) : active l'état "hovered" quand la card est visible
+  const { register } = useScrollReveal({ mode: "threshold" });
+
   return (
     <div
+      ref={register(0)}
       className={`${styles.closed} w-full flex items-center justify-between gap-6`}
       onClick={() => router.push(`/projects/${project.id}`)}
     >

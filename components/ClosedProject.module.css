@@ -11,3 +11,12 @@
 .closed:hover :global(.proj-title)        { transform: translateY(-0.05em); }
 .closed:hover :global(.proj-title::after) { width: 100%; }
 .closed:hover :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
+
+/* ── Mobile sans hover : déclenché par .is-revealed (scroll) ── */
+
+@media (hover: none) {
+  .closed.is-revealed                          { transform: translateX(0.85em); }
+  .closed.is-revealed :global(.proj-index)        { color: var(--amber); }
+  .closed.is-revealed :global(.proj-title::after) { width: 100%; }
+  .closed.is-revealed :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
+}

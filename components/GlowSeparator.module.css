@@ -1,6 +1,6 @@
 /* ── Séparateur (horizontal) ── */
 .separator {
-  --thickness: 4px;
+  --thickness: 8px;
   height: var(--thickness);
   background: color-mix(in srgb, var(--amber) 25%, transparent);
   border: 1px solid color-mix(in srgb, var(--amber) 60%, transparent);

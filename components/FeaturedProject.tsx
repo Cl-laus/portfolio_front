@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { ProjectSummary } from "@/types";
 import CircleButton from "./CircleButton";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import styles from "./FeaturedProject.module.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
@@ -16,6 +17,9 @@ interface FeaturedProjectProps {
 export default function FeaturedProject({ project }: FeaturedProjectProps) {
   const router = useRouter();
 
+  // Sur mobile (pas de hover) : active l'état "hovered" quand la card est visible
+  const { register } = useScrollReveal({ mode: "threshold" });
+
   const year       = project.createdAt ? new Date(project.createdAt).getFullYear() : null;
   const categories = project.technologies?.map(t => t.category).filter(Boolean) ?? [];
   const cats       = categories.slice(0, 2).join(" · ");
@@ -23,6 +27,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
 
   return (
     <a
+      ref={register(0)}
       className={`${styles.featured} block`}
       href={`/projects/${project.id}`}
       onClick={(e) => { e.preventDefault(); router.push(`/projects/${project.id}`); }}

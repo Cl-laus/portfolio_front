@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
@@ -13,6 +13,7 @@ import TechChip from "@/components/TechChip";
 import CircleButton from "@/components/CircleButton";
 import Footer from "@/components/Footer";
 import GlowSeparator from "@/components/GlowSeparator";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import styles from "./page.module.css";
 
 function socialIcon(name: string) {
@@ -35,7 +36,6 @@ export default function AboutPage() {
   const [info,    setInfo]    = useState<Information | null>(null);
   const [techs,   setTechs]   = useState<Technology[]>([]);
   const [socials, setSocials] = useState<SocialNetwork[]>([]);
-  const colRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     Promise.all([
@@ -46,40 +46,9 @@ export default function AboutPage() {
       .catch(console.error);
   }, []);
 
-  useEffect(() => {
-    const cols = colRefs.current.filter(Boolean) as HTMLDivElement[];
-    if (!cols.length) return;
-
-    let raf: number | null = null;
-    const update = () => {
-      raf = null;
-      const vh     = window.innerHeight;
-      const center = vh / 2;
-      const fadeIn  = vh * 0.25;
-      const fadeOut = vh * 0.60;
-
-      for (const el of cols) {
-        const r       = el.getBoundingClientRect();
-        const dist    = r.top + r.height / 2 - center;
-        const absDist = Math.abs(dist);
-        const p = absDist <= fadeIn  ? 1
-                : absDist >= fadeOut ? 0
-                : 1 - (absDist - fadeIn) / (fadeOut - fadeIn);
-
-        el.style.setProperty("--p",   p.toFixed(3));
-        el.style.setProperty("--dir", dist >= 0 ? "1" : "-1");
-      }
-    };
-
-    const onScroll = () => { if (raf == null) raf = requestAnimationFrame(update); };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    update();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [info, techs, socials]);
+  // Fondu progressif des blocs de texte selon leur position dans le viewport
+  // Se relance quand les données arrivent (les éléments ne sont rendus qu'après)
+  const { register } = useScrollReveal({ mode: "continuous" }, [info, techs, socials]);
 
   const techGroups = groupByCategory(techs.filter(t => t.visible));
 
@@ -112,7 +81,7 @@ export default function AboutPage() {
 
             {/* 01 — Hello */}
             <section className={`${styles.block} ${styles.left}`}>
-              <div className={`${styles.col} min-w-0`} ref={el => { colRefs.current[0] = el; }}>
+              <div className={`${styles.col} min-w-0`} ref={register(0)}>
                 <div className={styles.eyebrow}>
                   <span className={styles.hairline} />
                   <span>01 — Hello</span>
@@ -124,7 +93,7 @@ export default function AboutPage() {
 
             {/* 02 — Parcours */}
             <section className={`${styles.block} ${styles.right}`}>
-              <div className={`${styles.col} min-w-0`} ref={el => { colRefs.current[1] = el; }}>
+              <div className={`${styles.col} min-w-0`} ref={register(1)}>
                 <div className={styles.eyebrow}>
                   <span className={styles.hairline} />
                   <span>02 — Parcours</span>
@@ -140,7 +109,7 @@ export default function AboutPage() {
 
             {/* 03 — Stack */}
             <section className={`${styles.block} ${styles.left}`}>
-              <div className={`${styles.col} min-w-0`} ref={el => { colRefs.current[2] = el; }}>
+              <div className={`${styles.col} min-w-0`} ref={register(2)}>
                 <div className={styles.eyebrow}>
                   <span className={styles.hairline} />
                   <span>03 — Stack</span>
@@ -161,7 +130,7 @@ export default function AboutPage() {
 
             {/* 04 — Liens */}
             <section className={`${styles.block} ${styles.right}`}>
-              <div className={`${styles.col} min-w-0`} ref={el => { colRefs.current[3] = el; }}>
+              <div className={`${styles.col} min-w-0`} ref={register(3)}>
                 <div className={styles.eyebrow}>
                   <span className={styles.hairline} />
                   <span>04 — Liens</span>
