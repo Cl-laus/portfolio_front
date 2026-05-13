@@ -63,7 +63,7 @@ export default function ProjectPage({
 
       <article className={`${styles.card} grid gap-20 items-start flex-1 min-h-0`}>
 
-        <div className={`${styles.carouselWrap} aspect-video overflow-hidden`}>
+        <div className="aspect-video overflow-hidden">
           <ProjectCarousel images={images} title={title} />
         </div>
 
