@@ -4,7 +4,7 @@
 ═══════════════════════════════════ */
 .separator,
 .separatorV {
-  --beam: 60%;       /* taille du faisceau — % du séparateur parent */
+  --beam: 60%;
   background: color-mix(in srgb, var(--amber) 18%, transparent);
   overflow: hidden;
 }
@@ -20,7 +20,8 @@
     transparent  100%
   );
   filter: blur(4px);
-  animation: var(--sweep) linear infinite;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 /* ═══════════════════════════════════
@@ -29,12 +30,13 @@
 .separator {
   border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
   --glow-dir: to right;
-  --sweep: sweepLTR 5s;
 }
 
 .separator::after {
   top: 0; bottom: 0; left: 0;
   width: var(--beam);
+  animation-name: sweepLTR;
+  animation-duration: 5s;
 }
 
 /* ═══════════════════════════════════
@@ -44,18 +46,17 @@
   border-top:    1px solid color-mix(in srgb, var(--amber) 55%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--amber) 28%, transparent);
   --glow-dir: to bottom;
-  --sweep: sweepTTB 120s;
 }
 
 .separatorV::after {
   left: 0; right: 0; top: 0;
   height: var(--beam);
+  animation-name: sweepTTB;
+  animation-duration: 120s;
 }
 
 /* ═══════════════════════════════════
    KEYFRAMES
-   -100% = l'élément recule de sa propre taille → hors écran
-   Si --beam change, le départ s'adapte automatiquement
 ═══════════════════════════════════ */
 @keyframes sweepLTR {
   from { transform: translateX(-100%); }
