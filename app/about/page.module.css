@@ -140,27 +140,29 @@
 
 /* Glass cards ≤ 959px */
 @media (max-width: 959px) {
-  /* Image de fond via ::before dans le même stacking context que les cards */
   .mobileBg { display: none; }
 
-  .scrollWrap::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: url('/about-rock.jpg') center / cover no-repeat;
-  }
-
   .col {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
     text-align: left;
     width: 100%;
     max-width: 100%;
     padding: 2rem;
-    background: color-mix(in srgb, var(--bg-mid) 45%, transparent);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: color-mix(in srgb, var(--bg-mid) 35%, transparent);
     border: 1px solid color-mix(in srgb, var(--fg-muted) 20%, transparent);
     border-radius: 1rem;
+  }
+
+  /* Image floutée derrière le contenu de chaque card */
+  .col::before {
+    content: '';
+    position: absolute;
+    inset: -30px;
+    background: url('/about-rock.jpg') center / cover fixed;
+    filter: blur(20px);
+    z-index: -1;
   }
   .block.right .col {
     grid-column: 1 !important;
