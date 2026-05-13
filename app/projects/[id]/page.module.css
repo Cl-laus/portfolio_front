@@ -6,7 +6,7 @@
 }
 
 .noLink {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
   color: var(--amber);
@@ -31,5 +31,4 @@
   .page     { padding: 3.5rem 1.5rem 2rem; }
   .card     { grid-template-columns: 1fr !important; gap: 2.5rem; }
   .metaRow  { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
-  .linksCol { align-items: flex-start !important; }
 }
