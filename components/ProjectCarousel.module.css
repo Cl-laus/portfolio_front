@@ -8,18 +8,6 @@
 }
 .slide:global(.active) { opacity: 1; }
 
-.slide::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, black 10%, transparent) 0%,
-    transparent 40%,
-    color-mix(in srgb, black 20%, transparent) 100%
-  );
-  pointer-events: none;
-}
 
 .slideImg {
   width: 100%;
