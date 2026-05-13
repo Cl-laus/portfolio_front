@@ -15,7 +15,16 @@
 
 .metaRow { border-top: 1px solid var(--separator); }
 
-.metaLabel { letter-spacing: var(--ls-wide); }
+.metaLabel {
+  letter-spacing: var(--ls-wide);
+  font-size: 1rem;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+
+.carouselWrap {
+  border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
+}
 
 .backLink {
   letter-spacing: var(--ls-wide);
