@@ -22,10 +22,6 @@
   text-transform: uppercase;
 }
 
-.carouselWrap {
-  border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
-}
-
 .backLink {
   letter-spacing: var(--ls-wide);
   transition: color .35s ease;
