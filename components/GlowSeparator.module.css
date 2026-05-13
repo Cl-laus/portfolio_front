@@ -1,5 +1,7 @@
 /* ── Séparateur (horizontal) ── */
 .separator {
+  --thickness: 4px;
+  height: var(--thickness);
   background: color-mix(in srgb, var(--amber) 25%, transparent);
   border: 1px solid color-mix(in srgb, var(--amber) 60%, transparent);
   overflow: hidden;
@@ -14,7 +16,7 @@
     to right,
     transparent                                0%,
     var(--amber)                              30%,
-    color-mix(in srgb, var(--amber) 40%, white) 50%,  /* centre brillant */
+    color-mix(in srgb, var(--amber) 40%, white) 50%,
     var(--amber)                              70%,
     transparent                              100%
   );
@@ -25,9 +27,9 @@
   animation-iteration-count: infinite;
 }
 
-/* ── Wrapper pour version verticale — simple rotation 90° ── */
+/* ── Wrapper pour version verticale — rotation 90° ── */
 .verticalWrapper {
-  width: 4px;
+  width: var(--thickness, 4px);
   height: 100vh;
   position: relative;
   overflow: hidden;
@@ -37,7 +39,7 @@
 .rotated {
   position: absolute;
   width: 100vh;
-  height: 4px;
+  height: var(--thickness, 4px);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(90deg);
