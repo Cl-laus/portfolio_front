@@ -1,6 +1,6 @@
 .carousel {
   background: var(--bg-top);
-  min-height: 28em;
+  aspect-ratio: 16 / 9;
 }
 
 .slide {
