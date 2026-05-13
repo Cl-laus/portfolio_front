@@ -1,69 +1,42 @@
-/* ═══════════════════════════════════
-   TRONC COMMUN
-   Modifier ici = modifie horizontal ET vertical
-═══════════════════════════════════ */
-.separator,
-.separatorV {
-  --beam: 60%;
+/* ── Séparateur (horizontal) ── */
+.separator {
   background: color-mix(in srgb, var(--amber) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
   overflow: hidden;
 }
 
-.separator::after,
-.separatorV::after {
+.separator::after {
   content: '';
   position: absolute;
-  background: linear-gradient(
-    var(--glow-dir),
-    transparent  0%,
-    var(--amber) 50%,
-    transparent  100%
-  );
+  top: 0; bottom: 0; left: 0;
+  width: 60%;
+  background: linear-gradient(to right, transparent 0%, var(--amber) 50%, transparent 100%);
   filter: blur(4px);
+  animation-name: sweepLTR;
+  animation-duration: 5s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
 
-/* ═══════════════════════════════════
-   HORIZONTAL
-═══════════════════════════════════ */
-.separator {
-  border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
-  --glow-dir: to right;
+/* ── Wrapper pour version verticale — simple rotation 90° ── */
+.verticalWrapper {
+  width: 4px;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.separator::after {
-  top: 0; bottom: 0; left: 0;
-  width: var(--beam);
-  animation-name: sweepLTR;
-  animation-duration: 5s;
+.rotated {
+  position: absolute;
+  width: 100vh;
+  height: 4px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
 }
 
-/* ═══════════════════════════════════
-   VERTICAL
-═══════════════════════════════════ */
-.separatorV {
-  border-top:    1px solid color-mix(in srgb, var(--amber) 55%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--amber) 28%, transparent);
-  --glow-dir: to bottom;
-}
-
-.separatorV::after {
-  left: 0; right: 0; top: 0;
-  height: var(--beam);
-  animation-name: sweepTTB;
-  animation-duration: 120s;
-}
-
-/* ═══════════════════════════════════
-   KEYFRAMES
-═══════════════════════════════════ */
 @keyframes sweepLTR {
   from { transform: translateX(-100%); }
   to   { transform: translateX(100vw); }
-}
-
-@keyframes sweepTTB {
-  from { transform: translateY(-100%); }
-  to   { transform: translateY(100vh); }
 }
