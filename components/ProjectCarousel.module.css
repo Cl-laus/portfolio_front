@@ -1,6 +1,5 @@
 .carousel {
   background: var(--bg-top);
-  aspect-ratio: 16 / 9;
 }
 
 .slide {

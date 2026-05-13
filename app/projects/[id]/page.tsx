@@ -61,9 +61,11 @@ export default function ProjectPage({
         {title}{year && ` · ${year}`}
       </div>
 
-      <article className={`${styles.card} grid gap-20 items-stretch flex-1 min-h-0`}>
+      <article className={`${styles.card} grid gap-20 items-start flex-1 min-h-0`}>
 
-        <ProjectCarousel images={images} title={title} />
+        <div className="aspect-video overflow-hidden">
+          <ProjectCarousel images={images} title={title} />
+        </div>
 
         <section className="flex flex-col justify-between py-2">
 
