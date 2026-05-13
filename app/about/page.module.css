@@ -159,7 +159,7 @@
     width: 100%;
     max-width: 100%;
     padding: 2rem;
-    background: color-mix(in srgb, var(--bg-bot) 85%, transparent);
+    background: color-mix(in srgb, var(--bg-mid) 90%, transparent);
     border: 1px solid color-mix(in srgb, var(--fg-muted) 20%, transparent);
     border-radius: 1rem;
   }
