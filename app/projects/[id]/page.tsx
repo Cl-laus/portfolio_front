@@ -78,7 +78,7 @@ export default function ProjectPage({
 
             {projectTechs.length > 0 && (
               <div className="flex flex-col gap-4">
-                <div className={`${styles.metaLabel} label`}>Built with</div>
+                <div className={`${styles.metaLabel} label`}>Réalisé avec</div>
                 <div className="flex flex-wrap gap-2">
                   {projectTechs.map((tech) => (
                     <TechChip key={tech.id} name={tech.name} />
@@ -88,7 +88,7 @@ export default function ProjectPage({
             )}
 
             <div className={`${styles.linksCol} flex flex-col items-start gap-4`}>
-              <div className={`${styles.metaLabel} label`}>Links</div>
+              <div className={`${styles.metaLabel} label`}>Liens</div>
               {links && Object.keys(links).length > 0 ? (
                 <div className="flex gap-3">
                   {Object.entries(links).map(([key, url]) => (
@@ -116,7 +116,7 @@ export default function ProjectPage({
         href="/"
       >
         <FontAwesomeIcon icon={faArrowLeft} />
-        <span>Back to home</span>
+        <span>Revenir à l&apos;accueil</span>
       </Link>
 
     </main>
