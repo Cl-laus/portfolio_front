@@ -46,6 +46,7 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
             <span className={`${styles.featCtaLabel} label`}>Voir détail du projet</span>
             <CircleButton
               icon={<FontAwesomeIcon icon={faArrowRight} />}
+              ariaLabel="Voir le projet"
               size="lg"
               className={`${styles.ctaBtn} shrink-0`}
             />

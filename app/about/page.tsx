@@ -174,10 +174,10 @@ export default function AboutPage() {
                 </p>
                 <div className="flex gap-3 mt-2 flex-wrap">
                   {socials.map(s => (
-                    <CircleButton key={s.id} href={s.url} icon={socialIcon(s.name)} />
+                    <CircleButton key={s.id} href={s.url} icon={socialIcon(s.name)} ariaLabel={s.name} />
                   ))}
                   {info?.email && (
-                    <CircleButton href={`mailto:${info.email}`} icon={<FontAwesomeIcon icon={faEnvelope} />} />
+                    <CircleButton href={`mailto:${info.email}`} icon={<FontAwesomeIcon icon={faEnvelope} />} ariaLabel="Envoyer un email" />
                   )}
                 </div>
               </div>
