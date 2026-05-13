@@ -59,8 +59,8 @@
 
 .col {
   /* min-w-0 via Tailwind */
-  opacity: var(--p, 0);
-  transform: translateY(calc((1 - var(--p, 0)) * var(--dir, 1) * 40px));
+  opacity: var(--reveal, 0);
+  transform: translateY(calc((1 - var(--reveal, 0)) * var(--enter-from, 1) * 40px));
   transition: opacity .25s linear, transform .25s linear;
   will-change: opacity, transform;
 }
