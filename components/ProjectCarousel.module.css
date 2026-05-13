@@ -43,8 +43,8 @@
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
   background: rgba(157, 158, 161, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 .dot {
