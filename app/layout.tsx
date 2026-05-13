@@ -32,9 +32,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${euclidCircularA.variable} ${geistMono.variable} dark antialiased`}>
+      <head>
+        <link rel="preload" href="/hero.jpg" as="image" />
+      </head>
       <body className="min-h-screen">
         <NavBar />
-        {children}
+        <main>
+          {children}
+        </main>
       </body>
     </html>
   );

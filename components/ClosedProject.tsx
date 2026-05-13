@@ -28,6 +28,7 @@ export default function ClosedProject({ project, index, meta }: ClosedProjectPro
       </div>
       <CircleButton
         icon={<FontAwesomeIcon icon={faArrowRight} />}
+        ariaLabel="Voir le projet"
         size="lg"
         className="shrink-0"
       />

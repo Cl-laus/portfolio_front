@@ -2,13 +2,14 @@ import styles from "./CircleButton.module.css";
 
 interface CircleButtonProps {
   icon: React.ReactNode;
+  ariaLabel?: string;
   size?: "lg";
   className?: string;
   onClick?: () => void;
   href?: string;
 }
 
-export default function CircleButton({ icon, size, className = "", onClick, href }: CircleButtonProps) {
+export default function CircleButton({ icon, ariaLabel, size, className = "", onClick, href }: CircleButtonProps) {
   const cls = [
     styles.btn,
     "inline-flex items-center justify-center",
@@ -18,14 +19,14 @@ export default function CircleButton({ icon, size, className = "", onClick, href
 
   if (href) {
     return (
-      <a className={cls} href={href} target="_blank" rel="noopener noreferrer">
+      <a className={cls} href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel}>
         {icon}
       </a>
     );
   }
 
   return (
-    <button className={cls} type="button" onClick={onClick}>
+    <button className={cls} type="button" onClick={onClick} aria-label={ariaLabel}>
       {icon}
     </button>
   );

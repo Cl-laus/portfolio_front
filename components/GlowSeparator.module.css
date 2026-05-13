@@ -34,15 +34,15 @@
   content: '';
   position: absolute;
   inset: 0;
-  height: 60vh;
+  height: 150vh;
   background: linear-gradient(
     to bottom,
     transparent  0%,
     var(--amber) 50%,
     transparent 100%
   );
-  filter: blur(5px);
-  animation: sweepTTB 120s linear infinite;
+  filter: blur(1px);
+  animation: sweepTTB 10s linear infinite;
 }
 
 @keyframes sweepTTB {

@@ -95,6 +95,7 @@ export default function ProjectPage({
                     <CircleButton
                       key={key}
                       href={url}
+                      ariaLabel={key}
                       icon={
                         key.toLowerCase().includes("github")
                           ? <FontAwesomeIcon icon={faGithub} />
