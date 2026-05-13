@@ -145,7 +145,7 @@ export default function AboutPage() {
                   <span className={styles.hairline} />
                   <span>03 — Stack</span>
                 </div>
-                <h2 className="title">Technologies utilisées.</h2>
+                <h2 className="title">Technologies utilisées</h2>
                 <div className="flex flex-col gap-5 mt-2">
                   {Object.entries(techGroups).map(([category, items]) => (
                     <div key={category} className="flex flex-col gap-2">
@@ -166,7 +166,7 @@ export default function AboutPage() {
                   <span className={styles.hairline} />
                   <span>04 — Liens</span>
                 </div>
-                <h2 className="title">Restons en contact.</h2>
+                <h2 className="title">Restons en contact</h2>
                 <p className="text">
                   {info?.email
                     ? `Disponible par email à ${info.email}.`
