@@ -9,47 +9,47 @@
 .card {
   width: 100%;
   max-width: 420px;
-  border-radius: 18px;
-  border: 1px solid var(--separator);
-  background: transparent;
-  padding: 40px;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--amber) 20%, transparent);
+  background: color-mix(in srgb, var(--amber) 4%, transparent);
+  padding: 2.5rem;
 }
 
 .crumb {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  color: var(--amber-bright);
-  font-size: 12px;
+  gap: 0.875rem;
+  color: var(--amber);
+  font-size: 0.75rem;
   letter-spacing: 0.32em;
   text-transform: uppercase;
   font-family: var(--font-geist-mono), monospace;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .dash {
-  width: 18px;
+  width: 1.125rem;
   height: 1px;
   background: var(--amber);
   flex-shrink: 0;
 }
 
 .subtitle {
-  font-size: 13px;
+  font-size: 0.875rem;
   color: var(--fg-muted);
-  margin-bottom: 32px;
+  margin-bottom: 2rem;
 }
 
 .error {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--amber);
   letter-spacing: 0.04em;
-  margin-top: -4px;
-  margin-bottom: 12px;
+  margin-top: -0.25rem;
+  margin-bottom: 0.75rem;
 }
 
 .submit {
   width: 100%;
   justify-content: center;
-  margin-top: 8px;
+  margin-top: 0.5rem;
 }
