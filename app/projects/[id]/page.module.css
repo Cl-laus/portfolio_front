@@ -2,8 +2,8 @@
 
 .contentTop p {
   font-size: 1rem;
+  white-space: pre-line;
 }
-.contentTop p + p { margin-top: 1rem; }
 
 .noLink {
   font-size: 0.75rem;
