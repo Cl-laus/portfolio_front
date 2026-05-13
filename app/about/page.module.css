@@ -138,32 +138,32 @@
    RESPONSIVE (mobile + tablet)
 ═══════════════════════════════════ */
 
-/* Glass cards ≤ 959px */
+/* Cards ≤ 959px */
 @media (max-width: 959px) {
-  .mobileBg { display: none; }
+  .mobileBg {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .mobileBg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
 
   .col {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
     text-align: left;
     width: 100%;
     max-width: 100%;
     padding: 2rem;
-    background: color-mix(in srgb, var(--bg-mid) 35%, transparent);
+    background: color-mix(in srgb, var(--bg-mid) 80%, transparent);
     border: 1px solid color-mix(in srgb, var(--fg-muted) 20%, transparent);
     border-radius: 1rem;
   }
 
-  /* Image floutée derrière le contenu de chaque card */
-  .col::before {
-    content: '';
-    position: absolute;
-    inset: -30px;
-    background: url('/about-rock.jpg') center / cover fixed;
-    filter: blur(20px);
-    z-index: -1;
-  }
   .block.right .col {
     grid-column: 1 !important;
     justify-self: stretch !important;
