@@ -1,6 +1,10 @@
-/* ── Base commune ── */
+/* ═══════════════════════════════════
+   TRONC COMMUN
+   Modifier ici = modifie horizontal ET vertical
+═══════════════════════════════════ */
 .separator,
 .separatorV {
+  --beam: 60%;       /* taille du faisceau — % du séparateur parent */
   background: color-mix(in srgb, var(--amber) 18%, transparent);
   overflow: hidden;
 }
@@ -11,43 +15,54 @@
   position: absolute;
   background: linear-gradient(
     var(--glow-dir),
-    transparent   0%,
-    var(--amber)  50%,
+    transparent  0%,
+    var(--amber) 50%,
     transparent  100%
   );
+  filter: blur(4px);
+  animation: var(--sweep) linear infinite;
 }
 
-/* ── Horizontal ── */
+/* ═══════════════════════════════════
+   HORIZONTAL
+═══════════════════════════════════ */
 .separator {
   border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
   --glow-dir: to right;
+  --sweep: sweepLTR 5s;
 }
 
 .separator::after {
   top: 0; bottom: 0; left: 0;
-  width: 30vw;
-  animation: sweepLTR 10s linear infinite;
+  width: var(--beam);
 }
 
-/* ── Vertical ── */
+/* ═══════════════════════════════════
+   VERTICAL
+═══════════════════════════════════ */
 .separatorV {
   border-top:    1px solid color-mix(in srgb, var(--amber) 55%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--amber) 28%, transparent);
   --glow-dir: to bottom;
+  --sweep: sweepTTB 120s;
 }
 
 .separatorV::after {
   left: 0; right: 0; top: 0;
-  height: 60vh;
-  animation: sweepTTB 120s linear infinite;
+  height: var(--beam);
 }
 
+/* ═══════════════════════════════════
+   KEYFRAMES
+   -100% = l'élément recule de sa propre taille → hors écran
+   Si --beam change, le départ s'adapte automatiquement
+═══════════════════════════════════ */
 @keyframes sweepLTR {
-  from { transform: translateX(-30vw); }
+  from { transform: translateX(-100%); }
   to   { transform: translateX(100vw); }
 }
 
 @keyframes sweepTTB {
-  from { transform: translateY(-60vh); }
+  from { transform: translateY(-100%); }
   to   { transform: translateY(100vh); }
 }
