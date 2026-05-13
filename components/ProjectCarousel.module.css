@@ -38,7 +38,14 @@
 .arrowLeft  { left: 1em; }
 .arrowRight { right: 1em; }
 
-.dots { z-index: 3; }
+.dots {
+  z-index: 3;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(157, 158, 161, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
 
 .dot {
   width: 0.3em;
