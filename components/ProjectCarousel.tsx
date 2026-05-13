@@ -35,7 +35,7 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
       {images?.length > 0 ? (
         images.map((img, i) => (
           <div key={img.id} className={`${styles.slide} absolute inset-0${i === slide ? " active" : ""}`}>
-            <img className="img-cover" src={`${API_URL}${img.url}`} alt={`${title} — ${i + 1}`} />
+            <img className={styles.slideImg} src={`${API_URL}${img.url}`} alt={`${title} — ${i + 1}`} />
           </div>
         ))
       ) : (

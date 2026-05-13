@@ -1,9 +1,10 @@
 .carousel {
-  background: var(--bg-top);
+  background: color-mix(in srgb, var(--amber) 6%, transparent);
 }
 
 .slide {
   opacity: 0;
+  background: color-mix(in srgb, var(--amber) 6%, transparent);
   transition: opacity .9s cubic-bezier(.4,0,.2,1);
 }
 .slide:global(.active) { opacity: 1; }
@@ -21,9 +22,15 @@
   pointer-events: none;
 }
 
-.slide img { filter: brightness(.9) contrast(1.05) saturate(1.04); }
+.slideImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  filter: brightness(.95) contrast(1.02);
+}
 
-.slideFallback { background: rgba(245, 241, 234, 0.04); }
+.slideFallback { background: color-mix(in srgb, var(--amber) 6%, transparent); }
 
 .arrow {
   border-radius: 50%;
