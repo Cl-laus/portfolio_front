@@ -80,15 +80,15 @@
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  border: 1px solid var(--separator);
-  color: var(--fg);
+  border: 1px solid color-mix(in srgb, var(--fg-muted) 40%, transparent);
+  color: var(--fg-muted);
   background: transparent;
   cursor: pointer;
   white-space: nowrap;
   transition: background .3s ease, border-color .3s ease, color .3s ease,
               translate .35s var(--ease-snappy);
 }
-.adm-btn:hover { background: var(--fg); border-color: var(--fg); color: var(--fg-muted); translate: 2px -2px; }
+.adm-btn:hover { background: var(--fg-muted); border-color: var(--fg-muted); color: var(--bg-mid); translate: 2px -2px; }
 .adm-btn svg { width: 1rem; height: 1rem; }
 
 .adm-btn-amber { border-color: var(--amber); color: var(--amber); }
@@ -242,18 +242,18 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  border: 1px solid var(--separator);
+  border: 1px solid color-mix(in srgb, var(--fg-muted) 40%, transparent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--fg);
+  color: var(--fg-muted);
   background: transparent;
   cursor: pointer;
   flex-shrink: 0;
   transition: background .3s ease, border-color .3s ease, color .3s ease,
               translate .35s var(--ease-snappy);
 }
-.adm-icon-btn:hover { background: var(--fg); border-color: var(--fg); color: var(--fg-muted); translate: 2px -2px; }
+.adm-icon-btn:hover { background: var(--fg-muted); border-color: var(--fg-muted); color: var(--bg-mid); translate: 2px -2px; }
 .adm-icon-btn svg { width: 1rem; height: 1rem; }
 
 .adm-icon-btn--danger:hover { background: var(--amber); border-color: var(--amber); color: var(--fg); }
