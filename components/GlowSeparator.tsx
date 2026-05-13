@@ -12,5 +12,5 @@ export default function GlowSeparator({ vertical }: Props) {
       </div>
     );
   }
-  return <div className={`${styles.separator} relative w-full h-1`} aria-hidden="true" />;
+  return <div className={`${styles.separator} relative w-full`} aria-hidden="true" />;
 }
