@@ -64,8 +64,6 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
           <p className={`${styles.featDesc} text`}>{project.summary}</p>
 
           <div className={`${styles.ctaArea} mt-auto self-end flex items-center gap-6 pb-8 pr-10`}>
-            {/* Pill ambiant — conteneur fixe avec overflow:hidden, light passe dedans */}
-            <span className={styles.shimmerPill} aria-hidden="true" />
             <span className={`${styles.featCtaLabel} label`}>Voir détail du projet</span>
             <CircleButton
               icon={<FontAwesomeIcon icon={faArrowRight} />}
