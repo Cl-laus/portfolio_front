@@ -41,39 +41,39 @@
   transition: opacity var(--dur-snap) var(--ease-snappy);
 }
 .featImageFallback { background: rgba(245, 241, 234, 0.04); }
-.featured:hover .featImage { opacity: 1; }
 
 
-/* ── Hover: module-scoped ── */
+/* ── Hover desktop uniquement ── */
 
-.featured:hover .titleRow     { transform: translateX(0.85em); }
-.featured:hover .featHairline { width: 4em; }
-.featured:hover .featDesc     { opacity: 1; }
-.featured:hover .ctaBtn       { translate: 0.85em 0; }
+@media (hover: hover) {
+  .featured:hover .featImage     { opacity: 1; }
+  .featured:hover .titleRow      { transform: translateX(0.85em); }
+  .featured:hover .featHairline  { width: 4em; }
+  .featured:hover .featDesc      { opacity: 1; }
+  .featured:hover .ctaBtn        { translate: 0.85em 0; }
+  .featured:hover .featCtaLabel  { color: var(--amber); }
+  .featured:hover :global(.proj-index)        { color: var(--amber); }
+  .featured:hover :global(.proj-title)        { transform: translateY(-0.05em); }
+  .featured:hover :global(.proj-title::after) { width: 100%; }
+  .featured:hover :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
+}
 
-.featured:hover .featCtaLabel,
-.featCtaLabel:hover           { color: var(--amber); }
 
-
-/* ── Hover: global shared classes ── */
-
-.featured:hover :global(.proj-index)        { color: var(--amber); }
-.featured:hover :global(.proj-title)        { transform: translateY(-0.05em); }
-.featured:hover :global(.proj-title::after) { width: 100%; }
-.featured:hover :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
-/* ── Mobile sans hover : déclenché par .is-revealed (scroll) ── */
+/* ── Mobile : déclenché par .is-revealed (timer) ── */
 
 @media (hover: none) {
-  .featured.is-revealed .titleRow     { transform: translateX(0.85em); }
-  .featured.is-revealed .featHairline { width: 4em; }
-  .featured.is-revealed .featDesc     { opacity: 1; }
-  .featured.is-revealed .featCtaLabel { color: var(--amber); }
+  .featured.is-revealed .featImage     { opacity: 1; }
+  .featured.is-revealed .titleRow      { transform: translateX(0.85em); }
+  .featured.is-revealed .featHairline  { width: 4em; }
+  .featured.is-revealed .featDesc      { opacity: 1; }
+  .featured.is-revealed .featCtaLabel  { color: var(--amber); }
   .featured.is-revealed :global(.proj-index)        { color: var(--amber); }
   .featured.is-revealed :global(.proj-title::after) { width: 100%; }
   .featured.is-revealed :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
 }
 
-/* ── Mobile ── */
+
+/* ── Layout mobile ── */
 
 @media (max-width: 900px) {
   .featDetail    { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem; padding-left: 0; min-height: auto; }
