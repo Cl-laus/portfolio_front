@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
@@ -13,7 +13,6 @@ import TechChip from "@/components/TechChip";
 import CircleButton from "@/components/CircleButton";
 import Footer from "@/components/Footer";
 import GlowSeparator from "@/components/GlowSeparator";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 import styles from "./page.module.css";
 
 function socialIcon(name: string) {
@@ -46,9 +45,47 @@ export default function AboutPage() {
       .catch(console.error);
   }, []);
 
-  // Fondu progressif des blocs de texte selon leur position dans le viewport
-  // Se relance quand les données arrivent (les éléments ne sont rendus qu'après)
-  const { register } = useScrollReveal({ mode: "continuous" }, [info, techs, socials]);
+  // Refs sur les 4 blocs de texte pour l'animation de fondu au scroll
+  const colRefs = useRef<(HTMLElement | null)[]>([]);
+
+  // Fondu progressif : --reveal (0→1) selon la distance au centre du viewport
+  // Se relance quand les données arrivent (éléments pas encore rendus avant)
+  useEffect(() => {
+    const els = colRefs.current.filter(Boolean) as HTMLElement[];
+    if (!els.length) return;
+
+    let raf: number | null = null;
+    const update = () => {
+      raf = null;
+      const vh        = window.innerHeight;
+      const center    = vh / 2;
+      const fadeStart = vh * 0.25;
+      const fadeEnd   = vh * 0.60;
+
+      for (const el of els) {
+        const rect      = el.getBoundingClientRect();
+        const dist      = rect.top + rect.height / 2 - center;
+        const absDist   = Math.abs(dist);
+        const reveal    = absDist <= fadeStart ? 1
+                        : absDist >= fadeEnd   ? 0
+                        : 1 - (absDist - fadeStart) / (fadeEnd - fadeStart);
+
+        el.style.setProperty("--reveal",     reveal.toFixed(3));
+        el.style.setProperty("--enter-from", dist >= 0 ? "1" : "-1");
+      }
+    };
+
+    const onScroll = () => { if (raf == null) raf = requestAnimationFrame(update); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [info, techs, socials]);
+
+  const register = (i: number) => (el: HTMLElement | null) => { colRefs.current[i] = el; };
 
   const techGroups = groupByCategory(techs.filter(t => t.visible));
 
