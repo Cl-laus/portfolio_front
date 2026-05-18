@@ -45,10 +45,8 @@ export default function HomePage() {
   useEffect(() => {
     if (!projects.length) return;
 
-    // Ne tourne que sur mobile (écran < 960px — même breakpoint que le CSS)
-    const isMobile = window.matchMedia("(max-width: 959px)").matches;
-    if (!isMobile) return;
-
+    // Le timer tourne toujours.
+    // Le CSS (max-width: 959px) contrôle si .is-revealed a un effet visuel.
     const STEP_DURATION  = 1000; // 1s par card
     const PAUSE_DURATION = 5000; // 5s de pause entre les cycles
     const ITEM_COUNT     = projects.length; // 3 projets
