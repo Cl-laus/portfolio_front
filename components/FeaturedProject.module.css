@@ -43,34 +43,30 @@
 .featImageFallback { background: rgba(245, 241, 234, 0.04); }
 
 
-/* ── Hover desktop uniquement ── */
+/* ── Hover (souris desktop) ── */
 
-@media (hover: hover) {
-  .featured:hover .featImage     { opacity: 1; }
-  .featured:hover .titleRow      { transform: translateX(0.85em); }
-  .featured:hover .featHairline  { width: 4em; }
-  .featured:hover .featDesc      { opacity: 1; }
-  .featured:hover .ctaBtn        { translate: 0.85em 0; }
-  .featured:hover .featCtaLabel  { color: var(--amber); }
-  .featured:hover :global(.proj-index)        { color: var(--amber); }
-  .featured:hover :global(.proj-title)        { transform: translateY(-0.05em); }
-  .featured:hover :global(.proj-title::after) { width: 100%; }
-  .featured:hover :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
-}
+.featured:hover .featImage     { opacity: 1; }
+.featured:hover .titleRow      { transform: translateX(0.85em); }
+.featured:hover .featHairline  { width: 4em; }
+.featured:hover .featDesc      { opacity: 1; }
+.featured:hover .ctaBtn        { translate: 0.85em 0; }
+.featured:hover .featCtaLabel  { color: var(--amber); }
+.featured:hover :global(.proj-index)        { color: var(--amber); }
+.featured:hover :global(.proj-title)        { transform: translateY(-0.05em); }
+.featured:hover :global(.proj-title::after) { width: 100%; }
+.featured:hover :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
 
 
-/* ── Mobile : déclenché par .is-revealed (timer) ── */
+/* ── is-revealed (timer mobile) — global, sans media query ── */
 
-@media (max-width: 959px) {
-  .featured.is-revealed .featImage     { opacity: 1; }
-  .featured.is-revealed .titleRow      { transform: translateX(0.85em); }
-  .featured.is-revealed .featHairline  { width: 4em; }
-  .featured.is-revealed .featDesc      { opacity: 1; }
-  .featured.is-revealed .featCtaLabel  { color: var(--amber); }
-  .featured.is-revealed :global(.proj-index)        { color: var(--amber); }
-  .featured.is-revealed :global(.proj-title::after) { width: 100%; }
-  .featured.is-revealed :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
-}
+.featured.is-revealed .featImage     { opacity: 1; }
+.featured.is-revealed .titleRow      { transform: translateX(0.85em); }
+.featured.is-revealed .featHairline  { width: 4em; }
+.featured.is-revealed .featDesc      { opacity: 1; }
+.featured.is-revealed .featCtaLabel  { color: var(--amber); }
+.featured.is-revealed :global(.proj-index)        { color: var(--amber); }
+.featured.is-revealed :global(.proj-title::after) { width: 100%; }
+.featured.is-revealed :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
 
 
 /* ── Layout mobile ── */
