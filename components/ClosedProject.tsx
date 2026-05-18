@@ -40,8 +40,6 @@ export default function ClosedProject({ project, index, meta }: ClosedProjectPro
       className={`${styles.closed} ${activated ? styles.activated : ""} w-full flex items-center justify-between gap-6`}
       onClick={handleClick}
     >
-      {/* Pill ambiant — conteneur fixe avec overflow:hidden, light passe dedans */}
-      <span className={styles.shimmerPill} aria-hidden="true" />
       <div className="flex items-baseline gap-6 min-w-0 flex-1">
         <span className="proj-index pt-3 self-start">{index} /</span>
         <h2 className="proj-title inline-block m-0">{project.title}</h2>
