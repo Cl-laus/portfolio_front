@@ -15,7 +15,7 @@
 
 /* ── Mobile : déclenché par .is-revealed (timer) ── */
 
-@media (hover: none) {
+@media (max-width: 959px) {
   .closed.is-revealed                          { transform: translateX(0.85em); }
   .closed.is-revealed :global(.proj-index)        { color: var(--amber); }
   .closed.is-revealed :global(.proj-title::after) { width: 100%; }
