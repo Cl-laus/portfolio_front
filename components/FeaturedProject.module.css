@@ -41,35 +41,42 @@
 .featImageFallback { background: rgba(245, 241, 234, 0.04); }
 
 
+/* ── Pill ambiant — caché sur desktop ── */
+.shimmerPill { display: none; }
+
 /* ══════════════════════════════════════
    AMBIENT ANIMATION — mobile uniquement
-   Shimmer uniquement au niveau du CircleButton (ctaArea)
-   Même hauteur que le bouton, carré à gauche, rond à droite
+   Pill fixe au niveau du ctaArea (même hauteur que CircleButton)
+   Carré à gauche, rond à droite — light passe dedans
 ══════════════════════════════════════ */
 
 @media (max-width: 959px) {
   @media (prefers-reduced-motion: no-preference) {
-    .ctaArea {
-      position: relative;
+    /* Conteneur pill — occupe toute la largeur du ctaArea, carré G, rond D */
+    .shimmerPill {
+      display: block;
+      position: absolute;
+      inset: 0; /* remplit la hauteur du ctaArea = hauteur du bouton */
+      border-radius: 0 999px 999px 0;
       overflow: hidden;
+      pointer-events: none;
     }
-    .ctaArea::before {
+    /* Light qui passe à l'intérieur du pill */
+    .shimmerPill::before {
       content: '';
       position: absolute;
-      inset: 0;         /* remplit exactement la hauteur du ctaArea = hauteur du bouton */
-      width: 55%;
-      border-radius: 0 999px 999px 0; /* carré gauche, rond droite */
+      top: 0; bottom: 0; left: 0;
+      width: 60%;
       background: linear-gradient(
         90deg,
         transparent 0%,
-        color-mix(in srgb, white 15%, transparent) 50%,
+        color-mix(in srgb, white 18%, transparent) 50%,
         transparent 100%
       );
       will-change: transform;
-      animation: shimmerPass 14s ease-in-out infinite;
-      pointer-events: none;
+      animation: shimmerInPill 4s ease-in-out infinite;
     }
-    .activated .ctaArea::before {
+    .activated .shimmerPill::before {
       animation-play-state: paused;
     }
   }
@@ -122,8 +129,13 @@
 }
 
 
-@keyframes shimmerPass {
-  0%   { transform: translate3d(-100%, 0, 0); }
-  100% { transform: translate3d(300%, 0, 0); }
+/* ctaArea doit être positionné pour que shimmerPill puisse s'y ancrer */
+@media (max-width: 959px) {
+  .ctaArea { position: relative; }
+}
+
+@keyframes shimmerInPill {
+  from { transform: translate3d(-100%, 0, 0); }
+  to   { transform: translate3d(200%, 0, 0); }
 }
 
