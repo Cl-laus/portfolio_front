@@ -20,7 +20,7 @@ export default function HomePage() {
   // Index de la card active sur mobile (-1 = aucune)
   // 0 = FeaturedProject, 1 = ClosedProject[0], 2 = ClosedProject[1]
   const [revealedIndex, setRevealedIndex] = useState(-1);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     const load = async () => {
