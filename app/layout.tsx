@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${euclidCircularA.variable} ${geistMono.variable} dark antialiased`}>
+    <html lang="fr" className={`${euclidCircularA.variable} ${geistMono.variable} antialiased`}>
       <head>
         <link rel="preload" href="/hero.jpg" as="image" />
       </head>
