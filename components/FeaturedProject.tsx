@@ -26,18 +26,15 @@ export default function FeaturedProject({ project }: FeaturedProjectProps) {
   const meta       = [cats, year].filter(Boolean).join(" · ");
 
   const handleClick = (e: React.MouseEvent) => {
-    // Sur appareil tactile : premier tap = active, second tap = navigue
+    // Sur mobile : déclenche l'animation hover puis navigue après 350ms
     if (navigator.maxTouchPoints > 0) {
-      if (!activated) {
-        e.preventDefault();
-        setActivated(true);
-        // Auto-reset après 2.5s si pas de second tap
-        clearTimeout(resetTimer.current);
-        resetTimer.current = setTimeout(() => setActivated(false), 2500);
-        return;
-      }
+      e.preventDefault();
+      setActivated(true);
       clearTimeout(resetTimer.current);
-      setActivated(false);
+      resetTimer.current = setTimeout(() => {
+        router.push(`/projects/${project.id}`);
+      }, 350);
+      return;
     }
     router.push(`/projects/${project.id}`);
   };
