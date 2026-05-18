@@ -3,7 +3,6 @@
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--amber);
-  font-family: var(--font-geist-mono), monospace;
 }
 
 .title {

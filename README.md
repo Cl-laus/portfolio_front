@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio — Lucas Luisetti
 
-## Getting Started
+Portfolio personnel développé from scratch. Design sombre et typé, animations ambiantes, CMS maison pour gérer les projets et les contenus.
 
-First, run the development server:
+Déployé sur → **[lucasluisetti.me](https://lucasluisetti.me)**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+## Stack
+
+| Framework | Next.js 16 (App Router) |
+| Langage | TypeScript |
+| Style | Tailwind v4|
+| Police | Euclid Circular A |
+| Icônes | Font Awesome |
+| HTTP | Axios |
+| Backend | API REST séparée — `api.lucasluisetti.me` |
+
+
+## Architecture
+
+app/
+  page.tsx              → Home (hero + 3 projets basic)
+  about/                → Page À propos
+  projects/[id]/        → Détail d'un projet
+  batcave/              → CMS admin (securisé)
+  layout.tsx            → Layout racine (police, NavBar, preload)
+  not-found.tsx         → Page erreur 404
+  
+
+components/
+  HeroSection           → Section hero avec image de fond
+  FeaturedProject       → Card projet principal
+  ClosedProject         → Card projet secondaire
+  ProjectCarousel       → Carrousel d'images projet
+  CircleButton          → Bouton rond (icon-only)
+  GlowSeparator         → Séparateur animé (horizontal + vertical)
+  NavBar, Footer, ...
+
+
+## Pages
+
+  ### Home `/`
+  Hero plein écran + liste des projets(3).
+
+  ### À propos `/about`
+  Présentation en 4 sections avec animation de fondu au scroll. Liens vers reseaux externes et bouton pour dl mon CV
+
+  ### Projet `/projects/[id]`
+  Carrousel d'images, description, stack technique, liens( Git ou autres).
+
+  ### Admin `/batcave`
+  CMS interne pour gérer les projets, les images, les informations du portfolio et les réseaux sociaux. Accès par mot de passe.
+
+
+## Design system
+
+Tout est dans `app/globals.css` et  `admin.css `. Ces fichiers partagent les classes CSS communes. Sinon chaques components a son module CSS avec les classes qui lui sont propres.
+
+
+
+**Breakpoint**
+```
+mobile  : < 960px
+desktop : ≥ 960px
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Règle CSS / Tailwind**
+- Tailwind = Pour le POSITIONNEMENT: 
+    exemple:layout, spacing, sizing (`flex`, `grid`, `gap`, `p-*`, `m-*`, `w-*`, `h-*`)
+- CSS Modules = Pour le STYLE PRECIS 
+    exemple: couleurs, animations, transitions, typographie fine, effets visuels
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---------------------------------------------------------------------
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Lancer le projet
 
-## Learn More
+```bash
+npm install
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Créer un fichier `.env.local` à la racine :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+NEXT_PUBLIC_API_URL=https://api.lucasluisetti.me
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Variables d'environnement
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+ `NEXT_PUBLIC_API_URL`  URL de l'API backend 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Déploiement
+
+Le site est déployé sur **Vercel**. Chaque push sur `master` déclenche un redéploiement automatique.
+
+Le backend tourne sur un VPS avec **Caddy** (HTTPS automatique via Let's Encrypt).
+
+---
+

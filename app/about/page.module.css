@@ -117,7 +117,6 @@
 
 /* ── Group label (visuel seul) ── */
 .groupLabel {
-  font-family: var(--font-geist-mono), monospace;
   font-size: 0.65rem;
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;

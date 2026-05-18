@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { Geist_Mono } from 'next/font/google';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 config.autoAddCss = false;
@@ -19,11 +18,6 @@ const euclidCircularA = localFont({
   display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-
 export const metadata: Metadata = {
   title: 'Lucas Luisetti — Portfolio',
   description: 'Designer-turned-developer.',
@@ -31,7 +25,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${euclidCircularA.variable} ${geistMono.variable} antialiased`}>
+    <html lang="fr" className={`${euclidCircularA.variable} antialiased`}>
       <head>
         <link rel="preload" href="/hero.jpg" as="image" />
       </head>
