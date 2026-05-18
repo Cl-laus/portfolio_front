@@ -21,16 +21,14 @@ export default function ClosedProject({ project, index, meta }: ClosedProjectPro
   const resetTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const handleClick = () => {
-    // Sur appareil tactile : premier tap = active, second tap = navigue
+    // Sur mobile : déclenche l'animation hover puis navigue après 350ms
     if (navigator.maxTouchPoints > 0) {
-      if (!activated) {
-        setActivated(true);
-        clearTimeout(resetTimer.current);
-        resetTimer.current = setTimeout(() => setActivated(false), 2500);
-        return;
-      }
+      setActivated(true);
       clearTimeout(resetTimer.current);
-      setActivated(false);
+      resetTimer.current = setTimeout(() => {
+        router.push(`/projects/${project.id}`);
+      }, 350);
+      return;
     }
     router.push(`/projects/${project.id}`);
   };
