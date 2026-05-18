@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -11,16 +12,33 @@ interface ClosedProjectProps {
   project: ProjectSummary;
   index: string;
   meta?: string;
-  isRevealed?: boolean; // true sur mobile quand le timer active cette card
 }
 
-export default function ClosedProject({ project, index, meta, isRevealed }: ClosedProjectProps) {
+export default function ClosedProject({ project, index, meta }: ClosedProjectProps) {
   const router = useRouter();
+  // État d'activation tactile : premier tap = révèle, second tap = navigue
+  const [activated, setActivated] = useState(false);
+  const resetTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  const handleClick = () => {
+    // Sur appareil tactile : premier tap = active, second tap = navigue
+    if (navigator.maxTouchPoints > 0) {
+      if (!activated) {
+        setActivated(true);
+        clearTimeout(resetTimer.current);
+        resetTimer.current = setTimeout(() => setActivated(false), 2500);
+        return;
+      }
+      clearTimeout(resetTimer.current);
+      setActivated(false);
+    }
+    router.push(`/projects/${project.id}`);
+  };
 
   return (
     <div
-      className={`${styles.closed} w-full flex items-center justify-between gap-6${isRevealed ? " is-revealed" : ""}`}
-      onClick={() => router.push(`/projects/${project.id}`)}
+      className={`${styles.closed} ${activated ? styles.activated : ""} w-full flex items-center justify-between gap-6`}
+      onClick={handleClick}
     >
       <div className="flex items-baseline gap-6 min-w-0 flex-1">
         <span className="proj-index pt-3 self-start">{index} /</span>
