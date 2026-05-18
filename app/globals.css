@@ -20,8 +20,8 @@
    ========================= */
 :root {
   /* Colors — TEST palette grise (inspirée image hero) */
-  --bg-top: #cecece;
-  --bg-mid: #94989c;
+  --bg-top: #a5a0a0;
+  --bg-mid: #8b8f94;
   --bg-bot: #515152;
   --fg:      #2c2722;
   --fg-muted: #e7dfd8;

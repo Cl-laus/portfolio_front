@@ -5,25 +5,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { ProjectSummary } from "@/types";
 import CircleButton from "./CircleButton";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 import styles from "./ClosedProject.module.css";
 
 interface ClosedProjectProps {
   project: ProjectSummary;
   index: string;
   meta?: string;
+  isRevealed?: boolean; // true sur mobile quand le timer active cette card
 }
 
-export default function ClosedProject({ project, index, meta }: ClosedProjectProps) {
+export default function ClosedProject({ project, index, meta, isRevealed }: ClosedProjectProps) {
   const router = useRouter();
-
-  // Sur mobile (pas de hover) : active l'état "hovered" quand la card est visible
-  const { register } = useScrollReveal({ mode: "threshold" });
 
   return (
     <div
-      ref={register(0)}
-      className={`${styles.closed} w-full flex items-center justify-between gap-6`}
+      className={`${styles.closed} w-full flex items-center justify-between gap-6${isRevealed ? " is-revealed" : ""}`}
       onClick={() => router.push(`/projects/${project.id}`)}
     >
       <div className="flex items-baseline gap-6 min-w-0 flex-1">
