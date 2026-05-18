@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { projectService }     from "@/services/projectService";
 import { informationService } from "@/services/informationService";
 import { ProjectSummary, Information } from "@/types";
@@ -16,11 +16,6 @@ export default function HomePage() {
   const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [info,     setInfo]     = useState<Information | null>(null);
   const [loading,  setLoading]  = useState(true);
-
-  // Index de la card active sur mobile (-1 = aucune)
-  // 0 = FeaturedProject, 1 = ClosedProject[0], 2 = ClosedProject[1]
-  const [revealedIndex, setRevealedIndex] = useState(-1);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     const load = async () => {
@@ -39,53 +34,6 @@ export default function HomePage() {
     };
     load();
   }, []);
-
-  // Animation séquentielle sur mobile uniquement
-  // FeaturedProject → ClosedProject 1 → ClosedProject 2 → pause 5s → boucle
-  useEffect(() => {
-    if (!projects.length) return;
-
-    // Ne tourne que sur mobile (largeur < 960px)
-    if (window.innerWidth >= 960) return;
-    const STEP_DURATION  = 1000; // 1s par card
-    const PAUSE_DURATION = 5000; // 5s de pause entre les cycles
-    const ITEM_COUNT     = projects.length; // 3 projets
-
-    let cancelled = false;
-    let step = 0;
-
-    const run = () => {
-      if (cancelled) return;
-
-      setRevealedIndex(step); // active la card courante
-
-      timerRef.current = setTimeout(() => {
-        if (cancelled) return;
-        step++;
-
-        if (step < ITEM_COUNT) {
-          // Passe à la card suivante
-          run();
-        } else {
-          // Fin du cycle → tout éteindre, puis pause 5s
-          setRevealedIndex(-1);
-          timerRef.current = setTimeout(() => {
-            if (cancelled) return;
-            step = 0;
-            run(); // recommence depuis le début
-          }, PAUSE_DURATION);
-        }
-      }, STEP_DURATION);
-    };
-
-    run();
-
-    return () => {
-      cancelled = true;
-      clearTimeout(timerRef.current);
-      setRevealedIndex(-1);
-    };
-  }, [projects.length]);
 
   if (loading || !info) return <LoadingSpinner />;
 
@@ -112,21 +60,15 @@ export default function HomePage() {
           </span>
         </div>
 
-        {featured && (
-          <FeaturedProject
-            project={featured}
-            isRevealed={revealedIndex === 0}
-          />
-        )}
+        {featured && <FeaturedProject project={featured} />}
 
         {closed.map((project, i) => (
           <div key={project.id}>
             <div className={`${styles.projectDivider} my-24 h-px`} />
             <ClosedProject
               project={project}
-              index={String(i + 2).padStart(2, "0")}
+              index={String(i + 2).padStart(2, "00")}
               meta={closedMeta(project)}
-              isRevealed={revealedIndex === i + 1}
             />
           </div>
         ))}

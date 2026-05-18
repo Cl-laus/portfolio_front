@@ -1,9 +1,14 @@
 .closed {
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
   transition: transform var(--dur-snap) var(--ease-snappy);
 }
 
-/* ── Hover (souris desktop) ── */
+
+/* ══════════════════════════════════════
+   HOVER — desktop (souris)
+══════════════════════════════════════ */
 
 .closed:hover                          { transform: translateX(0.85em); }
 .closed:hover :global(.proj-index)        { color: var(--amber); }
@@ -11,9 +16,50 @@
 .closed:hover :global(.proj-title::after) { width: 100%; }
 .closed:hover :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
 
-/* ── is-revealed (timer mobile) — global, sans media query ── */
 
-.closed.is-revealed                          { transform: translateX(0.85em); }
-.closed.is-revealed :global(.proj-index)        { color: var(--amber); }
-.closed.is-revealed :global(.proj-title::after) { width: 100%; }
-.closed.is-revealed :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
+/* ══════════════════════════════════════
+   ACTIVATED — tap mobile (mêmes styles que hover)
+══════════════════════════════════════ */
+
+.activated                          { transform: translateX(0.85em); }
+.activated :global(.proj-index)        { color: var(--amber); }
+.activated :global(.proj-title::after) { width: 100%; }
+.activated :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
+
+
+/* ══════════════════════════════════════
+   AMBIENT ANIMATION — mobile uniquement
+   Shimmer léger qui traverse la card très lentement
+   GPU-composited, respecte prefers-reduced-motion
+══════════════════════════════════════ */
+
+@media (max-width: 959px) {
+  @media (prefers-reduced-motion: no-preference) {
+    .closed::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in srgb, white 3%, transparent) 50%,
+        transparent 100%
+      );
+      will-change: transform;
+      animation: shimmerPass 14s ease-in-out infinite;
+      pointer-events: none;
+    }
+    /* Pause quand activée */
+    .activated::before {
+      animation-play-state: paused;
+    }
+  }
+}
+
+@keyframes shimmerPass {
+  0%   { transform: translate3d(-100%, 0, 0); }
+  100% { transform: translate3d(300%, 0, 0); }
+}

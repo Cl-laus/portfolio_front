@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -11,22 +12,41 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 interface FeaturedProjectProps {
   project: ProjectSummary;
-  isRevealed?: boolean; // true sur mobile quand le timer active cette card
 }
 
-export default function FeaturedProject({ project, isRevealed }: FeaturedProjectProps) {
+export default function FeaturedProject({ project }: FeaturedProjectProps) {
   const router = useRouter();
+  // État d'activation tactile : premier tap = révèle, second tap = navigue
+  const [activated, setActivated] = useState(false);
+  const resetTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const year       = project.createdAt ? new Date(project.createdAt).getFullYear() : null;
   const categories = project.technologies?.map(t => t.category).filter(Boolean) ?? [];
   const cats       = categories.slice(0, 2).join(" · ");
   const meta       = [cats, year].filter(Boolean).join(" · ");
 
+  const handleClick = (e: React.MouseEvent) => {
+    // Sur appareil tactile : premier tap = active, second tap = navigue
+    if (navigator.maxTouchPoints > 0) {
+      if (!activated) {
+        e.preventDefault();
+        setActivated(true);
+        // Auto-reset après 2.5s si pas de second tap
+        clearTimeout(resetTimer.current);
+        resetTimer.current = setTimeout(() => setActivated(false), 2500);
+        return;
+      }
+      clearTimeout(resetTimer.current);
+      setActivated(false);
+    }
+    router.push(`/projects/${project.id}`);
+  };
+
   return (
     <a
-      className={`${styles.featured} block${isRevealed ? " is-revealed" : ""}`}
+      className={`${styles.featured} ${activated ? styles.activated : ""} block`}
       href={`/projects/${project.id}`}
-      onClick={(e) => { e.preventDefault(); router.push(`/projects/${project.id}`); }}
+      onClick={handleClick}
     >
       <div className="inline-flex items-center gap-3 mb-6">
         <div className={styles.featHairline} />

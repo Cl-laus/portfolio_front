@@ -23,7 +23,7 @@
   font-size: 1rem;
   max-width: 27em;
   opacity: 0.5;
-  transition: opacity 500ms ease, color 500ms ease;
+  transition: opacity 500ms ease;
 }
 
 .featCtaLabel {
@@ -31,9 +31,7 @@
   transition: color var(--dur-fade) ease;
 }
 
-.featImageWrap {
-  min-height: 16em;
-}
+.featImageWrap { min-height: 16em; }
 
 .featImage {
   filter: brightness(0.9) contrast(1.08) saturate(1.05);
@@ -43,7 +41,9 @@
 .featImageFallback { background: rgba(245, 241, 234, 0.04); }
 
 
-/* ── Hover (souris desktop) ── */
+/* ══════════════════════════════════════
+   HOVER — desktop (souris)
+══════════════════════════════════════ */
 
 .featured:hover .featImage     { opacity: 1; }
 .featured:hover .titleRow      { transform: translateX(0.85em); }
@@ -57,19 +57,23 @@
 .featured:hover :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
 
 
-/* ── is-revealed (timer mobile) — global, sans media query ── */
+/* ══════════════════════════════════════
+   ACTIVATED — tap mobile (mêmes styles que hover)
+══════════════════════════════════════ */
 
-.featured.is-revealed .featImage     { opacity: 1; }
-.featured.is-revealed .titleRow      { transform: translateX(0.85em); }
-.featured.is-revealed .featHairline  { width: 4em; }
-.featured.is-revealed .featDesc      { opacity: 1; }
-.featured.is-revealed .featCtaLabel  { color: var(--amber); }
-.featured.is-revealed :global(.proj-index)        { color: var(--amber); }
-.featured.is-revealed :global(.proj-title::after) { width: 100%; }
-.featured.is-revealed :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
+.activated .featImage     { opacity: 1; }
+.activated .titleRow      { transform: translateX(0.85em); }
+.activated .featHairline  { width: 4em; }
+.activated .featDesc      { opacity: 1; }
+.activated .featCtaLabel  { color: var(--amber); }
+.activated :global(.proj-index)        { color: var(--amber); }
+.activated :global(.proj-title::after) { width: 100%; }
+.activated :global(.proj-meta)         { opacity: 0.7; transform: translateX(0); }
 
 
-/* ── Layout mobile ── */
+/* ══════════════════════════════════════
+   LAYOUT MOBILE
+══════════════════════════════════════ */
 
 @media (max-width: 900px) {
   .featDetail    { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem; padding-left: 0; min-height: auto; }
@@ -78,5 +82,32 @@
   .featuredRight { order: 2; }
   .ctaArea       { order: 3; justify-content: flex-end; padding-right: 0 !important; width: 100%; }
   .featImageWrap { min-height: 14em; }
-  .featImage     { opacity: 1 !important; }
+  /* Image plus visible sur mobile pour que le drift soit perceptible */
+  .featImage     { opacity: 0.45; }
+}
+
+
+/* ══════════════════════════════════════
+   AMBIENT ANIMATION — mobile uniquement
+   Image drift très lent (Apple-style)
+   GPU-composited, respecte prefers-reduced-motion
+══════════════════════════════════════ */
+
+@media (max-width: 959px) {
+  @media (prefers-reduced-motion: no-preference) {
+    .featImage {
+      will-change: transform;
+      animation: imageDrift 9s ease-in-out infinite;
+      /* Pause quand la card est activée (tap) */
+    }
+    .activated .featImage {
+      animation-play-state: paused;
+    }
+  }
+}
+
+@keyframes imageDrift {
+  0%, 100% { transform: scale(1.06) translate3d(0,    0,    0); }
+  33%       { transform: scale(1.06) translate3d(-7px, -4px, 0); }
+  66%       { transform: scale(1.06) translate3d(4px,  -6px, 0); }
 }
