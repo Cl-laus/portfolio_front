@@ -45,9 +45,9 @@ export default function HomePage() {
   useEffect(() => {
     if (!projects.length) return;
 
-    // Ne tourne que sur les appareils sans hover (touch / mobile)
-    const isTouchDevice = !window.matchMedia("(hover: hover)").matches;
-    if (!isTouchDevice) return;
+    // Ne tourne que sur mobile (écran < 960px — même breakpoint que le CSS)
+    const isMobile = window.matchMedia("(max-width: 959px)").matches;
+    if (!isMobile) return;
 
     const STEP_DURATION  = 1000; // 1s par card
     const PAUSE_DURATION = 5000; // 5s de pause entre les cycles

@@ -61,7 +61,7 @@
 
 /* ── Mobile : déclenché par .is-revealed (timer) ── */
 
-@media (hover: none) {
+@media (max-width: 959px) {
   .featured.is-revealed .featImage     { opacity: 1; }
   .featured.is-revealed .titleRow      { transform: translateX(0.85em); }
   .featured.is-revealed .featHairline  { width: 4em; }
