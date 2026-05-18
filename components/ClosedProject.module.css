@@ -1,7 +1,5 @@
 .closed {
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
   transition: transform var(--dur-snap) var(--ease-snappy);
 }
 
