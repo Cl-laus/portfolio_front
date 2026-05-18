@@ -42,6 +42,42 @@
 
 
 /* ══════════════════════════════════════
+   AMBIENT ANIMATION — mobile uniquement
+   Shimmer léger sur toute la card
+══════════════════════════════════════ */
+
+@media (max-width: 959px) {
+  @media (prefers-reduced-motion: no-preference) {
+    .featured {
+      position: relative;
+      overflow: hidden;
+    }
+    .featured::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in srgb, white 22%, transparent) 50%,
+        transparent 100%
+      );
+      will-change: transform;
+      animation: shimmerPass 14s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .activated::before {
+      animation-play-state: paused;
+    }
+  }
+}
+
+
+/* ══════════════════════════════════════
    HOVER — desktop (souris)
 ══════════════════════════════════════ */
 
@@ -87,9 +123,8 @@
 }
 
 
-/* ══════════════════════════════════════
-   AMBIENT ANIMATION — mobile uniquement
-   Image drift très lent (Apple-style)
-   GPU-composited, respecte prefers-reduced-motion
-══════════════════════════════════════ */
+@keyframes shimmerPass {
+  0%   { transform: translate3d(-100%, 0, 0); }
+  100% { transform: translate3d(300%, 0, 0); }
+}
 

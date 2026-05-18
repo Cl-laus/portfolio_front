@@ -45,7 +45,7 @@
       background: linear-gradient(
         90deg,
         transparent 0%,
-        color-mix(in srgb, white 12%, transparent) 50%,
+        color-mix(in srgb, white 22%, transparent) 50%,
         transparent 100%
       );
       will-change: transform;
