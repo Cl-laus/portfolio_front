@@ -93,21 +93,3 @@
    GPU-composited, respecte prefers-reduced-motion
 ══════════════════════════════════════ */
 
-@media (max-width: 959px) {
-  @media (prefers-reduced-motion: no-preference) {
-    .featImage {
-      will-change: transform;
-      animation: imageDrift 9s ease-in-out infinite;
-      /* Pause quand la card est activée (tap) */
-    }
-    .activated .featImage {
-      animation-play-state: paused;
-    }
-  }
-}
-
-@keyframes imageDrift {
-  0%, 100% { transform: scale(1.06) translate3d(0,    0,    0); }
-  33%       { transform: scale(1.06) translate3d(-7px, -4px, 0); }
-  66%       { transform: scale(1.06) translate3d(4px,  -6px, 0); }
-}
