@@ -180,9 +180,12 @@
 .adm-col-title .title-link:hover { color: var(--amber); }
 .adm-col-status  { width: 9rem; }
 .adm-col-views                    { width: 5rem; text-align: right; }
+.adm-table thead .adm-col-views   { text-align: right; }
 .adm-table tbody .adm-col-views   { font-size: 0.75rem; color: var(--amber); }
-.adm-col-order   { width: 7rem; }
-.adm-col-actions { width: 9rem; text-align: right; }
+.adm-col-order                    { width: 7rem; text-align: center; }
+.adm-table thead .adm-col-order   { text-align: center; }
+.adm-col-actions                  { width: 9rem; text-align: right; }
+.adm-table thead .adm-col-actions { text-align: right; }
 
 
 /* ── Status pills ── */
