@@ -179,7 +179,8 @@
 .adm-col-title .title-link { cursor: pointer; transition: color .25s ease; }
 .adm-col-title .title-link:hover { color: var(--amber); }
 .adm-col-status  { width: 9rem; }
-.adm-col-views   { width: 5rem; font-size: 0.75rem; color: var(--fg-muted); text-align: right; }
+.adm-col-views                    { width: 5rem; text-align: right; }
+.adm-table tbody .adm-col-views   { font-size: 0.75rem; color: var(--amber); }
 .adm-col-order   { width: 7rem; }
 .adm-col-actions { width: 9rem; text-align: right; }
 
