@@ -179,13 +179,14 @@
 .adm-col-title .title-link { cursor: pointer; transition: color .25s ease; }
 .adm-col-title .title-link:hover { color: var(--amber); }
 .adm-col-status  { width: 9rem; }
-.adm-col-views                    { width: 5rem; text-align: right; }
-.adm-table thead .adm-col-views   { text-align: right; }
+.adm-table thead .adm-col-status  { text-align: center; }
+.adm-col-views                    { width: 5rem; text-align: center; }
+.adm-table thead .adm-col-views   { text-align: center; }
 .adm-table tbody .adm-col-views   { font-size: 0.75rem; color: var(--amber); }
 .adm-col-order                    { width: 7rem; text-align: center; }
 .adm-table thead .adm-col-order   { text-align: center; }
 .adm-col-actions                  { width: 9rem; text-align: right; }
-.adm-table thead .adm-col-actions { text-align: right; }
+.adm-table thead .adm-col-actions { text-align: center; }
 
 
 /* ── Status pills ── */
