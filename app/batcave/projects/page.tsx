@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Project } from '@/types';
 import { projectService } from '@/services/projectService';
+import { statsService } from '@/services/statsService';
 import AdminCard from '@/components/AdminCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
@@ -14,12 +15,14 @@ import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 export default function ProjectsPage() {
   const { isAuth, checkingAuth } = useProtectedRoute();
   const [projects, setProjects] = useState<Project[]>([]);
+  const [stats, setStats] = useState<Map<number, number>>(new Map());
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     if (!isAuth) return;
     fetchProjects();
+    fetchStats();
   }, [isAuth]);
 
   async function fetchProjects() {
@@ -30,6 +33,14 @@ export default function ProjectsPage() {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function fetchStats() {
+    try {
+      setStats(await statsService.getProjectStats());
+    } catch {
+      // stats are non-critical
     }
   }
 
@@ -68,7 +79,7 @@ export default function ProjectsPage() {
     if (list.length === 0) {
       return (
         <tr>
-          <td colSpan={5} className="adm-empty">Aucun projet</td>
+          <td colSpan={6} className="adm-empty">Aucun projet</td>
         </tr>
       );
     }
@@ -87,6 +98,9 @@ export default function ProjectsPage() {
             <span className="dot" />
             {project.displayOrder <= 3 ? 'Visible' : 'Archivé'}
           </span>
+        </td>
+        <td className="adm-col-views" data-label="Vues">
+          {stats.get(project.id) ?? 0}
         </td>
         <td className="adm-col-order" data-label="Ordre">
           <input
@@ -124,6 +138,7 @@ export default function ProjectsPage() {
       <th className="adm-col-id">ID</th>
       <th className="adm-col-title">Titre</th>
       <th className="adm-col-status">Statut</th>
+      <th className="adm-col-views">Vues</th>
       <th className="adm-col-order">Ordre</th>
       <th className="adm-col-actions">Actions</th>
     </tr>
